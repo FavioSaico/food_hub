@@ -4,6 +4,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
+import 'package:food_hub/widgets/app_column.dart';
 import 'package:food_hub/widgets/big_text.dart';
 import 'package:food_hub/widgets/icon_and_text_widget.dart';
 import 'package:food_hub/widgets/small_text.dart';
@@ -81,11 +82,11 @@ void dispose() {
               )
             ],
           ),
-        )
+        ),
 
         //Lista de comidas e imagenes
       
-        ,ListView.builder(
+        ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: 10,
@@ -113,7 +114,7 @@ void dispose() {
                 ,Expanded(
                 child: Container(
                   height: Dimensions.listViewTextContSize,
-                 
+                  
                   decoration: BoxDecoration(
                     borderRadius:BorderRadius.only(
                       topRight:Radius.circular(Dimensions.radius20),
@@ -240,48 +241,7 @@ void dispose() {
                 child: Container(
                   padding: EdgeInsets.only(
                       top: Dimensions.height15, left: 15, right: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BigText(text: "Ceviche de Pescado"),
-                      SizedBox(
-                        height: Dimensions.height10,
-                      ),
-                      Row(
-                        children: [
-                          Wrap(children: [
-                            SmallText(
-                              text: "Plato tradicional infaltable del verano.",
-                              color: Colors.black54,
-                            )
-                          ])
-                        ],
-                      ),
-                      SizedBox(
-                        height: Dimensions.height20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconAndTextWidget(
-                            icon: Icons.set_meal,
-                            text: "Fondo",
-                            iconColor: AppColors.iconColor1,
-                          ),
-                          IconAndTextWidget(
-                            icon: Icons.delivery_dining_sharp,
-                            text: "20 min",
-                            iconColor: AppColors.iconcolor3,
-                          ),
-                          IconAndTextWidget(
-                            icon: Icons.access_time_rounded,
-                            text: "15 min",
-                            iconColor: AppColors.mainColor,
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
+                  child: AppColumn(text: "Ceviche de Pescado")
                 ),
               ))
         ],
