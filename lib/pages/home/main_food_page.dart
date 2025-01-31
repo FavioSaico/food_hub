@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_hub/pages/home/body_food_page.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
+import 'package:food_hub/widgets/app_icon.dart';
 import 'package:food_hub/widgets/big_text.dart';
 import 'package:food_hub/widgets/small_text.dart';
 
@@ -16,6 +17,7 @@ class _MainFoodPageState extends State<MainFoodPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Container(
@@ -53,9 +55,24 @@ class _MainFoodPageState extends State<MainFoodPage> {
             ),
           ),
           Expanded(
-              child: SingleChildScrollView(
-            child: BodyFoodPage(),
+            child: SingleChildScrollView(
+              child: BodyFoodPage(),
           )),
+          Container(
+            margin: EdgeInsets.only(
+              top: Dimensions.height10,
+              bottom: Dimensions.height10,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.home),
+                AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.table_bar),
+                AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.shopping_cart),
+                AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.person),
+              ],
+          ),
+          )
         ],
       ),
     );

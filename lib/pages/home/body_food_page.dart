@@ -66,20 +66,44 @@ void dispose() {
         ,SizedBox(height: Dimensions.height30),
         Container(
           margin: EdgeInsets.only(left: Dimensions.width30),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment,
             children: [
-              BigText(text: "Popular"),
-              SizedBox(width: Dimensions.width10,),
-              Container(
-                margin: const EdgeInsets.only(bottom: 3),
-                child: BigText(text: ".", color:Colors.black26),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                  padding: EdgeInsets.only(
+                    left: Dimensions.width20*2,
+                    right: Dimensions.width20*2,
+                    top: Dimensions.height10,
+                    bottom: Dimensions.height10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.mainColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(Dimensions.radius15),
+                      topRight: Radius.circular(Dimensions.radius15),
+                      bottomLeft: Radius.circular(Dimensions.radius15),
+                      bottomRight: Radius.circular(Dimensions.radius15),
+                    )
+                  ),
+                  child: BigText(text: "Haz una reserva", color: Colors.white,size:Dimensions.font16),
+                ),
+                ],
               ),
-              SizedBox(width: Dimensions.width10,),
-              Container(
-                margin: const EdgeInsets.only(bottom: 2),
-                child: SmallText(text: "Food hub",),
-              )
+              BigText(text: "Popular"),
+              // SizedBox(width: Dimensions.width10,),
+              // Container(
+              //   margin: const EdgeInsets.only(bottom: 3),
+              //   child: BigText(text: ".", color:Colors.black26),
+              // ),
+              // SizedBox(width: Dimensions.width10,),
+              // Container(
+              //   margin: const EdgeInsets.only(bottom: 2),
+              //   child: SmallText(text: "Food hub",),
+              // )
             ],
           ),
         ),
@@ -165,8 +189,7 @@ void dispose() {
               ],
             )//Row
           );//Container
-        })// List view builder
-      
+        }),// List 
       ],
     );
   }

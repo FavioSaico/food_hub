@@ -19,8 +19,8 @@ class RecommendedFoodDetail extends StatelessWidget {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppIcon(icon: Icons.clear),
-                AppIcon(icon: Icons.shopping_cart_outlined)
+                AppIcon(icon: Icons.chevron_left, iconColor:Colors.white, backgroundColor: AppColors.mainColor,iconSize: Dimensions.iconSize24),
+                // AppIcon(icon: Icons.shopping_cart_outlined)
               ],
             ),
             bottom: PreferredSize(
@@ -41,7 +41,7 @@ class RecommendedFoodDetail extends StatelessWidget {
               )
             ),
             pinned: true,
-            backgroundColor: AppColors.yellowColor,
+            backgroundColor: AppColors.mainColor,
             expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
               background: Image.asset(
@@ -57,7 +57,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20),
                   child: ExpandableTextWidget(
-                    text: "Un clasico de la gastronomía peruana. Delicados trozos de pescado fresco, marinados en jugo de limón recién exprimido, acompañados de cebolla roja, ají limo y un toque de cilantro fresco. El ceviche es sin duda el rey de la gastronomía peruana. Amado en nuestro territorio y admirado fuera de él, es un potaje que resulta de la perfecta combinación de los siguientes insumos básicos: el pescado, el limón, la cebolla roja y el ají limo. Más allá de estos ingredientes, admite, por supuesto, muchas variantes en la que intervienen los mariscos, el culantro, distintas proporciones de sal, kion, ajo y hasta el polémico glutamato monosódico. Además, viene con distintos acompañamientos según el lugar en el que se prepare o se coma: choclo sancochado, camote (a veces glaseado), canchita serrana, lechuga, zarandaja y más.... Pero ¿dónde reside el maravilloso encanto del ceviche? ¿En la frescura del pescado? ¿En el acidito del limón? ¿En la potencia de la cebolla cruda? ¿En ese toque picante que imprimen los ajíes peruanos? Pues en el equilibrio de todo lo dicho, y, por supuesto, en la calidad de los insumos. El pescado del mar peruano definitivamente es de carne especialmente sabrosa por la abundancia de plancton que favorece su nutrición. El limón sutil peruano tiene características propias y aporta una frescura ácida inigualable. Nuestras cebollas imprimen un sabor marcado e intenso. El limo es un ají único que no solo aporta picor, sino también un aroma que estimula nuestros sentidos."
+                    text: "Un clasico de la gastronomía peruana. Delicados trozos de pescado fresco, marinados en jugo de limón recién exprimido. El limón sutil peruano tiene características propias y aporta una frescura ácida inigualable. Nuestras cebollas imprimen un sabor marcado e intenso."
                   ),
                 )
               ],
@@ -76,13 +76,62 @@ class RecommendedFoodDetail extends StatelessWidget {
               bottom: Dimensions.height10,
             ),
             child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppIcon(iconSize: Dimensions.iconSize24, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.remove),
-              BigText(text: "S/. 56 X 0", color: AppColors.mainBlackColor,size:Dimensions.font26),
-              AppIcon(iconSize: Dimensions.iconSize24, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.add)
-            ],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppIcon(iconSize: Dimensions.iconSize24, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.remove),
+                BigText(text: "1", color: AppColors.mainBlackColor,size:Dimensions.font26),
+                AppIcon(iconSize: Dimensions.iconSize24, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.add),
+                Container(
+                  padding: EdgeInsets.only(
+                    left: Dimensions.width20*2,
+                    right: Dimensions.width20*2,
+                    top: Dimensions.height10,
+                    bottom: Dimensions.height10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.mainColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(Dimensions.radius15),
+                      topRight: Radius.circular(Dimensions.radius15),
+                      bottomLeft: Radius.circular(Dimensions.radius15),
+                      bottomRight: Radius.circular(Dimensions.radius15),
+                    )
+                  ),
+                  child: BigText(text: "Añadir", color: Colors.white,size:Dimensions.font16),
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                    left: Dimensions.width20*1.4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.mainColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(Dimensions.radius15),
+                      topRight: Radius.circular(Dimensions.radius15),
+                      bottomLeft: Radius.circular(Dimensions.radius15),
+                      bottomRight: Radius.circular(Dimensions.radius15),
+                    )
+                  ),
+                  child:  AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.mode_comment),
+                ),
+              ],
+            ),
           ),
+          Container(
+            margin: EdgeInsets.only(
+              top: Dimensions.height10,
+              bottom: Dimensions.height10,
+            ),
+            child: 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.home),
+                  AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.table_bar),
+                  AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.shopping_cart),
+                  AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.person),
+                ],
+              ),
           )
         ],
       ),
