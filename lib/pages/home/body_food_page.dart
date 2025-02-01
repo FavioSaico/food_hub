@@ -2,6 +2,7 @@
 
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:food_hub/interfaces/product.dart';
 import 'package:food_hub/pages/food/recommended_food_detail.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
@@ -9,15 +10,6 @@ import 'package:food_hub/widgets/app_column.dart';
 import 'package:food_hub/widgets/big_text.dart';
 import 'package:food_hub/widgets/icon_and_text_widget.dart';
 import 'package:food_hub/widgets/small_text.dart';
-
-class Product {
-  final String name;
-  final String description;
-  final double price;
-  final String imageUrl;
-
-  Product({required this.name, required this.description, required this.price, required this.imageUrl});
-}
 
 class BodyFoodPage extends StatefulWidget {
   const BodyFoodPage({super.key});
@@ -33,10 +25,30 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
   final double _height = Dimensions.pageViewContainer;
 
   final List<Product> products = [
-    Product(name: "Ceviche de Pescado", description: "n clasico de la gastronomía peruana. Delicados trozos de pescado fresco, marinados en jugo de limón recién exprimido. El limón sutil peruano tiene características propias y aporta una frescura ácida inigualable. Nuestras cebollas imprimen un sabor marcado e intenso.", 
-    price: 56.0, imageUrl: "assets/imagenes/Ceviche_Pescado.png"),
-    Product(name: "Arroz con mariscos", description: "Pantalla OLED, cámara de 108MP", price: 999.99, imageUrl: "assets/imagenes/ARROZ_CON_MARISCOS.png"),
-    Product(name: "Leche de tigre", description: "Cancelación de ruido, Bluetooth 5.0", price: 199.99, imageUrl: "assets/imagenes/LECHE_DE_TIGRE.png"),
+    Product(name: "Ceviche de Pescado", 
+            description: "n clasico de la gastronomía peruana. Delicados trozos de pescado fresco, marinados en jugo de limón recién exprimido. El limón sutil peruano tiene características propias y aporta una frescura ácida inigualable. Nuestras cebollas imprimen un sabor marcado e intenso.", 
+            price: 56.00, 
+            imageUrl: "assets/imagenes/Ceviche_Pescado.png",
+            typeFood: "Fondo",
+            time: '20 min',
+            timeDelivery: '30 min'
+    ),
+    Product(name: "Arroz con mariscos", 
+            description: "n clasico de la gastronomía peruana. Delicados trozos de pescado fresco, marinados en jugo de limón recién exprimido. El limón sutil peruano tiene características propias y aporta una frescura ácida inigualable. Nuestras cebollas imprimen un sabor marcado e intenso.", 
+            price: 56.00, 
+            imageUrl: "assets/imagenes/ARROZ_CON_MARISCOS.png",
+            typeFood: "Fondo",
+            time: '20 min',
+            timeDelivery: '30 min'
+    ),
+    Product(name: "Leche de tigre", 
+            description: "n clasico de la gastronomía peruana. Delicados trozos de pescado fresco, marinados en jugo de limón recién exprimido. El limón sutil peruano tiene características propias y aporta una frescura ácida inigualable. Nuestras cebollas imprimen un sabor marcado e intenso.", 
+            price: 56.00, 
+            imageUrl: "assets/imagenes/LECHE_DE_TIGRE.png",
+            typeFood: "Fondo",
+            time: '20 min',
+            timeDelivery: '30 min'
+    ),
   ];
 
   @override
@@ -77,10 +89,10 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
             activeShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0)),
           ),
-        )
+        ),
 
         //Popular text
-        ,SizedBox(height: Dimensions.height30),
+        SizedBox(height: Dimensions.height30),
         Container(
           margin: EdgeInsets.only(left: Dimensions.width30),
           child: Column(
@@ -111,16 +123,6 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
                 ],
               ),
               BigText(text: "Popular"),
-              // SizedBox(width: Dimensions.width10,),
-              // Container(
-              //   margin: const EdgeInsets.only(bottom: 3),
-              //   child: BigText(text: ".", color:Colors.black26),
-              // ),
-              // SizedBox(width: Dimensions.width10,),
-              // Container(
-              //   margin: const EdgeInsets.only(bottom: 2),
-              //   child: SmallText(text: "Food hub",),
-              // )
             ],
           ),
         ),
@@ -138,19 +140,11 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
                   context,
                   MaterialPageRoute(
                     allowSnapshotting: false,
-                    builder: (context) => RecommendedFoodDetail(),
+                    builder: (context) => RecommendedFoodDetail(product: product,),
                   ),
                 );
               },
               child: Container(
-              // onPressed: () {
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => RecommendedFoodDetail(),
-              //     ),
-              //   );
-              // },
               margin: EdgeInsets.only(left: Dimensions.width20,right: Dimensions.width20, bottom: Dimensions.height10),
               child: Row(
                 children:[
@@ -190,24 +184,24 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
                           children: [
                             BigText(text: product.name),
                             SizedBox(height:Dimensions.height10,),
-                            SmallText(text: "Con ingredientes frescos"),
+                            SmallText(text: product.shortDescription, color: Colors.black54,),
                             SizedBox(height:Dimensions.height10,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconAndTextWidget(
                                   icon: Icons.set_meal,
-                                  text: "Fondo",
+                                  text: product.typeFood,
                                   iconColor: AppColors.iconColor1,
                                 ),
                                 IconAndTextWidget(
                                   icon: Icons.delivery_dining_sharp,
-                                  text: "20 min",
+                                  text: product.timeDelivery,
                                   iconColor: AppColors.iconcolor3,
                                 ),
                                 IconAndTextWidget(
                                   icon: Icons.access_time_rounded,
-                                  text: "15 min",
+                                  text: product.time,
                                   iconColor: AppColors.mainColor,
                                 ),
                               ],
