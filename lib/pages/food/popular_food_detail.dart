@@ -9,7 +9,7 @@ import 'package:food_hub/widgets/exandable_text_widget.dart';
 
 class PopularFoodDetail extends StatelessWidget {
 
-  const PopularFoodDetail ({ Key? key}): super(key: key);
+  const PopularFoodDetail ({ super.key});
 
   @override
   Widget build(BuildContext context) {

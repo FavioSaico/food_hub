@@ -3,8 +3,8 @@ import 'package:food_hub/pages/home/plantilla.dart';
 import 'package:food_hub/pages/food/popular_food_detail.dart';
 import 'package:food_hub/pages/food/recommended_food_detail.dart';
 import 'package:food_hub/pages/home/main_food_page.dart';
-import 'package:food_hub/pages/home/login_page.dart';
-import 'package:food_hub/pages/home/registro_usuario_page.dart';
+import 'package:food_hub/pages/auth/login_page.dart';
+import 'package:food_hub/pages/auth/registro_usuario_page.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -23,14 +23,16 @@ class MyApp extends StatelessWidget {
       initialRoute: '/', // Ruta inicial
       routes: {
         '/': (context) => MainFoodPage(),
-        '/second': (context) => PopularFoodDetail(),
+        '/login': (context) => LoginPage(),
+        '/register': (context) => RegistroPage(),
+        // '/second': (context) => PopularFoodDetail(),
         // '/third': (context) => ThirdScreen(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: RegistroPage(),// CAMBIAR
+      // home: RegistroPage(),// CAMBIAR
     );
   }
 }
