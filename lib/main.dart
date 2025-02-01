@@ -3,6 +3,8 @@ import 'package:food_hub/pages/home/plantilla.dart';
 import 'package:food_hub/pages/food/popular_food_detail.dart';
 import 'package:food_hub/pages/food/recommended_food_detail.dart';
 import 'package:food_hub/pages/home/main_food_page.dart';
+import 'package:food_hub/pages/home/login_page.dart';
+import 'package:food_hub/pages/home/registro_usuario_page.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // home: PlantillaPage(), // CAMBIAR
+      home: RegistroPage(),// CAMBIAR
     );
   }
 }
