@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:food_hub/pages/home/body_food_page.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
-import 'package:food_hub/widgets/app_icon.dart';
+import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/widgets/big_text.dart';
 import 'package:food_hub/widgets/small_text.dart';
+
+
 
 class MainFoodPage extends StatefulWidget {
   const MainFoodPage({super.key});
@@ -14,6 +16,7 @@ class MainFoodPage extends StatefulWidget {
 }
 
 class _MainFoodPageState extends State<MainFoodPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,28 +57,24 @@ class _MainFoodPageState extends State<MainFoodPage> {
               ),
             ),
           ),
+          // Lista de Platos
           Expanded(
             child: SingleChildScrollView(
               child: BodyFoodPage(),
             )
           ),
-          Container(
-            margin: EdgeInsets.only(
-              top: Dimensions.height10,
-              bottom: Dimensions.height10,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.home),
-                AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.table_bar),
-                AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.shopping_cart),
-                AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.person),
-              ],
-          ),
-          )
         ],
       ),
+      // Boton de ChatBot
+      floatingActionButton: FloatingActionButton(
+        enableFeedback: true, // para que no produzca una pequeña vibración
+        elevation: 5, // controlamos las sombras
+        backgroundColor: AppColors.mainColor,
+        shape: StadiumBorder(),
+        onPressed: ( ) {},
+        child: Icon(Icons.mode_comment, color: Colors.white, size: 30), // pasamos el icono
+      ),
+      bottomNavigationBar: AppMenu(),
     );
   }
 }
