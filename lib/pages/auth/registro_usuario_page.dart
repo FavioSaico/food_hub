@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_hub/pages/auth/providers/auth_provider.dart';
+import 'package:food_hub/pages/home/main_food_page.dart';
 import 'package:food_hub/widgets/Campos_Login_Registro.dart';
 import 'package:food_hub/widgets/Boton_Login_Registro.dart';
 import 'package:food_hub/utils/colors.dart';
 
-class RegistroPage extends StatefulWidget {
+class RegistroPage extends ConsumerStatefulWidget {
   const RegistroPage({super.key});
 
   @override
   _RegistroPageState createState() => _RegistroPageState();
 }
 
-class _RegistroPageState extends State<RegistroPage> {
+class _RegistroPageState extends ConsumerState<RegistroPage> {
+
+  void handleRegister() async {
+    await ref.read(authProvider.notifier).register(
+          "favio",
+          "favio@gmail.com",
+          "123456",
+          "Av. -------",
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +96,17 @@ class _RegistroPageState extends State<RegistroPage> {
                   const SizedBox(height: 35),
 
                   AppClickableText(
-                    text: "Registrarme"
+                    text: "Registrarme",
+                    onPressed: () {
+                      handleRegister();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          allowSnapshotting: false,
+                          builder: (context) => MainFoodPage(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

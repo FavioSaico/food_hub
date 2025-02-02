@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_hub/pages/home/plantilla.dart';
 import 'package:food_hub/pages/food/popular_food_detail.dart';
 import 'package:food_hub/pages/food/recommended_food_detail.dart';
@@ -8,7 +9,11 @@ import 'package:food_hub/pages/auth/registro_usuario_page.dart';
 import 'package:get/get.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ProviderScope( 
+      child: MyApp()
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,12 +25,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      initialRoute: '/', // Ruta inicial
+      initialRoute: '/login', // Ruta inicial
       routes: {
         '/': (context) => MainFoodPage(),
         '/login': (context) => LoginPage(),
         '/register': (context) => RegistroPage(),
-        // '/second': (context) => PopularFoodDetail(),
+        '/second': (context) => PopularFoodDetail(),
         // '/third': (context) => ThirdScreen(),
       },
       theme: ThemeData(

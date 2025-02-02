@@ -1,18 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_hub/pages/auth/providers/auth_provider.dart';
+import 'package:food_hub/pages/auth/registro_usuario_page.dart';
+import 'package:food_hub/pages/home/main_food_page.dart';
 import 'package:food_hub/widgets/Campos_Login_Registro.dart';
 import 'package:food_hub/widgets/Boton_Login_Registro.dart';
 import 'package:food_hub/utils/colors.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
+
+  void handleLogin() async {
+    // setState(() => isLoading = true);
+    // WidgetRef ref = WidgetRef();
+    
+    await ref.read(authProvider.notifier).login(
+          "favio@gmail.com",
+          "123456",
+    );
+    
+    // Navigator.pushReplacementNamed(context, '/home');
+    
+    // } finally {
+    //   setState(() => isLoading = false);
+    // }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true, // Esto hace que el contenido se desplace cuando el teclado aparece
@@ -49,7 +71,17 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 50),
 
                   AppClickableText(
-                    text: "Ingresar"
+                    text: "Ingresar",
+                    onPressed: () {
+                      handleLogin();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          allowSnapshotting: false,
+                          builder: (context) => MainFoodPage(),
+                        ),
+                      );
+                    },
                   ),
 
                   const SizedBox(height: 20),  
@@ -57,7 +89,13 @@ class _LoginPageState extends State<LoginPage> {
                   // Texto clickeable debajo del botón "Ingresar"
                   GestureDetector(
                     onTap: () {
-                      print("Redirigir a la página de registro");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          allowSnapshotting: false,
+                          builder: (context) => RegistroPage(),
+                        ),
+                      );
                     },
                     child: Text(
                       "¿No tienes una cuenta? Regístrate",
