@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class AppTextField extends StatelessWidget {
   final String hintText;
   final IconData icon;
+  final bool obscureText; // Añadir este parámetro
 
   const AppTextField({
     Key? key,
     required this.hintText,
     required this.icon,
+    this.obscureText = false, // Por defecto, no ocultar el texto
   }) : super(key: key);
 
   @override
@@ -19,6 +21,7 @@ class AppTextField extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: TextField(
+        obscureText: obscureText, // Aquí activamos la opción de ocultar el texto
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: const TextStyle(fontStyle: FontStyle.italic),

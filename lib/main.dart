@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      initialRoute: '/', // Ruta inicial
+      initialRoute: '/login', // Ruta inicial
       routes: {
         '/': (context) => MainFoodPage(),
         '/login': (context) => LoginPage(),
