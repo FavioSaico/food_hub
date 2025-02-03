@@ -2,6 +2,8 @@
 
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:food_hub/interfaces/product.dart';
+import 'package:food_hub/pages/food/recommended_food_detail.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
 import 'package:food_hub/widgets/app_column.dart';
@@ -22,6 +24,33 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
   final double _scaleFactor = 0.8;
   final double _height = Dimensions.pageViewContainer;
 
+  final List<Product> products = [
+    Product(name: "Ceviche de Pescado", 
+            description: "n clasico de la gastronomía peruana. Delicados trozos de pescado fresco, marinados en jugo de limón recién exprimido. El limón sutil peruano tiene características propias y aporta una frescura ácida inigualable. Nuestras cebollas imprimen un sabor marcado e intenso.", 
+            price: 56.00, 
+            imageUrl: "assets/imagenes/Ceviche_Pescado.png",
+            typeFood: "Fondo",
+            time: '20 min',
+            timeDelivery: '30 min'
+    ),
+    Product(name: "Arroz con mariscos", 
+            description: "n clasico de la gastronomía peruana. Delicados trozos de pescado fresco, marinados en jugo de limón recién exprimido. El limón sutil peruano tiene características propias y aporta una frescura ácida inigualable. Nuestras cebollas imprimen un sabor marcado e intenso.", 
+            price: 56.00, 
+            imageUrl: "assets/imagenes/ARROZ_CON_MARISCOS.png",
+            typeFood: "Fondo",
+            time: '20 min',
+            timeDelivery: '30 min'
+    ),
+    Product(name: "Leche de tigre", 
+            description: "n clasico de la gastronomía peruana. Delicados trozos de pescado fresco, marinados en jugo de limón recién exprimido. El limón sutil peruano tiene características propias y aporta una frescura ácida inigualable. Nuestras cebollas imprimen un sabor marcado e intenso.", 
+            price: 56.00, 
+            imageUrl: "assets/imagenes/LECHE_DE_TIGRE.png",
+            typeFood: "Fondo",
+            time: '20 min',
+            timeDelivery: '30 min'
+    ),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -32,10 +61,10 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
     });
   }
 
-@override
-void dispose() {
-  super.dispose();
-}
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +89,10 @@ void dispose() {
             activeShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0)),
           ),
-        )
+        ),
 
         //Popular text
-        ,SizedBox(height: Dimensions.height30),
+        SizedBox(height: Dimensions.height30),
         Container(
           margin: EdgeInsets.only(left: Dimensions.width30),
           child: Column(
@@ -94,102 +123,98 @@ void dispose() {
                 ],
               ),
               BigText(text: "Popular"),
-              // SizedBox(width: Dimensions.width10,),
-              // Container(
-              //   margin: const EdgeInsets.only(bottom: 3),
-              //   child: BigText(text: ".", color:Colors.black26),
-              // ),
-              // SizedBox(width: Dimensions.width10,),
-              // Container(
-              //   margin: const EdgeInsets.only(bottom: 2),
-              //   child: SmallText(text: "Food hub",),
-              // )
             ],
           ),
         ),
 
-        //Lista de comidas e imagenes
-      
+        //LISTA DE COMIDAS E IMAGENES
         ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: 10,
-          itemBuilder:(context, index){
-          return Container(
-            margin: EdgeInsets.only(left: Dimensions.width20,right: Dimensions.width20, bottom: Dimensions.height10),
-            child:Row(
-              children:[
-                //image section
-                Container(
-                  width:Dimensions.listViewImgSize,
-                  height: Dimensions.listViewImgSize,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Dimensions.radius20),
-                    color:Colors.white38,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                        "assets/imagenes/Ceviche_Pescado.png"
-                      )
-                    )
+          itemCount: products.length,
+          itemBuilder:(context, index) {
+            final product = products[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    allowSnapshotting: false,
+                    builder: (context) => RecommendedFoodDetail(product: product,),
                   ),
-
-                )//Container
-                ,Expanded(
-                child: Container(
-                  height: Dimensions.listViewTextContSize,
-                  
-                  decoration: BoxDecoration(
-                    borderRadius:BorderRadius.only(
-                      topRight:Radius.circular(Dimensions.radius20),
-                      bottomRight: Radius.circular(Dimensions.radius20)
-                    ),
-                    color: Colors.white,
-                  ),
-
-                  child: Padding(
-                    padding: EdgeInsets.only(left:Dimensions.width10, right: Dimensions.width10),
-                    child:Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-
-                      children: [
-                        BigText(text:"Ceviche de Pescado"),
-                        SizedBox(height:Dimensions.height10,),
-                        SmallText(text: "Con ingredientes frescos"),
-                        SizedBox(height:Dimensions.height10,),
-                        Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconAndTextWidget(
-                            icon: Icons.set_meal,
-                            text: "Fondo",
-                            iconColor: AppColors.iconColor1,
-                          ),
-                          IconAndTextWidget(
-                            icon: Icons.delivery_dining_sharp,
-                            text: "20 min",
-                            iconColor: AppColors.iconcolor3,
-                          ),
-                          IconAndTextWidget(
-                            icon: Icons.access_time_rounded,
-                            text: "15 min",
-                            iconColor: AppColors.mainColor,
-                          ),
-                        ],
+                );
+              },
+              child: Container(
+              margin: EdgeInsets.only(left: Dimensions.width20,right: Dimensions.width20, bottom: Dimensions.height10),
+              child: Row(
+                children:[
+                  //image section
+                  Container(
+                    width:Dimensions.listViewImgSize,
+                    height: Dimensions.listViewImgSize,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimensions.radius20),
+                      color:Colors.white38,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage(
+                          product.imageUrl
+                        )
                       )
-
-                      ],
                     ),
 
-                  ),//Padding
-                ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: Dimensions.listViewTextContSize,
+                      decoration: BoxDecoration(
+                        borderRadius:BorderRadius.only(
+                          topRight:Radius.circular(Dimensions.radius20),
+                          bottomRight: Radius.circular(Dimensions.radius20)
+                        ),
+                        color: Colors.white,
+                      ),
 
+                      child: Padding(
+                        padding: EdgeInsets.only(left:Dimensions.width10, right: Dimensions.width10),
+                        child:Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+
+                          children: [
+                            BigText(text: product.name),
+                            SizedBox(height:Dimensions.height10,),
+                            SmallText(text: product.shortDescription, color: Colors.black54,),
+                            SizedBox(height:Dimensions.height10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconAndTextWidget(
+                                  icon: Icons.set_meal,
+                                  text: product.typeFood,
+                                  iconColor: AppColors.iconColor1,
+                                ),
+                                IconAndTextWidget(
+                                  icon: Icons.delivery_dining_sharp,
+                                  text: product.timeDelivery,
+                                  iconColor: AppColors.iconcolor3,
+                                ),
+                                IconAndTextWidget(
+                                  icon: Icons.access_time_rounded,
+                                  text: product.time,
+                                  iconColor: AppColors.mainColor,
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
             )
-              ],
-            )//Row
-          );//Container
-        }),// List 
+          ));
+        }),
       ],
     );
   }

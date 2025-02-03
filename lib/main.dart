@@ -38,4 +38,8 @@ class MyApp extends StatelessWidget {
       // home: RegistroPage(),// CAMBIAR
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d26b1696a59d2d98ed698fe2e375ec7b271295fb
