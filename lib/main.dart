@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:food_hub/pages/home/plantilla.dart';
-import 'package:food_hub/pages/food/popular_food_detail.dart';
-import 'package:food_hub/pages/food/recommended_food_detail.dart';
 import 'package:food_hub/pages/home/main_food_page.dart';
 import 'package:food_hub/pages/home/login_page.dart';
 import 'package:food_hub/pages/home/registro_usuario_page.dart';
 import 'package:food_hub/pages/food/RegisterCard.dart';
 import 'package:food_hub/pages/home/Inicio1.dart';
 import 'package:food_hub/pages/home/Inicio2.dart';
+
+import 'package:food_hub/pages/user/admin_profile_page.dart';
+import 'package:food_hub/pages/user/admin_view_page.dart';
+import 'package:food_hub/pages/user/user_profile_page.dart';
+
 import 'package:get/get.dart';
 
 void main() {
@@ -23,10 +25,16 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      initialRoute: '/iniciolog2', // Ruta inicial
+      initialRoute: '/login', // Ruta inicial
+
       routes: {
         '/': (context) => MainFoodPage(),
-        '/second': (context) => PopularFoodDetail(),
+        '/login': (context) => LoginPage(),
+        '/register': (context) => RegistroPage(),
+        '/userProfile': (context) => PerfilUsuarioPage(),
+        '/adminProfile': (context) => PerfilAdminPage(),
+        '/adminView': (context) => VistaAdminPage(),
+        // '/second': (context) => PopularFoodDetail(),
         // '/third': (context) => ThirdScreen(),
         '/register-card': (context) => const RegisterCard(),
         '/iniciolog':(context) => const SplashScreen(),

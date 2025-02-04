@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
-import 'package:food_hub/widgets/app_icon.dart';
+// import 'package:food_hub/widgets/app_icon.dart';
 
 class AppMenu extends StatefulWidget {
   const AppMenu({super.key});
@@ -34,26 +34,6 @@ class _AppMenuState extends State<AppMenu> {
 
   @override
   Widget build(BuildContext context) {
-
-    // return BottomNavigationBar(
-    //   backgroundColor: Colors.transparent,
-    //   showSelectedLabels: false,
-    //   showUnselectedLabels:false,
-    //   unselectedFontSize: 0,
-    //   selectedFontSize: 0,
-    //   elevation: 0, // Elimina la elevación predeterminada
-    //   // enableFeedback: false,
-    //   selectedItemColor: Colors.white,
-    //   iconSize:40,
-    //   items: [
-    //     BottomNavigationBarItem(icon: Icon(Icons.home), label: '', backgroundColor: AppColors.mainColor),
-    //     BottomNavigationBarItem(icon: Icon(Icons.table_bar), label: '', backgroundColor: Colors.amber),
-    //     BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ''),
-    //     BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-    //   ],
-    //   // currentIndex: _selectedIndex,
-    //   onTap: _onItemTapped,
-    // );
     return Container(
       margin: EdgeInsets.only(
         top: Dimensions.height10,
@@ -62,11 +42,7 @@ class _AppMenuState extends State<AppMenu> {
       child: 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            // AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.home),
-            // AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.table_bar),
-            // AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.shopping_cart),
-            // AppIcon(iconSize: Dimensions.iconSize32, iconColor:Colors.white, backgroundColor: AppColors.mainColor, icon: Icons.person),
+          children: [ // Botones del menú
             ElevatedButton(
               onPressed:() {
                 _selectedIndex = 0;

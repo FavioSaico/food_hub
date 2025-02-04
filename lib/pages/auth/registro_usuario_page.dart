@@ -49,7 +49,7 @@ class _RegistroPageState extends State<RegistroPage> {
 
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: AppTextField(hintText: "Ingrese una contraseña", icon: Icons.lock),
+                    child: AppTextField(hintText: "Ingrese una contraseña", icon: Icons.lock,obscureText: true),
                   ),
                   const SizedBox(height: 15),
 
