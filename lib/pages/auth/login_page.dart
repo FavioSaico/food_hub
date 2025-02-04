@@ -66,7 +66,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: AppTextField(hintText: "Contraseña", icon: Icons.lock),
+                    child: AppTextField(hintText: "Contraseña", icon: Icons.lock,obscureText: true),
                   ),
                   const SizedBox(height: 50),
 
