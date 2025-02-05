@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/providers/auth_provider.dart';
+import 'package:food_hub/pages/auth/registro_usuario_page.dart';
+import 'package:food_hub/pages/home/main_food_page.dart';
 import 'package:food_hub/widgets/Campos_Login_Registro.dart';
 import 'package:food_hub/widgets/Boton_Login_Registro.dart';
 import 'package:food_hub/utils/colors.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,8 +15,42 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _isLoading = false;
+  String message = "";
+  final correoTxtController = TextEditingController();
+  final claveTxtController = TextEditingController();
+
+  void handleLogin() async {
+    setState(() => _isLoading = true);
+    final authProvider = context.read<AuthProvider>();
+    // se realiza la petición
+    MessageResponse response = await authProvider.login(correoTxtController.value.text, claveTxtController.value.text);
+
+    if(response.isSuccessful && context.mounted){
+      await Future.delayed(const Duration(milliseconds: 500));
+      setState(() {
+        _isLoading = false;
+        message = response.message;
+      });
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          allowSnapshotting: false,
+          builder: (context) => MainFoodPage(),
+        ),
+      );
+    } else {
+      setState(() {
+        _isLoading = false;
+        message = response.message;
+      });
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true, // Esto hace que el contenido se desplace cuando el teclado aparece
@@ -38,18 +76,21 @@ class _LoginPageState extends State<LoginPage> {
                   // Cuerpo (Campos de texto y botón)
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: AppTextField(hintText: "Usuario / Correo electrónico", icon: Icons.person),
+                    child: AppTextField(hintText: "Correo electrónico", icon: Icons.person, textController: correoTxtController),
                   ),
                   const SizedBox(height: 20),
 
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: AppTextField(hintText: "Contraseña", icon: Icons.lock,obscureText: true),
+                    child: AppTextField(hintText: "Contraseña", icon: Icons.lock,obscureText: true, textController: claveTxtController,),
                   ),
                   const SizedBox(height: 50),
 
                   AppClickableText(
-                    text: "Ingresar"
+                    text: "Ingresar",
+                    onPressed: () {
+                      handleLogin();
+                    },
                   ),
 
                   const SizedBox(height: 20),  
@@ -57,7 +98,13 @@ class _LoginPageState extends State<LoginPage> {
                   // Texto clickeable debajo del botón "Ingresar"
                   GestureDetector(
                     onTap: () {
-                      print("Redirigir a la página de registro");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          allowSnapshotting: false,
+                          builder: (context) => RegistroPage(),
+                        ),
+                      );
                     },
                     child: Text(
                       "¿No tienes una cuenta? Regístrate",
@@ -68,6 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 10),
+                  _isLoading ? Center(child: CircularProgressIndicator(color: AppColors.mainColor)) : Text(message)
                 ],
               ),
             ),

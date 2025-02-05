@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_hub/interfaces/product.dart';
+import 'package:food_hub/domain/food.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
 import 'package:food_hub/widgets/app_menu.dart';
@@ -8,7 +8,7 @@ import 'package:food_hub/widgets/exandable_text_widget.dart';
 
 class RecommendedFoodDetail extends StatefulWidget {
 
-  final Product product;
+  final Food product;
   const RecommendedFoodDetail({super.key, required this.product});
 
   @override

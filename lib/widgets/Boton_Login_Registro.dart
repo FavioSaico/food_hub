@@ -3,10 +3,12 @@ import 'package:food_hub/utils/colors.dart';
 
 class AppClickableText extends StatefulWidget {
   final String text;
+  final VoidCallback? onPressed;
 
   const AppClickableText({
     Key? key,
     required this.text,
+    this.onPressed,
   }) : super(key: key);
 
   @override
@@ -19,9 +21,7 @@ class _AppClickableTextState extends State<AppClickableText> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // No hace nada al hacer clic
-      },
+      onTap: widget.onPressed,
       onHighlightChanged: (isPressed) {
         setState(() {
           _isPressed = isPressed; // Cambia el estado cuando se mantiene presionado
