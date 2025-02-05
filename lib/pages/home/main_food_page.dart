@@ -58,11 +58,8 @@ class _MainFoodPageState extends State<MainFoodPage> {
             ),
           ),
           // Lista de Platos
-          Expanded(
-            child: SingleChildScrollView(
-              child: BodyFoodPage(),
-            )
-          ),
+          BodyFoodPage()
+          ,
         ],
       ),
       // Boton de ChatBot

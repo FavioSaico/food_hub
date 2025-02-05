@@ -1,35 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_hub/pages/auth/providers/auth_provider.dart';
+import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/pages/auth/registro_usuario_page.dart';
 import 'package:food_hub/pages/home/main_food_page.dart';
 import 'package:food_hub/widgets/Campos_Login_Registro.dart';
 import 'package:food_hub/widgets/Boton_Login_Registro.dart';
 import 'package:food_hub/utils/colors.dart';
+import 'package:provider/provider.dart';
 
-class LoginPage extends ConsumerStatefulWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
+  bool _isLoading = false;
+  String message = "";
+  final correoTxtController = TextEditingController();
+  final claveTxtController = TextEditingController();
 
   void handleLogin() async {
-    // setState(() => isLoading = true);
-    // WidgetRef ref = WidgetRef();
-    
-    await ref.read(authProvider.notifier).login(
-          "favio@gmail.com",
-          "123456",
-    );
-    
-    // Navigator.pushReplacementNamed(context, '/home');
-    
-    // } finally {
-    //   setState(() => isLoading = false);
-    // }
+    setState(() => _isLoading = true);
+    final authProvider = context.read<AuthProvider>();
+    // se realiza la petición
+    MessageResponse response = await authProvider.login(correoTxtController.value.text, claveTxtController.value.text);
+
+    if(response.isSuccessful && context.mounted){
+      await Future.delayed(const Duration(milliseconds: 500));
+      setState(() {
+        _isLoading = false;
+        message = response.message;
+      });
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          allowSnapshotting: false,
+          builder: (context) => MainFoodPage(),
+        ),
+      );
+    } else {
+      setState(() {
+        _isLoading = false;
+        message = response.message;
+      });
+    }
   }
 
   @override
@@ -60,13 +76,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   // Cuerpo (Campos de texto y botón)
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: AppTextField(hintText: "Usuario / Correo electrónico", icon: Icons.person),
+                    child: AppTextField(hintText: "Correo electrónico", icon: Icons.person, textController: correoTxtController),
                   ),
                   const SizedBox(height: 20),
 
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: AppTextField(hintText: "Contraseña", icon: Icons.lock,obscureText: true),
+                    child: AppTextField(hintText: "Contraseña", icon: Icons.lock,obscureText: true, textController: claveTxtController,),
                   ),
                   const SizedBox(height: 50),
 
@@ -74,13 +90,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     text: "Ingresar",
                     onPressed: () {
                       handleLogin();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          allowSnapshotting: false,
-                          builder: (context) => MainFoodPage(),
-                        ),
-                      );
                     },
                   ),
 
@@ -106,6 +115,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 10),
+                  _isLoading ? Center(child: CircularProgressIndicator(color: AppColors.mainColor)) : Text(message)
                 ],
               ),
             ),

@@ -4,16 +4,20 @@ class AppTextField extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final bool obscureText; // Añadir este parámetro
+  // final ValueChanged<String> onValue;
+  final TextEditingController textController;
 
   const AppTextField({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.icon,
+    required this.textController,
     this.obscureText = false, // Por defecto, no ocultar el texto
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -21,6 +25,7 @@ class AppTextField extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: TextField(
+        controller: textController,
         obscureText: obscureText, // Aquí activamos la opción de ocultar el texto
         decoration: InputDecoration(
           hintText: hintText,
