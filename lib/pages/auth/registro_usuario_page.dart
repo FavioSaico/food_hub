@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/pages/home/main_food_page.dart';
 import 'package:food_hub/widgets/Campos_Login_Registro.dart';
@@ -137,7 +138,29 @@ class _RegistroPageState extends State<RegistroPage> {
                       // );
                     },
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 20),
+                  // Texto clickeable debajo del botón "Ingresar"
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          allowSnapshotting: false,
+                          builder: (context) => LoginPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "¡Ya tengo una cuenta!",
+                      style: TextStyle(
+                        color: AppColors.mainColor, // Usando el color principal del botón
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
                   _isLoading ? Center(child: CircularProgressIndicator(color: AppColors.mainColor)) : Text(message)
                 ],
               ),
