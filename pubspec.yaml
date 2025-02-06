@@ -38,8 +38,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
-
-
+  # flutter_riverpod: ^2.6.1
+  shared_preferences: ^2.0.18
+  dio: ^5.8.0+1
+  flutter_multi_formatter: ^2.4.0
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +54,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  custom_lint: ^0.7.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -69,7 +73,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
    - assets/imagenes/
-
+   - assets/imagenes/Logo.png
+   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
