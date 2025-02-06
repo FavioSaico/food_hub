@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_hub/pages/home/main_food_page.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/pages/auth/registro_usuario_page.dart';
+import 'package:food_hub/pages/reserva/detalle.dart';
+import 'package:food_hub/pages/reserva/sedes.dart';
 import 'package:food_hub/pages/user/admin_profile_page.dart';
 import 'package:food_hub/pages/user/admin_view_page.dart';
 import 'package:food_hub/pages/user/user_profile_page.dart';
