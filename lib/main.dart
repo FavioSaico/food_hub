@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        initialRoute: '/login', // Ruta inicial
+        initialRoute: '/iniciolog2', // Ruta inicial
         routes: {
           '/': (context) => MainFoodPage(),
           '/login': (context) => LoginPage(),
