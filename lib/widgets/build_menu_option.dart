@@ -4,10 +4,12 @@ import 'package:food_hub/widgets/app_icon.dart';
 
 class BuildMenuOption extends StatelessWidget {
   final String text;
+  final VoidCallback? onTap;
 
   const BuildMenuOption({
     super.key,
     required this.text,
+    this.onTap,
   });
 
   @override
@@ -40,7 +42,7 @@ class BuildMenuOption extends StatelessWidget {
           iconColor: AppColors.mainBlackColor,
           backgroundColor: Colors.white,
         ),
-        onTap: () {},
+        onTap: onTap,
       ),
     );
   }

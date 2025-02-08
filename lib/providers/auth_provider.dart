@@ -19,6 +19,8 @@ class AuthProvider extends ChangeNotifier {
   User? usuario;
   bool isAuthenticated = false;
 
+  User? get currentUser => usuario; // Getter para obtener el usuario actual
+
   Future<MessageResponse> login(String email, String password) async {
 
     try {
@@ -99,6 +101,31 @@ class AuthProvider extends ChangeNotifier {
       return MessageResponse(isSuccessful: false, message: "Error inesperado");
     }
   }
+  
+  Future<MessageResponse> changePassword(int userId, String oldPassword, String newPassword) async {
+  try {
+    final response = await DioClient.instance.put('/api/auth/changepassword',
+      data: {
+        'id_usuario': userId,
+        'clave_actual': oldPassword,
+        'clave_nueva': newPassword,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return MessageResponse(isSuccessful: true, message: "Contraseña cambiada con éxito");
+    } else {
+      return MessageResponse(isSuccessful: false, message: "Error al cambiar la contraseña");
+    }
+  } on DioException catch (e) {
+    return MessageResponse(
+      isSuccessful: false,
+      message: (e.response != null ? e.response?.data["error"] : "Error al cambiar la contraseña"),
+    );
+  } catch (e) {
+    return MessageResponse(isSuccessful: false, message: "Error inesperado");
+  }
+}
 
   Future<void> logout() async {
     usuario = null;
