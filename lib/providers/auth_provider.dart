@@ -19,6 +19,8 @@ class AuthProvider extends ChangeNotifier {
   User? usuario;
   bool isAuthenticated = false;
 
+  User? get currentUser => usuario; // Getter para obtener el usuario actual
+
   Future<MessageResponse> login(String email, String password) async {
 
     try {

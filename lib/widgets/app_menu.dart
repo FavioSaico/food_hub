@@ -21,7 +21,7 @@ class _AppMenuState extends State<AppMenu> {
         Navigator.pushNamed(context, '/');
         break;
       case 1:
-        Navigator.pushNamed(context, '/second');
+        Navigator.pushNamed(context, '/sedes_reserva');
         break;
       case 2:
         Navigator.pushNamed(context, '/second');
