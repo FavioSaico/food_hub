@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
 import 'package:food_hub/pages/reserva/sedes.dart';
+import 'package:food_hub/pages/user/user_profile_change_password_page.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/providers/food_provider.dart';
 import 'package:food_hub/pages/auth/registro_usuario_page.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
           '/iniciolog2':(context) => const SplashScreen2(),
           '/reserva':(context) => DetallePage(),
           '/sedes_reserva':(context) => SedesPage(),
+          '/cambio_contraseña':(context) => CambiarContrasenaPage()
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

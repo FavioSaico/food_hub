@@ -62,7 +62,12 @@ class _PerfilUsuarioPageState extends State<PerfilUsuarioPage> {
           // Opciones del menú
           BuildMenuOption(text: 'Historial de compras'),
           BuildMenuOption(text: 'Historial de reservas'),
-          BuildMenuOption(text: 'Cambiar contraseña'),
+          BuildMenuOption(
+          text: 'Cambio de contraseña',
+          onTap: () {
+          Navigator.pushNamed(context, '/cambio_contraseña');
+          },
+          ),
           BuildMenuOption(
           text: 'Cerrar sesión',
           onTap: () {
