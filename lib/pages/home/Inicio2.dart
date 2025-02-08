@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
-class SplashScreen2 extends StatelessWidget {
+class SplashScreen2 extends StatefulWidget {
   const SplashScreen2({super.key});
+
+  @override
+  _SplashScreen2State createState() => _SplashScreen2State();
+}
+
+class _SplashScreen2State extends State<SplashScreen2> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.pushReplacementNamed(context, '/iniciolog');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
