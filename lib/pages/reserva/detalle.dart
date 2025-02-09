@@ -38,7 +38,7 @@ class _DetallePageState extends State<DetallePage> {
                       BigText(
                           text: "Food Hub",
                           color: AppColors.mainColor,
-                          size: 30),
+                          size: 25),
                     ],
                   )
                 ],
@@ -60,15 +60,21 @@ class _DetallePageState extends State<DetallePage> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8),
-                  TextField(
-                    maxLines: 1,
-                    decoration: InputDecoration(
-                      hintText: "Ingrese detalles adicionales...",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width *
+                          0.8, // 80% del ancho de la pantalla
+                    ),
+                    child: TextField(
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        hintText: "Ingrese detalles adicionales...",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[200],
                       ),
-                      filled: true,
-                      fillColor: Colors.grey[200],
                     ),
                   ),
                 ],

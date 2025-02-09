@@ -8,6 +8,8 @@ import 'package:food_hub/pages/home/main_food_page.dart';
 import 'package:food_hub/pages/food/RegisterCard.dart';
 import 'package:food_hub/pages/home/Inicio1.dart';
 import 'package:food_hub/pages/home/Inicio2.dart';
+import 'package:food_hub/pages/reserva/detalle.dart';
+import 'package:food_hub/pages/reserva/sedes.dart';
 
 import 'package:food_hub/pages/user/admin_profile_page.dart';
 import 'package:food_hub/pages/user/admin_view_page.dart';
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        initialRoute: '/login', // Ruta inicial
+        initialRoute: '/sedes_reserva', // Ruta inicial
         routes: {
           '/': (context) => MainFoodPage(),
           '/login': (context) => LoginPage(),
@@ -45,6 +47,8 @@ class MyApp extends StatelessWidget {
           '/register-card': (context) => const RegisterCard(),
           '/iniciolog': (context) => const SplashScreen(),
           '/iniciolog2': (context) => const SplashScreen2(),
+          '/reserva': (context) => DetallePage(),
+          '/sedes_reserva': (context) => SedesPage(),
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
