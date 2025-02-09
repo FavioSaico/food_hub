@@ -5,6 +5,9 @@ import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/widgets/big_text.dart';
 import 'package:food_hub/widgets/bold_normal_text.dart';
 import 'package:food_hub/widgets/build_menu_option.dart';
+import 'package:provider/provider.dart';
+import 'package:food_hub/providers/auth_provider.dart';
+import 'package:get/get.dart';
 
 class PerfilUsuarioPage extends StatefulWidget {
   const PerfilUsuarioPage({super.key});
@@ -16,9 +19,13 @@ class PerfilUsuarioPage extends StatefulWidget {
 class _PerfilUsuarioPageState extends State<PerfilUsuarioPage> {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final usuario = authProvider.currentUser; 
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
+      body: SingleChildScrollView(
+      child: Column(
         children: [
           const SizedBox(height: 60),
           BigText(
@@ -36,7 +43,7 @@ class _PerfilUsuarioPageState extends State<PerfilUsuarioPage> {
           ),
           const SizedBox(height: 16),
           BigText(
-            text: 'Juan Pérez',
+            text: usuario?.name ?? 'Usuario no identificado', // Mostramos el nombre del usuario o un mensaje predeterminado
             color: AppColors.mainBlackColor,
             size: 24,
           ),
@@ -46,8 +53,8 @@ class _PerfilUsuarioPageState extends State<PerfilUsuarioPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BoldNormalText(label: 'Correo electrónico', value: 'juanperez@gmail.com'),
-                BoldNormalText(label: 'Dirección', value: 'Avenida Elmer Faucett, 265'),
+                BoldNormalText(label: 'Correo electrónico', value: usuario?.email ?? 'No disponible'),
+                BoldNormalText(label: 'Dirección', value: usuario?.address ?? 'No disponible'),
               ],
             ),
           ),
@@ -55,9 +62,20 @@ class _PerfilUsuarioPageState extends State<PerfilUsuarioPage> {
           // Opciones del menú
           BuildMenuOption(text: 'Historial de compras'),
           BuildMenuOption(text: 'Historial de reservas'),
-          BuildMenuOption(text: 'Cambiar contraseña'),
-          BuildMenuOption(text: 'Cerrar sesión'),
+          BuildMenuOption(
+          text: 'Cambio de contraseña',
+          onTap: () {
+          Navigator.pushNamed(context, '/cambio_contraseña');
+          },
+          ),
+          BuildMenuOption(
+          text: 'Cerrar sesión',
+          onTap: () {
+          Navigator.pushNamed(context, '/login');
+          },
+          ),
         ],
+      ),
       ),
       // Menú
       bottomNavigationBar: Column(
