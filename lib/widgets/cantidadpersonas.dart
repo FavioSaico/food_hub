@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 
 class CantidadPersonasSelector extends StatefulWidget {
+  final Function(int) onCantidadSeleccionada;
+
+  const CantidadPersonasSelector({
+    super.key, // Utilizamos `super.key` para pasar el parámetro directamente a la clase base.
+    required this.onCantidadSeleccionada,
+  });
+
   @override
-  _CantidadPersonasSelectorState createState() =>
-      _CantidadPersonasSelectorState();
+  CantidadPersonasSelectorState createState() =>
+      CantidadPersonasSelectorState();
 }
 
-class _CantidadPersonasSelectorState extends State<CantidadPersonasSelector> {
-  int _cantidad = 1; // Valor inicial, mínimo 1 persona
+class CantidadPersonasSelectorState extends State<CantidadPersonasSelector> {
+  int _cantidad = 1;
 
   void _incrementar() {
     if (_cantidad < 20) {
       setState(() {
         _cantidad++;
       });
+      widget.onCantidadSeleccionada(_cantidad);
     }
   }
 
@@ -22,6 +30,7 @@ class _CantidadPersonasSelectorState extends State<CantidadPersonasSelector> {
       setState(() {
         _cantidad--;
       });
+      widget.onCantidadSeleccionada(_cantidad);
     }
   }
 
@@ -37,7 +46,6 @@ class _CantidadPersonasSelectorState extends State<CantidadPersonasSelector> {
             "Cantidad de personas:",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-
           SizedBox(height: 10), // Espacio entre el texto y el selector
 
           // Selector de cantidad de personas
@@ -70,8 +78,8 @@ class _CantidadPersonasSelectorState extends State<CantidadPersonasSelector> {
                 onPressed: _incrementar,
                 icon: Icon(Icons.add, color: Colors.white),
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.teal),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  backgroundColor: WidgetStateProperty.all(Colors.teal),
+                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
                 ),
               ),

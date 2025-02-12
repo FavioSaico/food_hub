@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
+import 'package:food_hub/pages/reserva/resumen.dart';
 import 'package:food_hub/pages/reserva/sedes.dart';
 import 'package:food_hub/pages/user/user_profile_change_password_page.dart';
 import 'package:food_hub/providers/auth_provider.dart';
@@ -17,6 +18,7 @@ import 'package:food_hub/pages/user/admin_view_page.dart';
 import 'package:food_hub/pages/user/user_profile_page.dart';
 import 'package:get/get.dart';
 
+import 'package:food_hub/models/sede.dart';
 
 import 'package:provider/provider.dart';
 
@@ -32,13 +34,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => FoodProvider() ),
-        ChangeNotifierProvider(create: (_) => AuthProvider() ),
+        ChangeNotifierProvider(create: (_) => FoodProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        initialRoute: '/iniciolog2', // Ruta inicial
+        initialRoute: '/iniciolog', // Ruta inicial
         routes: {
           '/': (context) => MainFoodPage(),
           '/login': (context) => LoginPage(),
@@ -47,11 +49,26 @@ class MyApp extends StatelessWidget {
           '/adminProfile': (context) => PerfilAdminPage(),
           '/adminView': (context) => VistaAdminPage(),
           '/register-card': (context) => const RegisterCard(),
-          '/iniciolog':(context) => const SplashScreen(),
-          '/iniciolog2':(context) => const SplashScreen2(),
-          '/reserva':(context) => DetallePage(),
-          '/sedes_reserva':(context) => SedesPage(),
-          '/cambio_contraseña':(context) => CambiarContrasenaPage()
+          '/iniciolog': (context) => const SplashScreen(),
+          '/iniciolog2': (context) => const SplashScreen2(),
+          '/reserva': (context) => DetallePage(
+              sedeSeleccionada:
+                  Sede(nombre: '', descripcion: '', direccion: '', imagen: '')),
+          '/sedes_reserva': (context) => SedesPage(),
+          '/resumen_reserva': (context) {
+            final arguments = ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>;
+
+            return ResumenPage(
+              sede: arguments['sede'] as Sede,
+              requerimientos: arguments['requerimientos'] as String? ?? "",
+              fecha: arguments['fecha'] as String? ?? "",
+              hora: arguments['hora'] as String? ?? "",
+              cantidadPersonas: arguments['cantidadPersonas'] as int? ?? 1,
+              zonaPreferida: arguments['zonaPreferida'] as String? ?? "",
+            );
+          },
+          '/cambio_contraseña': (context) => CambiarContrasenaPage()
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
