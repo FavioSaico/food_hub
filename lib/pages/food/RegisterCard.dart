@@ -21,68 +21,70 @@ class RegisterCard extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            const Text(
-              "REGISTRE LOS DATOS DE SU TARJETA DE CRÉDITO/DÉBITO",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: 300,
-              height: 180,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 5,
-                    spreadRadius: 2,
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              const Text(
+                "REGISTRE LOS DATOS DE SU TARJETA DE CRÉDITO/DÉBITO",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  'assets/imagenes/DATOS_TARJETA.png',
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(
-                      child: Icon(Icons.error, color: Colors.red, size: 50),
-                    );
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            _buildCardNumberField(), // Número de tarjeta con formato
-            const SizedBox(height: 10),
-            _buildExpiryDateField(),  // Mes y Año con formato
-            const SizedBox(height: 10),
-            _buildCVCField(),         // CVC limitado a 3 dígitos
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Lógica para guardar la tarjeta
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.mainColor,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
+              const SizedBox(height: 20),
+              Container(
+                width: 300,
+                height: 180,
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 5,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    'assets/imagenes/DATOS_TARJETA.png',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Center(
+                        child: Icon(Icons.error, color: Colors.red, size: 50),
+                      );
+                    },
+                  ),
                 ),
               ),
-              child: const Text(
-                "Guardar",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+              const SizedBox(height: 20),
+              _buildCardNumberField(), // Número de tarjeta con formato
+              const SizedBox(height: 10),
+              _buildExpiryDateField(),  // Mes y Año con formato
+              const SizedBox(height: 10),
+              _buildCVCField(),         // CVC limitado a 3 dígitos
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Lógica para guardar la tarjeta
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.mainColor,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text(
+                  "Guardar",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
