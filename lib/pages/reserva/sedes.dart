@@ -19,8 +19,8 @@ class SedesPage extends StatefulWidget {
 
 class SedesPageState extends State<SedesPage> {
   int selectedIndex = -1;
-  final Color defaultColor = AppColors.mainColor;
-  final Color selectedColor = Colors.white;
+  final Color defaultColor = Colors.white;
+  final Color selectedColor = AppColors.mainColor;
 
   // Lista de sedes usando la clase Sede en lugar de Map
   final List<Sede> sedes = [
@@ -132,8 +132,8 @@ class SedesPageState extends State<SedesPage> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: selectedIndex == index
-                                      ? Colors.black
-                                      : Colors.white,
+                                      ? Colors.white
+                                      : Colors.black,
                                 ),
                               ),
                               Text(
@@ -141,8 +141,8 @@ class SedesPageState extends State<SedesPage> {
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: selectedIndex == index
-                                      ? Colors.black54
-                                      : Colors.white,
+                                      ? Colors.white
+                                      : Colors.black54,
                                 ),
                               ),
                               SizedBox(height: 5),
@@ -152,8 +152,8 @@ class SedesPageState extends State<SedesPage> {
                                   Icon(
                                     Icons.location_on,
                                     color: selectedIndex == index
-                                        ? Colors.black54
-                                        : Colors.white,
+                                        ? Colors.white
+                                        : Colors.black54,
                                     size: 16,
                                   ),
                                   SizedBox(width: 5),
@@ -162,8 +162,8 @@ class SedesPageState extends State<SedesPage> {
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: selectedIndex == index
-                                          ? Colors.black54
-                                          : Colors.white,
+                                          ? Colors.white
+                                          : Colors.black54,
                                     ),
                                   ),
                                 ],
