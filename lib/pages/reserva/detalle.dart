@@ -35,116 +35,121 @@ class DetallePageState extends State<DetallePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: BackButtonCustom(),
-            ),
-            const SizedBox(height: 10),
-            //logo
-            Center(
-              child: Image.asset("assets/imagenes/Logo.png",
-                  height: 70, width: 140),
-            ),
-            const SizedBox(height: 15),
-            // Mostrar sede seleccionada
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Sede: ${widget.sedeSeleccionada.direccion}",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      body: GestureDetector(
+        onTap: () {
+          // Ocultar el teclado cuando se hace clic fuera de un campo de texto
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 40),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: BackButtonCustom(),
               ),
-            ),
-
-// Widgets para seleccionar datos
-            FechaHoraSelector(
-              onFechaHoraSeleccionada: (fecha, hora) {
-                setState(() {
-                  fechaSeleccionada = fecha;
-                  horaSeleccionada = hora;
-                });
-              },
-            ),
-            CantidadPersonasSelector(
-              onCantidadSeleccionada: (cantidad) {
-                setState(() {
-                  cantidadPersonas = cantidad;
-                });
-              },
-            ),
-            ZonaPreferidaWidget(
-              onZonaSeleccionada: (zona) {
-                setState(() {
-                  zonaPreferida = zona;
-                });
-              },
-            ),
-
-// Campo de requerimientos
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width *
-                    0.8, // Ocupa el 80% del ancho de la pantalla
-                child: TextField(
-                  controller: requerimientosController,
-                  decoration: InputDecoration(
-                    hintText: "Ingrese detalles adicionales...",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                  ),
+              const SizedBox(height: 10),
+              // Logo
+              Center(
+                child: Image.asset("assets/imagenes/Logo.png",
+                    height: 70, width: 140),
+              ),
+              const SizedBox(height: 15),
+              // Mostrar sede seleccionada
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Sede: ${widget.sedeSeleccionada.direccion}",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
 
-// Botón para ir al resumen
-            Center(
-              child: InkWell(
-                onTap: () {
-                  // Navegar a la página de resumen pasando los datos
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ResumenPage(
-                        sede: widget.sedeSeleccionada,
-                        fecha: fechaSeleccionada?.toIso8601String() ?? "",
-                        hora: horaSeleccionada,
-                        cantidadPersonas: cantidadPersonas,
-                        zonaPreferida: zonaPreferida,
-                        requerimientos: requerimientosController.text,
-                      ),
-                    ),
-                  );
+              // Widgets para seleccionar datos
+              FechaHoraSelector(
+                onFechaHoraSeleccionada: (fecha, hora) {
+                  setState(() {
+                    fechaSeleccionada = fecha;
+                    horaSeleccionada = hora;
+                  });
                 },
+              ),
+              CantidadPersonasSelector(
+                onCantidadSeleccionada: (cantidad) {
+                  setState(() {
+                    cantidadPersonas = cantidad;
+                  });
+                },
+              ),
+              ZonaPreferidaWidget(
+                onZonaSeleccionada: (zona) {
+                  setState(() {
+                    zonaPreferida = zona;
+                  });
+                },
+              ),
+
+              // Campo de requerimientos
+              Center(
                 child: Container(
-                  padding: EdgeInsets.only(
-                    left: Dimensions.width20 * 2,
-                    right: Dimensions.width20 * 2,
-                    top: Dimensions.height10,
-                    bottom: Dimensions.height10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.mainColor,
-                    borderRadius: BorderRadius.circular(Dimensions.radius15),
-                  ),
-                  child: BigText(
-                    text: "Guardar",
-                    color: Colors.white,
-                    size: Dimensions.font16,
+                  width: MediaQuery.of(context).size.width * 0.8, // 80% del ancho
+                  child: TextField(
+                    controller: requerimientosController,
+                    decoration: InputDecoration(
+                      hintText: "Ingrese detalles adicionales...",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 20),
+
+              // Botón para ir al resumen
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    // Navegar a la página de resumen pasando los datos
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResumenPage(
+                          sede: widget.sedeSeleccionada,
+                          fecha: fechaSeleccionada?.toIso8601String() ?? "",
+                          hora: horaSeleccionada,
+                          cantidadPersonas: cantidadPersonas,
+                          zonaPreferida: zonaPreferida,
+                          requerimientos: requerimientosController.text,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: Dimensions.width20 * 2,
+                      right: Dimensions.width20 * 2,
+                      top: Dimensions.height10,
+                      bottom: Dimensions.height10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.mainColor,
+                      borderRadius: BorderRadius.circular(Dimensions.radius15),
+                    ),
+                    child: BigText(
+                      text: "Guardar",
+                      color: Colors.white,
+                      size: Dimensions.font16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: AppMenu(),
