@@ -9,13 +9,18 @@ import 'package:food_hub/providers/food_provider.dart';
 import 'package:food_hub/pages/auth/registro_usuario_page.dart';
 
 import 'package:food_hub/pages/home/main_food_page.dart';
+
 import 'package:food_hub/pages/food/RegisterCard.dart';
 import 'package:food_hub/pages/home/Inicio1.dart';
 import 'package:food_hub/pages/home/Inicio2.dart';
-
 import 'package:food_hub/pages/user/admin_profile_page.dart';
 import 'package:food_hub/pages/user/admin_view_page.dart';
 import 'package:food_hub/pages/user/user_profile_page.dart';
+
+import 'package:food_hub/pages/pago/compra.dart';
+import 'package:food_hub/pages/pago/Pagorealizado.dart';
+import 'package:food_hub/pages/pago/compratienda.dart';
+
 import 'package:get/get.dart';
 
 import 'package:food_hub/models/sede.dart';
@@ -68,7 +73,10 @@ class MyApp extends StatelessWidget {
               zonaPreferida: arguments['zonaPreferida'] as String? ?? "",
             );
           },
-          '/cambio_contraseña': (context) => CambiarContrasenaPage()
+          '/cambio_contraseña': (context) => CambiarContrasenaPage(),
+          '/pagoefectuado':(context)=> const PaymentScreen(),
+          '/pagoefectuadotienda':(context)=>const PaymentScreen2(),
+          '/pagorealizado':(context)=>const PagoRealizadoPage(numeroCompra: "0003", monto: 168.00)
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
