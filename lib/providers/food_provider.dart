@@ -45,5 +45,23 @@ class FoodProvider extends ChangeNotifier {
       // return MessageResponse(isSuccessful: false, message: "Error inesperado");
     }
   }
-  
+
+  Future<Food?> getFoodById(int idComida) async {
+    try {
+      // Si la lista está vacía, cargamos las comidas primero
+      if (foodList.isEmpty) {
+        await getFoods();
+      }
+
+      // Buscamos la comida en la lista por su ID
+      return foodList.firstWhere(
+        (food) => food.id == idComida,
+        orElse: () => throw Exception('Comida no encontrada'),
+      );
+    } catch (e) {
+      print('Error obteniendo comida por ID: $e');
+      return null;
+    }
+  }
+
 }
