@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        initialRoute: '/iniciolog', // Ruta inicial
+        initialRoute: '/login', // Ruta inicial
         routes: {
           '/': (context) => MainFoodPage(),
           '/login': (context) => LoginPage(),
@@ -74,9 +74,10 @@ class MyApp extends StatelessWidget {
             );
           },
           '/cambio_contraseña': (context) => CambiarContrasenaPage(),
-          '/pagoefectuado':(context)=> const PaymentScreen(),
-          '/pagoefectuadotienda':(context)=>const PaymentScreen2(),
-          '/pagorealizado':(context)=>const PagoRealizadoPage(numeroCompra: "0003", monto: 168.00)
+          '/pagoefectuado': (context) => const PaymentScreen(),
+          '/pagoefectuadotienda': (context) => const PaymentScreen2(),
+          '/pagorealizado': (context) =>
+              const PagoRealizadoPage(numeroCompra: "0003", monto: 168.00)
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
