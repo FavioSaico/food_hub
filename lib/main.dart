@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
+import 'package:food_hub/pages/reserva/carrito.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
 import 'package:food_hub/pages/reserva/resumen.dart';
 import 'package:food_hub/pages/reserva/sedes.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        initialRoute: '/login', // Ruta inicial
+        initialRoute: '/iniciolog', // Ruta inicial
         routes: {
           '/': (context) => MainFoodPage(),
           '/login': (context) => LoginPage(),
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
             );
           },
           '/cambio_contraseña': (context) => CambiarContrasenaPage(),
+          '/carrito': (context) => CarritoPage(),
           '/pagoefectuado': (context) => const PaymentScreen(),
           '/pagoefectuadotienda': (context) => const PaymentScreen2(),
           '/pagorealizado': (context) =>
