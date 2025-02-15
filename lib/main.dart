@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
+import 'package:food_hub/pages/food/cart_page.dart';
 import 'package:food_hub/pages/reserva/carrito.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
 import 'package:food_hub/pages/reserva/resumen.dart';
 import 'package:food_hub/pages/reserva/sedes.dart';
 import 'package:food_hub/pages/user/user_profile_change_password_page.dart';
 import 'package:food_hub/providers/auth_provider.dart';
+import 'package:food_hub/providers/cart_provider.dart';
 import 'package:food_hub/providers/food_provider.dart';
 import 'package:food_hub/pages/auth/registro_usuario_page.dart';
 
@@ -42,6 +44,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => FoodProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
@@ -75,7 +78,7 @@ class MyApp extends StatelessWidget {
             );
           },
           '/cambio_contraseña': (context) => CambiarContrasenaPage(),
-          '/carrito': (context) => CarritoPage(),
+          '/carrito':(context) => CartPage()
           '/pagoefectuado':(context)=> const PaymentScreen(),
           '/pagoefectuadotienda':(context)=>const PaymentScreen2(),
           '/pagorealizado':(context)=>const PagoRealizadoPage(numeroCompra: "0003", monto: 168.00)
