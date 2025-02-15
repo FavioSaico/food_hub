@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
         },
           '/cambio_contraseña': (context) => CambiarContrasenaPage(),
           '/carrito':(context) => CartPage(),
-          '/pagoefectuado':(context)=> const PaymentScreen(),
+          // '/pagoefectuado':(context)=> const PaymentScreen(),
           '/pagoefectuadotienda':(context)=>const PaymentScreen2(),
           '/pagorealizado':(context)=>const PagoRealizadoPage(numeroCompra: "0003", monto: 168.00)
         },

@@ -57,9 +57,9 @@ class _AppMenuState extends State<AppMenu> {
         case '/userProfile':
           _selectedIndex = 3;
           break;
-        default:
-          _selectedIndex = 0;
-          break;
+        // default:
+        //   _selectedIndex = 0;
+        //   break;
       }
       setState(() {});
   });

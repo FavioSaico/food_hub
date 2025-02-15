@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/pages/pago/compra.dart';
+import 'package:food_hub/utils/colors.dart';
 import 'package:provider/provider.dart';
-import 'package:food_hub/providers/food_provider.dart';
 import 'package:food_hub/providers/cart_provider.dart';
 import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/widgets/payment_details.dart';
 import 'package:food_hub/widgets/cart_item_card.dart';
 import 'package:food_hub/widgets/empty_cart.dart';
-import 'package:food_hub/domain/food.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final foodProvider = Provider.of<FoodProvider>(context);
+    // final foodProvider = Provider.of<FoodProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Consumer<CartProvider>(
@@ -47,31 +47,47 @@ class CartPage extends StatelessWidget {
                   itemCount: cartProvider.items.length,
                   itemBuilder: (context, index) {
                     final item = cartProvider.items[index];
-                    return FutureBuilder<Food?>(
-                      future: foodProvider.getFoodById(item.idComida),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-
-                        if (snapshot.hasError || !snapshot.hasData) {
-                          return Text('Error cargando el producto');
-                        }
-
-                        final food = snapshot.data!;
-                        return CartItemCard(
-                          item: item,
-                          food: food,
-                        );
-                      },
+                    return CartItemCard(
+                      item: item,
                     );
                   },
                 ),
               ),
               PaymentDetails(
                 subtotal: cartProvider.subtotal,
-                shippingCost: 0.00,
+                // shippingCost: 0.00,
+              ),
+              // BOTON DE SIGUIENTE
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Implementar acción de siguiente
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        allowSnapshotting: false,
+                        builder: (context) => PaymentScreen(items: cartProvider.items, subtotal: cartProvider.subtotal),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.mainColor,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    'Siguiente',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
               ),
             ],
           );
