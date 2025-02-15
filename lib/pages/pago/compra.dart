@@ -57,6 +57,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
             // textDirection: TextDirection(),
             // padding: const EdgeInsets.all(16.0),
             children: [
+                // Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                //   width: double.infinity,
+                //   child: PageView(
+                //     children: <Widget>[
+                //       Center(child: Text('First Page')),
+                //       Center(child: Text('Second Page')),
+                //       Center(child: Text('Third Page')),
+                //     ],
+                //   ),
+                // ),
                 // Método de pago
                 Card(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -115,10 +126,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 // Detalles de pago
                 const Text("Detalles de pago", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-                _buildPaymentDetail("Subtotal", "S/. ${widget.subtotal}"),
+                _buildPaymentDetail("Subtotal", "S/. ${widget.subtotal.toStringAsFixed(2)}"),
                 _buildPaymentDetail("Costo de envío", "S/. $delivery"),
                 const Divider(thickness: 1),
-                _buildPaymentDetail("Total", "S/. ${widget.subtotal + delivery}", isTotal: true),
+                _buildPaymentDetail("Total", "S/. ${(widget.subtotal + delivery).toStringAsFixed(2)}", isTotal: true),
                 const SizedBox(height: 20),
           
                 // Botón de pago
