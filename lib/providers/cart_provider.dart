@@ -8,7 +8,7 @@ class CartProvider with ChangeNotifier {
   double get subtotal {
     return _items.fold(0, (sum, item) => sum + (item.costo * item.cantidad));
   }
-
+  
   void addItem(CartItem newItem) {
     final existingItemIndex = _items.indexWhere((item) => item.idComida == newItem.idComida);
 

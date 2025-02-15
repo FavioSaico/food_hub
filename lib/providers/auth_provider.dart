@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/dio.dart';
 import 'package:food_hub/domain/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MessageResponse {
   bool isSuccessful;
@@ -20,6 +23,35 @@ class AuthProvider extends ChangeNotifier {
   bool isAuthenticated = false;
 
   User? get currentUser => usuario; // Getter para obtener el usuario actual
+
+  // GUARDAR LOS DATOS DEL USUARIOS EN EL DISPOSITIVO
+  Future<void> saveUserSession(User? usuario) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setInt('id', usuario!.id); // Guardar el usuario
+    await prefs.setString('name', usuario.name); // Guardar el usuario
+    await prefs.setString('typeUser',usuario.email); // Guardar el usuario
+    await prefs.setString('email', usuario.email); // Guardar el usuario
+    await prefs.setString('address', usuario.address); // Guardar el usuario
+  }
+  // OBTENER LOS DATOS DEL USUARIO DEL DISPOSITIVO
+  Future<void> getUserSesion() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? userEmailJson = prefs.getString('email');
+
+    if (userEmailJson != null) {
+      usuario = User(
+        id: prefs.getInt('id') ?? 1,
+        typeUser: prefs.getString('typeUser') ?? "",
+        name: prefs.getString('name') ?? "", 
+        email: userEmailJson, 
+        address: prefs.getString('address') ?? "",
+      );
+    }else{
+      usuario = null;
+    }
+    notifyListeners();
+  }
 
   Future<MessageResponse> login(String email, String password) async {
 
@@ -41,6 +73,9 @@ class AuthProvider extends ChangeNotifier {
           address: data["direccion"],
         );
         isAuthenticated = true;
+
+        
+        await saveUserSession(usuario);
         // print(response.data);
         notifyListeners();
         return MessageResponse(isSuccessful: true, message: "Usuario autenticado");
@@ -130,6 +165,10 @@ class AuthProvider extends ChangeNotifier {
   Future<void> logout() async {
     usuario = null;
     isAuthenticated = false;
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('usuario'); // Eliminar usuario al cerrar sesión
+
     notifyListeners();
   }
 }

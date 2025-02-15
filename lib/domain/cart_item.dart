@@ -1,19 +1,20 @@
 class CartItem {
-  final int idCompra;
   final int idComida;
   int cantidad;
   final double costo;
+  final String imageUrl;
+  final String name;
 
   CartItem({
-    required this.idCompra,
     required this.idComida,
     required this.cantidad,
     required this.costo,
+    required this.imageUrl,
+    required this.name,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'idCompra': idCompra,
       'idComida': idComida,
       'cantidad': cantidad,
       'costo': costo,
@@ -22,10 +23,11 @@ class CartItem {
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
     return CartItem(
-      idCompra: json['idCompra'],
       idComida: json['idComida'],
       cantidad: json['cantidad'],
       costo: json['costo'].toDouble(),
+      imageUrl: json['image'],
+      name: json['name'],
     );
   }
 }
