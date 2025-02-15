@@ -53,7 +53,7 @@ class _PerfilUsuarioPageState extends State<PerfilUsuarioPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BoldNormalText(label: 'Correo electrónico', value: usuario?.email ?? 'No disponible'),
+                BoldNormalText(label: 'Correo', value: usuario?.email ?? 'No disponible'),
                 BoldNormalText(label: 'Dirección', value: usuario?.address ?? 'No disponible'),
               ],
             ),
