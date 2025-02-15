@@ -119,18 +119,21 @@ class AuthProvider extends ChangeNotifier {
           address: data["direccion"],
         );
         isAuthenticated = true;
+
+        await saveUserSession(usuario);
+
         notifyListeners();
-        return MessageResponse(isSuccessful: true, message: "Usuario autenticado");
+        return MessageResponse(isSuccessful: true, message: "Usuario registrado");
       } else {
         usuario = null;
         isAuthenticated = false;
         notifyListeners();
-        return MessageResponse(isSuccessful: true, message: "Error en la autenticación");
+        return MessageResponse(isSuccessful: true, message: "Error en el registro");
       }
     }  on DioException catch (e) {
       return MessageResponse(
         isSuccessful: false,
-        message: (e.response != null ? e.response?.data["error"] : "Error en la autenticación")
+        message: (e.response != null ? e.response?.data["error"] : "Error en el registro")
       );
     } catch (e) {
       return MessageResponse(isSuccessful: false, message: "Error inesperado");

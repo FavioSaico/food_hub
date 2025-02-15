@@ -69,10 +69,11 @@ class _PerfilUsuarioPageState extends State<PerfilUsuarioPage> {
           },
           ),
           BuildMenuOption(
-          text: 'Cerrar sesión',
-          onTap: () {
-          Navigator.pushNamed(context, '/login');
-          },
+            text: 'Cerrar sesión',
+            onTap: () {
+              authProvider.logout();
+              Navigator.pushNamed(context, '/login');
+            },
           ),
         ],
       ),
