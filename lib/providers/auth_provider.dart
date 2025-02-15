@@ -166,8 +166,13 @@ class AuthProvider extends ChangeNotifier {
     usuario = null;
     isAuthenticated = false;
 
+    // Eliminar usuario al cerrar sesión
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('usuario'); // Eliminar usuario al cerrar sesión
+    await prefs.remove('id');
+    await prefs.remove('name');
+    await prefs.remove('typeUser'); 
+    await prefs.remove('email');
+    await prefs.remove('address'); 
 
     notifyListeners();
   }
