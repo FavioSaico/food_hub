@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Para formatear fecha y hora
 
 class FechaHoraSelector extends StatefulWidget {
-  final Function(DateTime, String) onFechaHoraSeleccionada;
+  final Function(DateTime) onFechaHoraSeleccionada;
 
   const FechaHoraSelector({Key? key, required this.onFechaHoraSeleccionada})
       : super(key: key);
@@ -13,7 +13,7 @@ class FechaHoraSelector extends StatefulWidget {
 
 class _FechaHoraSelectorState extends State<FechaHoraSelector> {
   DateTime? selectedDate;
-  String selectedTime = "Seleccionar hora";
+  TimeOfDay? selectedTime;
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
@@ -22,44 +22,38 @@ class _FechaHoraSelectorState extends State<FechaHoraSelector> {
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
-    if (picked != null && picked != selectedDate) {
+    if (picked != null) {
       setState(() {
         selectedDate = picked;
       });
-      if (selectedDate != null) {
-        widget.onFechaHoraSeleccionada(selectedDate!, selectedTime);
-      }
+      _updateFechaHora();
     }
   }
 
-  void _selectTime(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> _selectTime(BuildContext context) async {
+    TimeOfDay? picked = await showTimePicker(
       context: context,
-      builder: (context) {
-        return Container(
-          height: 300,
-          child: ListView.builder(
-            itemCount: 9,
-            itemBuilder: (context, index) {
-              int hour = 12 + index;
-              String time = "$hour:00 Hrs";
-              return ListTile(
-                title: Text(time),
-                onTap: () {
-                  setState(() {
-                    selectedTime = time;
-                  });
-                  if (selectedDate != null) {
-                    widget.onFechaHoraSeleccionada(selectedDate!, selectedTime);
-                  }
-                  Navigator.pop(context);
-                },
-              );
-            },
-          ),
-        );
-      },
+      initialTime: selectedTime ?? TimeOfDay.now(),
     );
+    if (picked != null) {
+      setState(() {
+        selectedTime = picked;
+      });
+      _updateFechaHora();
+    }
+  }
+
+  void _updateFechaHora() {
+    if (selectedDate != null && selectedTime != null) {
+      DateTime finalDateTime = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
+        selectedTime!.hour,
+        selectedTime!.minute,
+      );
+      widget.onFechaHoraSeleccionada(finalDateTime);
+    }
   }
 
   @override
@@ -73,7 +67,7 @@ class _FechaHoraSelectorState extends State<FechaHoraSelector> {
             "Seleccione Fecha y Hora",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 10), // Espacio entre el texto y el selector
+          SizedBox(height: 10), 
 
           // Selector de fecha
           InkWell(
@@ -100,7 +94,7 @@ class _FechaHoraSelectorState extends State<FechaHoraSelector> {
             ),
           ),
 
-          SizedBox(height: 15), // Espacio entre fecha y hora
+          SizedBox(height: 15), 
 
           // Selector de hora
           InkWell(
@@ -116,7 +110,9 @@ class _FechaHoraSelectorState extends State<FechaHoraSelector> {
                 children: [
                   Icon(Icons.access_time, color: Colors.white),
                   Text(
-                    selectedTime,
+                    selectedTime != null
+                        ? selectedTime!.format(context)
+                        : "Seleccionar hora",
                     style: TextStyle(color: Colors.white),
                   ),
                   Icon(Icons.arrow_drop_down, color: Colors.white),

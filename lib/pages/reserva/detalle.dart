@@ -23,11 +23,9 @@ class DetallePage extends StatefulWidget {
 }
 
 class DetallePageState extends State<DetallePage> {
-  final TextEditingController requerimientosController =
-      TextEditingController();
+  final TextEditingController requerimientosController = TextEditingController();
 
-  DateTime? fechaSeleccionada;
-  String horaSeleccionada = "Seleccionar hora";
+  DateTime? fechaHoraSeleccionada;
   int cantidadPersonas = 1;
   String zonaPreferida = "Terraza";
 
@@ -37,7 +35,6 @@ class DetallePageState extends State<DetallePage> {
       backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () {
-          // Ocultar el teclado cuando se hace clic fuera de un campo de texto
           FocusScope.of(context).unfocus();
         },
         child: SingleChildScrollView(
@@ -50,13 +47,10 @@ class DetallePageState extends State<DetallePage> {
                 child: BackButtonCustom(),
               ),
               const SizedBox(height: 10),
-              // Logo
               Center(
-                child: Image.asset("assets/imagenes/Logo.png",
-                    height: 70, width: 140),
+                child: Image.asset("assets/imagenes/Logo.png", height: 70, width: 140),
               ),
               const SizedBox(height: 15),
-              // Mostrar sede seleccionada
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -64,13 +58,10 @@ class DetallePageState extends State<DetallePage> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-
-              // Widgets para seleccionar datos
               FechaHoraSelector(
-                onFechaHoraSeleccionada: (fecha, hora) {
+                onFechaHoraSeleccionada: (fechaHora) {
                   setState(() {
-                    fechaSeleccionada = fecha;
-                    horaSeleccionada = hora;
+                    fechaHoraSeleccionada = fechaHora;
                   });
                 },
               ),
@@ -88,11 +79,9 @@ class DetallePageState extends State<DetallePage> {
                   });
                 },
               ),
-
-              // Campo de requerimientos
               Center(
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.8, // 80% del ancho
+                  width: MediaQuery.of(context).size.width * 0.8,
                   child: TextField(
                     controller: requerimientosController,
                     decoration: InputDecoration(
@@ -102,39 +91,38 @@ class DetallePageState extends State<DetallePage> {
                       ),
                       filled: true,
                       fillColor: Colors.grey[200],
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                     ),
                   ),
                 ),
               ),
               SizedBox(height: 20),
-
-              // Botón para ir al resumen
               Center(
                 child: InkWell(
                   onTap: () {
-                    // Navegar a la página de resumen pasando los datos
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResumenPage(
-                          sede: widget.sedeSeleccionada,
-                          fecha: fechaSeleccionada?.toIso8601String() ?? "",
-                          hora: horaSeleccionada,
-                          cantidadPersonas: cantidadPersonas,
-                          zonaPreferida: zonaPreferida,
-                          requerimientos: requerimientosController.text,
+                    if (fechaHoraSeleccionada != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResumenPage(
+                            sede: widget.sedeSeleccionada,
+                            fechaHora: fechaHoraSeleccionada!,
+                            cantidadPersonas: cantidadPersonas,
+                            zonaPreferida: zonaPreferida,
+                            requerimientos: requerimientosController.text,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Por favor, seleccione fecha y hora.")),
+                      );
+                    }
                   },
                   child: Container(
-                    padding: EdgeInsets.only(
-                      left: Dimensions.width20 * 2,
-                      right: Dimensions.width20 * 2,
-                      top: Dimensions.height10,
-                      bottom: Dimensions.height10,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Dimensions.width20 * 2,
+                      vertical: Dimensions.height10,
                     ),
                     decoration: BoxDecoration(
                       color: AppColors.mainColor,
