@@ -46,7 +46,7 @@ class _PerfilAdminPageState extends State<PerfilAdminPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BoldNormalText(label: 'Correo electrónico', value: 'admin_god@gmail.com'),
+                BoldNormalText(label: 'Correo', value: 'admin_god@gmail.com'),
                 BoldNormalText(label: 'Dirección', value: 'Avenida Canadá, 265'),
               ],
             ),
