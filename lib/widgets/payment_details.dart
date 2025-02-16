@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 class PaymentDetails extends StatelessWidget {
   final double subtotal;
-  final double shippingCost;
+  // final double shippingCost;
 
   const PaymentDetails({
     super.key,
     required this.subtotal,
-    required this.shippingCost,
+    // required this.shippingCost,
   });
 
   @override
   Widget build(BuildContext context) {
-    final total = subtotal + shippingCost;
+    // final total = subtotal + shippingCost;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -38,49 +38,27 @@ class PaymentDetails extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 16),
-          _PaymentRow(
-            label: 'Subtotal',
-            amount: subtotal,
-          ),
+          // const SizedBox(height: 16),
+          // _PaymentRow(
+          //   label: 'Subtotal',
+          //   amount: subtotal,
+          // ),
           const SizedBox(height: 8),
-          _PaymentRow(
-            label: 'Costo de envío',
-            amount: shippingCost,
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: Divider(),
-          ),
+          // _PaymentRow(
+          //   label: 'Costo de envío',
+          //   amount: shippingCost,
+          // ),
+          // const Padding(
+          //   padding: EdgeInsets.symmetric(vertical: 12),
+          //   child: Divider(),
+          // ),
           _PaymentRow(
             label: 'Total',
-            amount: total,
+            amount: subtotal,
             isBold: true,
           ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                // Implementar acción de siguiente
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF5BA698),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'Siguiente',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
+          // const SizedBox(height: 16),
+          
         ],
       ),
     );

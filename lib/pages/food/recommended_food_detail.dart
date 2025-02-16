@@ -128,10 +128,11 @@ class _RecommendedFoodDetailState extends State<RecommendedFoodDetail> {
                           if (clickCounter > 0) {
                             cartProvider.addItem(
                               CartItem(
-                                idCompra: clickCounter,
                                 idComida: widget.product.id,
                                 cantidad: clickCounter,
                                 costo: widget.product.price,
+                                imageUrl: widget.product.imageUrl,
+                                name: widget.product.name
                               ),
                             );
                             ScaffoldMessenger.of(context).showSnackBar(
