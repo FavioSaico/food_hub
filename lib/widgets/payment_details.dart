@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_hub/pages/pago/compra.dart';
-import 'package:food_hub/utils/colors.dart';
 
 class PaymentDetails extends StatelessWidget {
   final double subtotal;

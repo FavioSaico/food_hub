@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:food_hub/pages/reserva/resumen.dart';
 import 'package:food_hub/widgets/app_menu.dart';
-import 'package:food_hub/pages/home/body_food_page.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
-import 'package:food_hub/widgets/app_icon.dart';
 import 'package:food_hub/widgets/big_text.dart';
-import 'package:food_hub/widgets/small_text.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
-import 'package:food_hub/models/sede.dart';
+import 'package:food_hub/domain/sede.dart';
 
 class SedesPage extends StatefulWidget {
   const SedesPage({super.key});

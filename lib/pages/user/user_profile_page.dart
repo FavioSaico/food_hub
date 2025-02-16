@@ -7,7 +7,6 @@ import 'package:food_hub/widgets/bold_normal_text.dart';
 import 'package:food_hub/widgets/build_menu_option.dart';
 import 'package:provider/provider.dart';
 import 'package:food_hub/providers/auth_provider.dart';
-import 'package:get/get.dart';
 
 class PerfilUsuarioPage extends StatefulWidget {
   const PerfilUsuarioPage({super.key});

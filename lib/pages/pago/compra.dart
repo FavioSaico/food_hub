@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/cart_item.dart';
-import 'package:food_hub/utils/dimensions.dart';
+import 'package:food_hub/domain/tipo_compra.dart';
+import 'package:food_hub/domain/tipo_pago.dart';
+import 'package:food_hub/providers/shared_provider.dart';
 import 'package:food_hub/widgets/app_menu.dart';
+import 'package:provider/provider.dart';
 
 class PaymentScreen extends StatefulWidget {
   final List<CartItem> items;
@@ -14,27 +17,82 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
 
-  int selectedEnvio = -1;
-  int selectedMetodoPago = -1;
+  bool _isLoading = false;
   final Color defaultColor = const Color.fromARGB(255, 230, 230, 230);
   final Color selectedColor = Colors.teal;
 
-  double delivery = 20.00;
-  // final double total = widget.subtotal + delivery;
+  double deliveryCost = 20.00;
+  bool _isDeliverySelect = false;
+  Set selectMetodoCompra = {1};
+  Set selectMetodoPago = {1};
+  
+  List<TipoCompra> tiposCompra = [];
+  List<TipoPago> tiposPago = [];
 
-  final List<Map<String, dynamic>> tiposCompra = [
-    {
-      "id_tipo_compra": 1,
-      "tipo_compra": "Recojo en tienda"
-    },
-    {
-      "id_tipo_compra": 2,
-      "tipo_compra": "Delivery"
-    }
-  ];
+  // List<ButtonSegment> listButtonTipoCompra = [];
+  // List<ButtonSegment> listButtonTipoPago = [];
+
+  // final List<Map<String, dynamic>> tiposCompra = [
+  //   {
+  //     "id_tipo_compra": 1,
+  //     "tipo_compra": "Recojo en tienda"
+  //   },
+  //   {
+  //     "id_tipo_compra": 2,
+  //     "tipo_compra": "Delivery"
+  //   }
+  // ];
+
+  
+  
+  Future<void> _loadTypes() async {
+    // cargamos los datos de los platillos
+    setState(() => _isLoading = true);
+    await Provider.of<SharedProvider>(context, listen: false).getTypesPayment();
+    await Provider.of<SharedProvider>(context, listen: false).getTypesPruchase();
+  
+    setState(() {
+      _isLoading = false;
+      // tiposPago = Provider.of<SharedProvider>(context, listen: false).tipoPagoList;
+      // tiposCompra = Provider.of<SharedProvider>(context, listen: false).tipoCompraList;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loadTypes();
+    // print(tiposPago);
+    // print(tiposCompra);
+
+    // for (var e in tiposCompra) {
+    //   listButtonTipoCompra.add(
+    //     ButtonSegment(
+    //       value: e.idTipoCompra,
+    //       label: Text(e.tipoCompra),
+    //       icon: Icon(Icons.delivery_dining, color: Colors.black,),
+    //     ),
+    //   );
+    // }
+
+    // for (var e in tiposPago) {
+    //   listButtonTipoPago.add(
+    //     ButtonSegment(
+    //       value: e.idTipoPago,
+    //       label: Text(e.tipoPago),
+    //       icon: Icon(Icons.delivery_dining, color: Colors.black,),
+    //     ),
+    //   );
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    final tiposPago = context.read<SharedProvider>().tipoPagoList;
+    final tiposCompra = context.read<SharedProvider>().tipoCompraList;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -52,61 +110,100 @@ class _PaymentScreenState extends State<PaymentScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
+          alignment: Alignment.centerLeft,
           margin: EdgeInsets.all(16.0),
           child: Column(
-            // textDirection: TextDirection(),
-            // padding: const EdgeInsets.all(16.0),
+            crossAxisAlignment: CrossAxisAlignment.start, // alineamiento
             children: [
-                // Container(
-                //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                //   width: double.infinity,
-                //   child: PageView(
-                //     children: <Widget>[
-                //       Center(child: Text('First Page')),
-                //       Center(child: Text('Second Page')),
-                //       Center(child: Text('Third Page')),
-                //     ],
+                // Método de pago
+                // Card(
+                //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                //   elevation: 2,
+                //   child: ListTile(
+                //     leading: const Icon(Icons.credit_card, color: Colors.teal),
+                //     title: const Text("Agregar tarjeta"),
+                //     subtitle: const Text("Débito o crédito"),
+                //     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                //     onTap: () {},
                 //   ),
                 // ),
-                // Método de pago
-                Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  elevation: 2,
-                  child: ListTile(
-                    leading: const Icon(Icons.credit_card, color: Colors.teal),
-                    title: const Text("Agregar tarjeta"),
-                    subtitle: const Text("Débito o crédito"),
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onTap: () {},
-                  ),
+                const Text(
+                  "Método de pago",
+                  textAlign: TextAlign.left ,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
                 ),
+                const SizedBox(height: 10),
+                
+                _isLoading 
+                ? Center(child: CircularProgressIndicator(color: selectedColor))
+                : SizedBox(
+                    width: double.infinity,
+                    child: SegmentedButton(
+                      style: SegmentedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        iconColor: Colors.white,
+                        selectedForegroundColor: Colors.white,
+                        selectedBackgroundColor: selectedColor,
+                      ),
+                      segments: tiposPago.map((e){
+                        return ButtonSegment(
+                          value: e.idTipoPago,
+                          label: Text(e.tipoPago),
+                          icon: Icon(Icons.delivery_dining, color: Colors.black,),
+                        );
+                      }).toList(),  
+                      selected: selectMetodoPago,
+                      onSelectionChanged: (Set<dynamic> newSelection) {
+                        setState(() {
+                          selectMetodoPago = newSelection;
+                        });
+                      },
+                    ),
+                  ),
                 const SizedBox(height: 20),
           
                 // Método de envío
-                const Text("Método de envío", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text(
+                  "Método de envío",
+                  textAlign: TextAlign.left ,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
+                ),
                 const SizedBox(height: 10),
                 
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: tiposCompra.length,
-                  itemBuilder: (context, index) {
-                    final tiposComp = tiposCompra[index];
-                    return ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedMetodoPago = selectedMetodoPago == index ? -1 : index;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: selectedMetodoPago == index ?  selectedColor : defaultColor,
-                        foregroundColor: selectedMetodoPago == index ? defaultColor : Colors.black,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                      child: Text('${tiposComp["tipo_compra"]}'),
-                    );
-                  }
+                _isLoading 
+                ? Center(child: CircularProgressIndicator(color: selectedColor)) 
+                : SizedBox(
+                  width: double.infinity,
+                  child: SegmentedButton(
+                    style: SegmentedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      iconColor: Colors.white,
+                      selectedForegroundColor: Colors.white,
+                      selectedBackgroundColor: selectedColor,
+                    ),
+                    segments: tiposCompra.map((e){
+                      return ButtonSegment(
+                        value: e.idTipoCompra,
+                        label: Text(e.tipoCompra),
+                        icon: Icon(Icons.delivery_dining, color: Colors.black,),
+                      );
+                    }).toList(), 
+                    selected: selectMetodoCompra,
+                    onSelectionChanged: (Set<dynamic> newSelection) {
+                      setState(() {
+                        selectMetodoCompra = newSelection;
+                        if (newSelection.first == 2){
+                          _isDeliverySelect = true;
+                          deliveryCost = 20.00;
+                        }else{
+                          _isDeliverySelect = false;
+                          deliveryCost = 0.00;
+                        }
+                      });
+                    },
+                  ),
                 ),
+                const SizedBox(height: 10),
           
                 // Detalles del pedido
                 const Text("Detalles del pedido", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -118,7 +215,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   itemCount: widget.items.length,
                   itemBuilder: (context, index) {
                     final item =  widget.items[index];
-                    return _buildOrderItem(item.name, "S/. ${item.costo}", item.imageUrl, item.cantidad);
+                    return _buildOrderItem(item.name, "S/. ${item.costo.toStringAsFixed(2)}", item.imageUrl, item.cantidad);
                   }
                 ),
                 const SizedBox(height: 20),
@@ -126,22 +223,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 // Detalles de pago
                 const Text("Detalles de pago", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-                _buildPaymentDetail("Subtotal", "S/. ${widget.subtotal.toStringAsFixed(2)}"),
-                _buildPaymentDetail("Costo de envío", "S/. $delivery"),
+
+                _isDeliverySelect 
+                ? Column(
+                    children: [
+                      _buildPaymentDetail("Subtotal", "S/. ${widget.subtotal.toStringAsFixed(2)}"),
+                      _buildPaymentDetail("Costo de envío", "S/. ${deliveryCost.toStringAsFixed(2)}")
+                    ],
+                  )
+                : SizedBox(height: 10),
+
                 const Divider(thickness: 1),
-                _buildPaymentDetail("Total", "S/. ${(widget.subtotal + delivery).toStringAsFixed(2)}", isTotal: true),
+                _buildPaymentDetail("Total", "S/. ${(widget.subtotal + deliveryCost).toStringAsFixed(2)}", isTotal: true),
                 const SizedBox(height: 20),
           
                 // Botón de pago
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.teal,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                     child: const Text("Pagar", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
