@@ -1,9 +1,7 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/dio.dart';
 import 'package:food_hub/domain/food.dart';
-
 class FoodProvider extends ChangeNotifier {
 
   // lista de comidas

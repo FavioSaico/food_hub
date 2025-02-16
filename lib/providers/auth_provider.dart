@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/dio.dart';
@@ -28,11 +26,11 @@ class AuthProvider extends ChangeNotifier {
   Future<void> saveUserSession(User? usuario) async {
     final prefs = await SharedPreferences.getInstance();
 
-    await prefs.setInt('id', usuario!.id); // Guardar el usuario
-    await prefs.setString('name', usuario.name); // Guardar el usuario
-    await prefs.setString('typeUser',usuario.email); // Guardar el usuario
-    await prefs.setString('email', usuario.email); // Guardar el usuario
-    await prefs.setString('address', usuario.address); // Guardar el usuario
+    await prefs.setInt('id', usuario!.id);
+    await prefs.setString('name', usuario.name);
+    await prefs.setString('typeUser',usuario.email);
+    await prefs.setString('email', usuario.email);
+    await prefs.setString('address', usuario.address);
   }
   // OBTENER LOS DATOS DEL USUARIO DEL DISPOSITIVO
   Future<void> getUserSesion() async {
@@ -73,7 +71,6 @@ class AuthProvider extends ChangeNotifier {
           address: data["direccion"],
         );
         isAuthenticated = true;
-
         
         await saveUserSession(usuario);
         // print(response.data);

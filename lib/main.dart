@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart'; 
 import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/pages/food/cart_page.dart';
-import 'package:food_hub/pages/reserva/carrito.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
 import 'package:food_hub/pages/reserva/resumen.dart';
 import 'package:food_hub/pages/reserva/sedes.dart';
@@ -24,10 +23,11 @@ import 'package:food_hub/pages/user/user_profile_page.dart';
 import 'package:food_hub/pages/pago/compra.dart';
 import 'package:food_hub/pages/pago/Pagorealizado.dart';
 import 'package:food_hub/pages/pago/compratienda.dart';
+import 'package:food_hub/providers/shared_provider.dart';
 
 import 'package:get/get.dart';
 
-import 'package:food_hub/models/sede.dart';
+import 'package:food_hub/domain/sede.dart';
 
 import 'package:provider/provider.dart';
 
@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FoodProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => SharedProvider()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

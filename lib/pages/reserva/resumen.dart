@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_hub/domain/reserva.dart';
 import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:food_hub/widgets/big_text.dart';
-import 'package:food_hub/models/sede.dart';
+import 'package:food_hub/domain/sede.dart';
 import 'package:food_hub/utils/dimensions.dart';
 import 'package:food_hub/pages/home/main_food_page.dart';
 import 'package:provider/provider.dart';
