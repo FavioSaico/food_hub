@@ -12,11 +12,16 @@ class CartProvider with ChangeNotifier {
   void addItem(CartItem newItem) {
     final existingItemIndex = _items.indexWhere((item) => item.idComida == newItem.idComida);
 
-    if (existingItemIndex >= 0) {
-      _items[existingItemIndex].cantidad += newItem.cantidad;
+    if (existingItemIndex >= 0) { // existe
+      // _items[existingItemIndex].cantidad += newItem.cantidad;
+      if(newItem.cantidad > _items[existingItemIndex].cantidad){
+        _items[existingItemIndex].cantidad = newItem.cantidad;
+      }
     } else {
       _items.add(newItem);
     }
+    
+
 
     notifyListeners();
   }

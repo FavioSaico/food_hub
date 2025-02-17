@@ -87,7 +87,7 @@ class _RecommendedFoodDetailState extends State<RecommendedFoodDetail> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "S/. ${widget.product.price.toString()}",
+                        "S/. ${widget.product.price.toStringAsFixed(2)}",
                         style: TextStyle(color: Colors.black, fontSize: Dimensions.font26, fontWeight: FontWeight.w600)
                       ),
                     ],
