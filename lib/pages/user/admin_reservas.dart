@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_hub/providers/compra_provider.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_icon.dart';
 import 'package:food_hub/widgets/app_menu.dart';
@@ -10,21 +9,19 @@ import 'package:food_hub/utils/dimensions.dart';
 import 'package:food_hub/providers/reserva_provider.dart';
 import 'package:provider/provider.dart';
 
-class AdminComprasPage extends StatefulWidget {
-  const AdminComprasPage({super.key});
+class AdminReservasPage extends StatefulWidget {
+  const AdminReservasPage({super.key});
   @override
-  _AdminComprasPageState createState() => _AdminComprasPageState();
+  _AdminReservasPageState createState() => _AdminReservasPageState();
 }
 
-class _AdminComprasPageState extends State<AdminComprasPage> {
+class _AdminReservasPageState extends State<AdminReservasPage> {
   @override
   void initState() {
     super.initState();
-    // Llama al método para cargar los estados de las compras
-    final provider = Provider.of<CompraProvider>(context, listen: false);
-    provider
-        .fetchStates(); // Asegúrate de que este método exista en tu provider
-    provider.getListPurchases(); // Llamamos a obtener las compras
+    // Llama al método para cargar los estados de las reservas
+    final provider = Provider.of<ReserveProvider>(context, listen: false);
+    provider.fetchStates(); // Asegúrate de tener este método en tu provider
   }
 
   @override
@@ -33,7 +30,7 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // Header
+          // Header de la página
           Container(
             margin: EdgeInsets.only(
                 top: Dimensions.height60, bottom: Dimensions.height15),
@@ -48,7 +45,7 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: Text(
-                        "Historial de compras ",
+                        "Historial de reservas ",
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -63,13 +60,14 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
             ),
           ),
 
-          // Lista de compras
+          // Lista de reservas
           Expanded(
-            child: Consumer<CompraProvider>(
-              // Usamos Consumer para escuchar cambios
+            child: Consumer<ReserveProvider>(
               builder: (context, provider, child) {
-                // Cargando datos
-                if (provider.reservations.isEmpty || provider.states.isEmpty) {
+                if (provider.reservations.isEmpty) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (provider.states.isEmpty) {
                   return Center(child: CircularProgressIndicator());
                 }
 
@@ -80,22 +78,20 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
                     return Card(
                       margin: EdgeInsets.all(10),
                       child: ListTile(
-                        title: Text('Reserva # ${reserva.id}'),
+                        title: Text('Reserva # ${reserva.id_reserva}'),
                         subtitle: Text('${reserva.fecha}'),
                         trailing: DropdownButton<int>(
-                          value:
-                              reserva.estado.id, // El valor actual del estado
+                          value: reserva.id_estado,
                           items: provider.states.map((state) {
                             return DropdownMenuItem<int>(
-                              value: state.id,
-                              child: Text(state.tipo),
+                              value: state.id_estado,
+                              child: Text(state.tipo_estado),
                             );
                           }).toList(),
                           onChanged: (newValue) async {
                             if (newValue != null) {
-                              // Actualizamos el estado de la reserva
                               await provider.updateReserveState(
-                                  reserva.id, newValue);
+                                  reserva.id_reserva, newValue);
                             }
                           },
                         ),

@@ -1,9 +1,9 @@
 class EstadoReserva {
-  final int id_reserva;
-  final String name;
+  final int id_estado;
+  String tipo_estado;
 
   EstadoReserva({
-    required this.id_reserva,
-    required this.name,
+    required this.id_estado,
+    required this.tipo_estado,
   });
 }

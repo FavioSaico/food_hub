@@ -4,6 +4,7 @@ import 'package:food_hub/pages/food/cart_page.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
 import 'package:food_hub/pages/reserva/resumen.dart';
 import 'package:food_hub/pages/reserva/sedes.dart';
+import 'package:food_hub/pages/user/admin_reservas.dart';
 import 'package:food_hub/pages/user/user_profile_change_password_page.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/providers/cart_provider.dart';
@@ -11,6 +12,7 @@ import 'package:food_hub/providers/compra_provider.dart';
 import 'package:food_hub/providers/food_provider.dart';
 import 'package:food_hub/providers/reserva_provider.dart';
 import 'package:food_hub/pages/auth/registro_usuario_page.dart';
+import 'package:food_hub/pages/user/admin_compras.dart';
 
 import 'package:food_hub/pages/home/main_food_page.dart';
 
@@ -49,11 +51,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => SharedProvider()),
         ChangeNotifierProvider(create: (_) => CompraProvider()),
+        ChangeNotifierProvider(create: (_) => ReserveProvider()),
+        ChangeNotifierProvider(create: (_) => CompraProvider()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        initialRoute: '/iniciolog', // Ruta inicial
+        initialRoute: '/login', // Ruta inicial
         routes: {
           '/': (context) => MainFoodPage(),
           '/login': (context) => LoginPage(),
@@ -61,6 +65,9 @@ class MyApp extends StatelessWidget {
           '/userProfile': (context) => PerfilUsuarioPage(),
           '/adminProfile': (context) => PerfilAdminPage(),
           '/adminView': (context) => VistaAdminPage(),
+          '/adminReservas': (context) => AdminReservasPage(),
+          '/adminCompras': (context) => AdminComprasPage(),
+
           // '/register-card': (context) => const RegisterCard(),
           '/iniciolog': (context) => const SplashScreen(),
           '/iniciolog2': (context) => const SplashScreen2(),

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:food_hub/domain/reserva.dart';
+import 'package:food_hub/domain/estadoreserva.dart';
 import 'package:food_hub/domain/dio.dart';
 
 class MessageResponse {
@@ -12,44 +14,9 @@ class MessageResponse {
   });
 }
 
-//modelo de reserva
-class Reserva {
-  final int id_reserva;
-  final int id_usuario;
-  final int id_sede;
-  int id_estado;
-  final int id_zona;
-  final DateTime fecha;
-  final int cantidad_personas;
-  final String detalle;
-
-  Reserva({
-    required this.id_reserva,
-    required this.id_usuario,
-    required this.id_sede,
-    required this.id_estado,
-    required this.id_zona,
-    required this.fecha,
-    required this.cantidad_personas,
-    required this.detalle,
-  });
-}
-
-//Modelo de estado de reserva
-
-class EstadoReserva {
-  final int id_reserva;
-  final String name;
-
-  EstadoReserva({
-    required this.id_reserva,
-    required this.name,
-  });
-}
-
 class ReserveProvider extends ChangeNotifier {
   List<Reserva> reservations = [];
-  List<EstadoReserva> states = []; // Lista de estados de reserva
+  List<EstadoReserva> states = [];
 
   /// Método para registrar una reserva
   Future<MessageResponse> registerReserve({
@@ -63,7 +30,7 @@ class ReserveProvider extends ChangeNotifier {
   }) async {
     try {
       final response = await DioClient.instance.post(
-        '/api/reserve',
+        '/api/reserve/',
         data: {
           'id_usuario': idUsuario,
           'id_sede': idSede,
@@ -103,7 +70,7 @@ class ReserveProvider extends ChangeNotifier {
   /// Método para obtener la lista de reservas
   Future<void> fetchReservations() async {
     try {
-      final response = await DioClient.instance.get('/api/reserves');
+      final response = await DioClient.instance.get('/api/reserve/');
 
       if (response.statusCode == 200 && response.data != null) {
         reservations = (response.data as List).map((reserva) {
@@ -115,7 +82,7 @@ class ReserveProvider extends ChangeNotifier {
             id_zona: reserva['id_zona'],
             fecha: DateTime.parse(reserva['fecha']),
             cantidad_personas: reserva['cantidad_personas'],
-            detalle: reserva['detalle'],
+            detalle: reserva['requerimientos'],
           );
         }).toList();
         notifyListeners();
@@ -125,17 +92,20 @@ class ReserveProvider extends ChangeNotifier {
     }
   }
 
-  /// Método para obtener los estados de reserva desde la API
+  /// Método para obtener los estados de reserva
   Future<void> fetchStates() async {
     try {
-      final response = await DioClient.instance
-          .get('/api/estados'); // URL para obtener los estados
-      // Mapea la respuesta a una lista de EstadoReserva
-      states = (response.data as List)
-          .map((e) =>
-              EstadoReserva(id_reserva: e['id_estado'], name: e['tipo_estado']))
-          .toList();
-      notifyListeners();
+      final response = await DioClient.instance.get('/api/estado/');
+
+      if (response.statusCode == 200 && response.data != null) {
+        states = (response.data as List)
+            .map((e) => EstadoReserva(
+                  id_estado: e['id_estado'],
+                  tipo_estado: e['tipo_estado'],
+                ))
+            .toList();
+        notifyListeners();
+      }
     } catch (e) {
       print('Error al obtener los estados: $e');
     }
@@ -145,7 +115,7 @@ class ReserveProvider extends ChangeNotifier {
   Future<void> updateReserveState(int reservaId, int newState) async {
     try {
       final response = await DioClient.instance.put(
-        '/api/reserve/update',
+        '/api/reserve/',
         data: {
           "id_reserva": reservaId,
           "id_estado": newState,
