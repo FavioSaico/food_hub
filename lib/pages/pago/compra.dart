@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/cart_item.dart';
+import 'package:food_hub/domain/compra_registro.dart';
+import 'package:food_hub/domain/sedes.dart';
 import 'package:food_hub/domain/tipo_compra.dart';
 import 'package:food_hub/domain/tipo_pago.dart';
+import 'package:food_hub/pages/pago/RegisterCard.dart';
+import 'package:food_hub/pages/pago/Pagorealizado.dart';
+import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/providers/shared_provider.dart';
 import 'package:food_hub/widgets/app_menu.dart';
 import 'package:provider/provider.dart';
@@ -14,48 +19,51 @@ class PaymentScreen extends StatefulWidget {
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
-
 class _PaymentScreenState extends State<PaymentScreen> {
 
   bool _isLoading = false;
   final Color defaultColor = const Color.fromARGB(255, 230, 230, 230);
   final Color selectedColor = Colors.teal;
 
-  double deliveryCost = 20.00;
+  double deliveryCost = 00.00;
   bool _isDeliverySelect = false;
   Set selectMetodoCompra = {1};
   Set selectMetodoPago = {1};
+  int selectSede = 1;
   
   List<TipoCompra> tiposCompra = [];
   List<TipoPago> tiposPago = [];
-
-  // List<ButtonSegment> listButtonTipoCompra = [];
-  // List<ButtonSegment> listButtonTipoPago = [];
-
-  // final List<Map<String, dynamic>> tiposCompra = [
-  //   {
-  //     "id_tipo_compra": 1,
-  //     "tipo_compra": "Recojo en tienda"
-  //   },
-  //   {
-  //     "id_tipo_compra": 2,
-  //     "tipo_compra": "Delivery"
-  //   }
-  // ];
-
-  
+  List<Sede> sedes = [];
   
   Future<void> _loadTypes() async {
-    // cargamos los datos de los platillos
+    // cargamos los datos
     setState(() => _isLoading = true);
     await Provider.of<SharedProvider>(context, listen: false).getTypesPayment();
     await Provider.of<SharedProvider>(context, listen: false).getTypesPruchase();
+    await Provider.of<SharedProvider>(context, listen: false).getSedes();
   
     setState(() {
       _isLoading = false;
-      // tiposPago = Provider.of<SharedProvider>(context, listen: false).tipoPagoList;
-      // tiposCompra = Provider.of<SharedProvider>(context, listen: false).tipoCompraList;
     });
+  }
+
+  CompraRegistro generateCompra () {
+    List<ListaComida> listaComida = widget.items.map( (e) {
+      return ListaComida (idComida: e.idComida, cantidad: e.cantidad ,costo: e.costo);
+    }).toList();
+
+    CompraRegistro compra = CompraRegistro(
+      idUsuario: Provider.of<AuthProvider>(context, listen: false).currentUser!.id,
+      idTipoCompra: selectMetodoCompra.first,
+      idTipoPago: selectMetodoPago.first,
+      idEstado: 1,
+      idSede: selectSede,
+      costoSubtotal: widget.subtotal,
+      costoTotal: widget.subtotal+deliveryCost,
+      costoDelivery: deliveryCost,
+      listaComidas: listaComida
+    );
+    return compra;
   }
 
   @override
@@ -63,28 +71,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.initState();
 
     _loadTypes();
-    // print(tiposPago);
-    // print(tiposCompra);
-
-    // for (var e in tiposCompra) {
-    //   listButtonTipoCompra.add(
-    //     ButtonSegment(
-    //       value: e.idTipoCompra,
-    //       label: Text(e.tipoCompra),
-    //       icon: Icon(Icons.delivery_dining, color: Colors.black,),
-    //     ),
-    //   );
-    // }
-
-    // for (var e in tiposPago) {
-    //   listButtonTipoPago.add(
-    //     ButtonSegment(
-    //       value: e.idTipoPago,
-    //       label: Text(e.tipoPago),
-    //       icon: Icon(Icons.delivery_dining, color: Colors.black,),
-    //     ),
-    //   );
-    // }
   }
 
   @override
@@ -92,6 +78,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     final tiposPago = context.read<SharedProvider>().tipoPagoList;
     final tiposCompra = context.read<SharedProvider>().tipoCompraList;
+    final sedesList = context.read<SharedProvider>().sedesList;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -113,20 +100,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           alignment: Alignment.centerLeft,
           margin: EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start, // alineamiento
+            crossAxisAlignment: CrossAxisAlignment.start, // alineamiento a la izquierda
             children: [
-                // Método de pago
-                // Card(
-                //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                //   elevation: 2,
-                //   child: ListTile(
-                //     leading: const Icon(Icons.credit_card, color: Colors.teal),
-                //     title: const Text("Agregar tarjeta"),
-                //     subtitle: const Text("Débito o crédito"),
-                //     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                //     onTap: () {},
-                //   ),
-                // ),
                 const Text(
                   "Método de pago",
                   textAlign: TextAlign.left ,
@@ -149,7 +124,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         return ButtonSegment(
                           value: e.idTipoPago,
                           label: Text(e.tipoPago),
-                          icon: Icon(Icons.delivery_dining, color: Colors.black,),
+                          icon: Icon(Icons.radio_button_unchecked, color: Colors.black,),
                         );
                       }).toList(),  
                       selected: selectMetodoPago,
@@ -185,7 +160,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       return ButtonSegment(
                         value: e.idTipoCompra,
                         label: Text(e.tipoCompra),
-                        icon: Icon(Icons.delivery_dining, color: Colors.black,),
+                        icon: Icon(Icons.radio_button_unchecked, color: Colors.black,),
                       );
                     }).toList(), 
                     selected: selectMetodoCompra,
@@ -204,7 +179,51 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-          
+
+                // ELECCION DE LA SEDE
+                !_isDeliverySelect
+                ? SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, // alineamiento a la izquierda
+                    children: [
+                      const Text(
+                        "Escoge una de nuestras sede",
+                        textAlign: TextAlign.left ,
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start, // alineamiento a la izquierda
+                        children: sedesList.map((e){
+                          return ListTile(
+                            contentPadding: EdgeInsets.all(0),
+                            title: Text(e.sede,
+                              textAlign: TextAlign.left ,
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal)
+                            ),
+                            leading: Radio<int>(
+                              activeColor: selectedColor,
+                              value: e.idSede,
+                              groupValue: selectSede,
+                              onChanged: (int? value) {
+                                setState(() {
+                                  selectSede = value!;
+                                });
+                              },
+                            ),
+                            onTap: () {
+                              setState(() {
+                                selectSede = e.idSede;
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                )
+                : SizedBox(height: 0),
+
                 // Detalles del pedido
                 const Text("Detalles del pedido", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
@@ -228,12 +247,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ? Column(
                     children: [
                       _buildPaymentDetail("Subtotal", "S/. ${widget.subtotal.toStringAsFixed(2)}"),
-                      _buildPaymentDetail("Costo de envío", "S/. ${deliveryCost.toStringAsFixed(2)}")
+                      _buildPaymentDetail("Costo de envío", "S/. ${deliveryCost.toStringAsFixed(2)}"),
+                      const Divider(thickness: 1),
                     ],
                   )
                 : SizedBox(height: 10),
 
-                const Divider(thickness: 1),
+                
                 _buildPaymentDetail("Total", "S/. ${(widget.subtotal + deliveryCost).toStringAsFixed(2)}", isTotal: true),
                 const SizedBox(height: 20),
           
@@ -241,9 +261,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // print(generateCompra().toJson());
+                      // PagoRealizadoPage
+                      if(selectMetodoPago.first == 2){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            allowSnapshotting: false,
+                            builder: (context) => RegisterCard(compra:generateCompra()),
+                          ),
+                        );
+                      } else{
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            allowSnapshotting: false,
+                            builder: (context) => PagoRealizadoPage(compra: generateCompra()),
+                          ),
+                        );
+                      }
+                      
+                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
+                      backgroundColor: selectedColor,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

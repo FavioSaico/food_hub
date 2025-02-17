@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/domain/compra_registro.dart';
+import 'package:food_hub/pages/pago/Pagorealizado.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:flutter/services.dart';
 
 class RegisterCard extends StatelessWidget {
-  const RegisterCard({super.key});
+
+  final CompraRegistro compra;
+  const RegisterCard({super.key, required this.compra});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
         leading: IconButton(
@@ -68,7 +73,13 @@ class RegisterCard extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Lógica para guardar la tarjeta
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      allowSnapshotting: false,
+                      builder: (context) => PagoRealizadoPage(compra: compra),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainColor,
@@ -79,7 +90,7 @@ class RegisterCard extends StatelessWidget {
                   ),
                 ),
                 child: const Text(
-                  "Guardar",
+                  "Pagar",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
               ),

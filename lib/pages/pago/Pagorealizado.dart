@@ -1,19 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/domain/compra_registro.dart';
+import 'package:food_hub/providers/cart_provider.dart';
+import 'package:food_hub/providers/compra_provider.dart';
+import 'package:food_hub/utils/colors.dart';
+import 'package:provider/provider.dart';
 
-class PagoRealizadoPage extends StatelessWidget {
-  final String numeroCompra;
-  final double monto;
+class PagoRealizadoPage extends StatefulWidget {
+  final CompraRegistro compra;
 
-  const PagoRealizadoPage({super.key, required this.numeroCompra, required this.monto});
+  const PagoRealizadoPage({super.key, required this.compra});
+
+  @override
+  State<PagoRealizadoPage> createState() => _PagoRealizadoPageState();
+}
+
+class _PagoRealizadoPageState extends State<PagoRealizadoPage> {
+
+  bool _isLoading = false;
+  MessageResponseCompraProvider? response;
+  bool _isSuccessful = true;
+
+  Future<void> _registrarCompra() async {
+    setState(() => _isLoading = true);
+    response = await Provider.of<CompraProvider>(context, listen: false).registerCompra(compra: widget.compra);
+    _isSuccessful = response!.isSuccessful;
+    if (_isSuccessful) Provider.of<CartProvider>(context, listen: false).clear();
+    setState(() => _isLoading = false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _registrarCompra();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return _isLoading
+    ? Scaffold(backgroundColor: Colors.white, body: Center(child: CircularProgressIndicator(color: AppColors.mainColor, backgroundColor: Colors.white,)))
+    : Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            if(_isSuccessful){
+              Navigator.pushNamed(context, '/');
+            }else{
+              Navigator.pop(context);
+            }
           },
         ),
         backgroundColor: Colors.white,
@@ -25,33 +62,44 @@ class PagoRealizadoPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/imagenes/Compra_realizadaC.png', height: 150),
+              _isSuccessful
+              ? Image.asset('assets/imagenes/Compra_realizadaC.png', height: 150)
+              : Icon(Icons.cancel,color: Colors.deepOrange, size: 60,),
               const SizedBox(height: 20),
-              const Text(
-                "Pago realizado correctamente",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              
+              Text(
+                response!.message,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
               ),
               const SizedBox(height: 10),
-              Text(
-                "Compra # $numeroCompra",
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                "S/. ${monto.toStringAsFixed(2)}",
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
+
+              _isSuccessful 
+              ? Column(
+                  children: [
+                    Text(
+                      "Compra # ${(response!.idCompra > 0 && response!.idCompra < 9) ? "00": (response!.idCompra > 9 ? "0" : "")}${response!.idCompra}",
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "S/. ${widget.compra.costoTotal.toStringAsFixed(2)}",
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                )
+              : const SizedBox(height: 0),
+
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/historialCompras');
+                  Navigator.pushNamed(context, '/');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF2CAA97),
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
                 child: const Text(
-                  "Ir al historial de compras",
+                  "Ir al home",
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
