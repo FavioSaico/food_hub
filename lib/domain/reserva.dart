@@ -2,7 +2,7 @@ class Reserva {
   final int id_reserva;
   final int id_usuario;
   final int id_sede;
-  final int id_estado;
+  int id_estado;
   final int id_zona;
   final DateTime fecha;
   final int cantidad_personas;
