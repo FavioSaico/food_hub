@@ -1,9 +1,13 @@
-class EstadoReserva {
-  final int id_estado;
-  String tipo_estado;
+class Estado {
+  final int id;
+  final String tipo;
 
-  EstadoReserva({
-    required this.id_estado,
-    required this.tipo_estado,
-  });
+  Estado({required this.id, required this.tipo});
+
+  factory Estado.fromJson(Map<String, dynamic> json) {
+    return Estado(
+      id: json['id_estado'],
+      tipo: json['tipo_estado'],
+    );
+  }
 }

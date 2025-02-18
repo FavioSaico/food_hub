@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/domain/compras_historial.dart';
 import 'package:food_hub/providers/compra_provider.dart';
 import 'package:food_hub/utils/colors.dart';
-import 'package:food_hub/widgets/app_icon.dart';
 import 'package:food_hub/widgets/app_menu.dart';
-import 'package:food_hub/widgets/big_text.dart';
-import 'package:food_hub/widgets/bold_normal_text.dart';
-import 'package:food_hub/widgets/build_menu_option.dart';
 import 'package:food_hub/utils/dimensions.dart';
-import 'package:food_hub/providers/reserva_provider.dart';
 import 'package:provider/provider.dart';
 
 class HistorialComprasPage extends StatefulWidget {
@@ -17,16 +13,72 @@ class HistorialComprasPage extends StatefulWidget {
   _HistorialComprasPageState createState() => _HistorialComprasPageState();
 }
 
-class _HistorialComprasPageState extends State<HistorialComprasPage> {
-  late Future<List<Compra>> _futureCompras;
-  final int userId = 1; // Aquí deberías obtener el ID del usuario autenticado
+class BackButtonCustom extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 4.0), // Ajuste para pegarlo más al borde
+      child: IconButton(
+        icon: Icon(Icons.arrow_back, color: Colors.black),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+}
 
+class _HistorialComprasPageState extends State<HistorialComprasPage> {
   @override
   void initState() {
     super.initState();
-    final provider = Provider.of<CompraProvider>(context, listen: false);
-    _futureCompras = provider.getListPurchasesByUser(userId);
-    provider.fetchStates(); // Carga los estados de compra
+  }
+
+  List<CompraHistorial> listacompras = [
+    CompraHistorial(
+      id_compra: 1,
+      fecha: DateTime.now(),
+      id_estado: 1,
+      costoTotal: 10,
+    ),
+    CompraHistorial(
+      id_compra: 2,
+      fecha: DateTime.now(),
+      id_estado: 2,
+      costoTotal: 20,
+    ),
+    CompraHistorial(
+      id_compra: 3,
+      fecha: DateTime.now(),
+      id_estado: 3,
+      costoTotal: 30,
+    ),
+  ];
+
+  String getEstado(int idEstado) {
+    switch (idEstado) {
+      case 1:
+        return 'En proceso';
+      case 2:
+        return 'Enviado';
+      case 3:
+        return 'Finalizado';
+      default:
+        return 'Desconocido';
+    }
+  }
+
+  IconData getEstadoIcon(int idEstado) {
+    switch (idEstado) {
+      case 1:
+        return Icons.access_time;
+      case 2:
+        return Icons.local_shipping;
+      case 3:
+        return Icons.check_circle;
+      default:
+        return Icons.help_outline;
+    }
   }
 
   @override
@@ -35,28 +87,29 @@ class _HistorialComprasPageState extends State<HistorialComprasPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // Header
+          // 🔹 Header modificado para incluir el botón de retroceso y centrar el título
           Container(
             margin: EdgeInsets.only(
                 top: Dimensions.height60, bottom: Dimensions.height15),
             padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // 🔹 Centra el contenido
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 15),
-                    Text(
-                      "Mis Compras",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.mainColor,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                  ],
+                Align(
+                  alignment: Alignment
+                      .centerLeft, // 🔹 Asegura que el botón esté a la izquierda
+                  child: BackButtonCustom(),
+                ),
+                SizedBox(height: 10), // 🔹 Espacio entre el botón y el título
+                Text(
+                  "Mis Compras",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.mainColor,
+                  ),
+                  textAlign: TextAlign.center, // 🔹 Asegura centrado del texto
                 ),
               ],
             ),
@@ -64,42 +117,36 @@ class _HistorialComprasPageState extends State<HistorialComprasPage> {
 
           // Lista de compras del usuario
           Expanded(
-            child: FutureBuilder<List<Compra>>(
-              future: _futureCompras,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text("Error al cargar compras"));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text("No hay compras registradas"));
-                }
-
-                final compras = snapshot.data!;
-                return ListView.builder(
-                  itemCount: compras.length,
-                  itemBuilder: (context, index) {
-                    final compra = compras[index];
-                    return Card(
-                      margin: EdgeInsets.all(10),
-                      child: ListTile(
-                        title: Text('Compra # ${compra.id}'),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Fecha: ${compra.fecha}'),
-                            Text(
-                              'Estado: ${compra.estado.tipo}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueAccent,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+            child: ListView.builder(
+              itemCount: listacompras.length,
+              itemBuilder: (context, index) {
+                final CompraHistorial compra = listacompras[index];
+                return Card(
+                  color: Colors.white,
+                  elevation: 3,
+                  margin: EdgeInsets.all(10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    tileColor: Colors.white,
+                    title: Text(
+                      'Compra # ${compra.id_compra}',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(' ${getEstado(compra.id_estado)}'),
+                        Text(' ${compra.fecha}'),
+                      ],
+                    ),
+                    trailing: Icon(
+                      getEstadoIcon(compra.id_estado),
+                      color: AppColors.mainColor,
+                      size: 30,
+                    ),
+                  ),
                 );
               },
             ),
