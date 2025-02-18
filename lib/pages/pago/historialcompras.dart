@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/compras_historial.dart';
-import 'package:food_hub/providers/compra_provider.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/utils/dimensions.dart';
-import 'package:provider/provider.dart';
 
 class HistorialComprasPage extends StatefulWidget {
   const HistorialComprasPage({super.key});
@@ -45,13 +43,13 @@ class _HistorialComprasPageState extends State<HistorialComprasPage> {
       id_compra: 2,
       fecha: DateTime.now(),
       id_estado: 2,
-      costoTotal: 20,
+      costoTotal: 70,
     ),
     CompraHistorial(
       id_compra: 3,
       fecha: DateTime.now(),
       id_estado: 3,
-      costoTotal: 30,
+      costoTotal: 80,
     ),
   ];
 
@@ -87,21 +85,19 @@ class _HistorialComprasPageState extends State<HistorialComprasPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // 🔹 Header modificado para incluir el botón de retroceso y centrar el título
+          // 🔹 Header con botón de retroceso y título centrado
           Container(
             margin: EdgeInsets.only(
                 top: Dimensions.height60, bottom: Dimensions.height15),
             padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
             child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.center, // 🔹 Centra el contenido
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Align(
-                  alignment: Alignment
-                      .centerLeft, // 🔹 Asegura que el botón esté a la izquierda
+                  alignment: Alignment.centerLeft,
                   child: BackButtonCustom(),
                 ),
-                SizedBox(height: 10), // 🔹 Espacio entre el botón y el título
+                SizedBox(height: 10),
                 Text(
                   "Mis Compras",
                   style: TextStyle(
@@ -109,13 +105,13 @@ class _HistorialComprasPageState extends State<HistorialComprasPage> {
                     fontWeight: FontWeight.bold,
                     color: AppColors.mainColor,
                   ),
-                  textAlign: TextAlign.center, // 🔹 Asegura centrado del texto
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
           ),
 
-          // Lista de compras del usuario
+          // Lista de compras con el costo total en lugar del icono
           Expanded(
             child: ListView.builder(
               itemCount: listacompras.length,
@@ -137,14 +133,17 @@ class _HistorialComprasPageState extends State<HistorialComprasPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(' ${getEstado(compra.id_estado)}'),
-                        Text(' ${compra.fecha}'),
+                        Text('${getEstado(compra.id_estado)}'),
+                        Text('${compra.fecha}'),
                       ],
                     ),
-                    trailing: Icon(
-                      getEstadoIcon(compra.id_estado),
-                      color: AppColors.mainColor,
-                      size: 30,
+                    trailing: Text(
+                      "S/. ${compra.costoTotal}",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 );
