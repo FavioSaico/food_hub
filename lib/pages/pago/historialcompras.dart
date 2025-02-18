@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/compras_historial.dart';
-import 'package:food_hub/providers/compra_provider.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/utils/dimensions.dart';
-import 'package:provider/provider.dart';
 
 class HistorialComprasPage extends StatefulWidget {
   const HistorialComprasPage({super.key});
@@ -45,13 +43,13 @@ class _HistorialComprasPageState extends State<HistorialComprasPage> {
       id_compra: 2,
       fecha: DateTime.now(),
       id_estado: 2,
-      costoTotal: 20,
+      costoTotal: 70,
     ),
     CompraHistorial(
       id_compra: 3,
       fecha: DateTime.now(),
       id_estado: 3,
-      costoTotal: 30,
+      costoTotal: 80,
     ),
   ];
 
@@ -142,8 +140,8 @@ class _HistorialComprasPageState extends State<HistorialComprasPage> {
                     trailing: Text(
                       "S/. ${compra.costoTotal}",
                       style: TextStyle(
-                        fontSize: 20, // 🔹 Tamaño más grande
-                        fontWeight: FontWeight.bold, // 🔹 Negrita
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                     ),
