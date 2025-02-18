@@ -8,6 +8,7 @@ import 'package:food_hub/pages/user/admin_reservas.dart';
 import 'package:food_hub/pages/user/user_profile_change_password_page.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/providers/cart_provider.dart';
+import 'package:food_hub/providers/chatbot_provider.dart';
 import 'package:food_hub/providers/compra_provider.dart';
 import 'package:food_hub/providers/food_provider.dart';
 import 'package:food_hub/providers/reserva_provider.dart';
@@ -53,11 +54,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CompraProvider()),
         ChangeNotifierProvider(create: (_) => ReserveProvider()),
         ChangeNotifierProvider(create: (_) => CompraProvider()),
+        ChangeNotifierProvider(create: (_) => ChatbotProvider()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        initialRoute: '/login', // Ruta inicial
+        initialRoute: '/iniciolog', // Ruta inicial
         routes: {
           '/': (context) => MainFoodPage(),
           '/login': (context) => LoginPage(),
