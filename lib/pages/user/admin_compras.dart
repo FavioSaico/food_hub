@@ -86,20 +86,18 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // 🔹 Header modificado: Flecha arriba, texto centrado abajo
+          // 🔹 Header con botón de retroceso y título centrado
           Container(
             margin: EdgeInsets.only(
                 top: Dimensions.height60, bottom: Dimensions.height15),
             padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
             child: Column(
-              // 🔹 Usamos Column en lugar de Row
               children: [
                 Align(
-                  alignment:
-                      Alignment.centerLeft, // 🔹 Flecha alineada a la izquierda
+                  alignment: Alignment.centerLeft,
                   child: BackButtonCustom(),
                 ),
-                SizedBox(height: 10), // 🔹 Espaciado entre flecha y texto
+                SizedBox(height: 10),
                 Text(
                   "Historial de compras",
                   style: TextStyle(
@@ -107,13 +105,13 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
                     fontWeight: FontWeight.bold,
                     color: AppColors.mainColor,
                   ),
-                  textAlign: TextAlign.center, // 🔹 Asegura centrado del texto
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
           ),
 
-          // Lista de compras
+          // Lista de compras con el costo total en lugar del icono
           Expanded(
             child: ListView.builder(
               itemCount: listacompras.length,
@@ -131,16 +129,17 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${getEstado(compra.id_estado)}',
-                        ),
+                        Text('${getEstado(compra.id_estado)}'),
                         Text('${compra.fecha}'),
                       ],
                     ),
-                    trailing: Icon(
-                      getEstadoIcon(compra.id_estado),
-                      color: AppColors.mainColor,
-                      size: 30,
+                    trailing: Text(
+                      "S/. ${compra.costoTotal}",
+                      style: TextStyle(
+                        fontSize: 20, // 🔹 Tamaño más grande
+                        fontWeight: FontWeight.bold, // 🔹 Negrita
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 );
