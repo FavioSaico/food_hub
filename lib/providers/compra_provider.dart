@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/compra_registro.dart';
+import 'package:food_hub/domain/compras_historial.dart';
 import 'package:food_hub/domain/dio.dart';
+import 'package:food_hub/domain/estadoreserva.dart';
 
 class MessageResponseCompraProvider {
   bool isSuccessful;
@@ -14,7 +16,7 @@ class MessageResponseCompraProvider {
 
 class CompraProvider extends ChangeNotifier {
   // Lista de reservas y estados de compra
-  List<Compra> reservations = [];
+  List<CompraHistorial> reservations = [];
   List<Estado> states = [];
 
   // Método para obtener todos los tipos de pago
@@ -51,12 +53,14 @@ class CompraProvider extends ChangeNotifier {
   }
 
   // Método para obtener el historial de compras
-  Future<List<Compra>> getListPurchases() async {
+  Future<List<CompraHistorial>> getListPurchases() async {
     try {
       final response = await DioClient.instance.get('/api/purchases');
       if (response.statusCode == 200) {
         // Mapear la respuesta y devolver la lista de compras
-        return (response.data as List).map((e) => Compra.fromJson(e)).toList();
+        return (response.data as List)
+            .map((e) => CompraHistorial.fromJson(e))
+            .toList();
       } else {
         throw Exception("Error al obtener el historial de compras");
       }
@@ -66,12 +70,14 @@ class CompraProvider extends ChangeNotifier {
   }
 
   // Método para obtener compras por usuario
-  Future<List<Compra>> getListPurchasesByUser(int userId) async {
+  Future<List<CompraHistorial>> getListPurchasesByUser(int userId) async {
     try {
       final response =
           await DioClient.instance.get('/api/purchases/user/$userId');
       if (response.statusCode == 200) {
-        return (response.data as List).map((e) => Compra.fromJson(e)).toList();
+        return (response.data as List)
+            .map((e) => CompraHistorial.fromJson(e))
+            .toList();
       } else {
         throw Exception("Error al obtener las compras del usuario");
       }
@@ -81,11 +87,11 @@ class CompraProvider extends ChangeNotifier {
   }
 
   // Método para obtener el detalle de una compra específica
-  Future<Compra> getPurchase(int id) async {
+  Future<CompraHistorial> getPurchase(int id) async {
     try {
       final response = await DioClient.instance.get('/api/purchase/$id');
       if (response.statusCode == 200) {
-        return Compra.fromJson(response.data);
+        return CompraHistorial.fromJson(response.data);
       } else {
         throw Exception("Error al obtener los detalles de la compra");
       }
@@ -176,41 +182,6 @@ class CompraProvider extends ChangeNotifier {
 }
 
 // Modelos de datos para Compra, Estado, TipoPago, etc.
-class Compra {
-  final int id;
-  final String fecha;
-  final Estado estado;
-  // Otros campos según tu estructura
-
-  Compra({
-    required this.id,
-    required this.fecha,
-    required this.estado,
-  });
-
-  factory Compra.fromJson(Map<String, dynamic> json) {
-    return Compra(
-      id: json['id_compra'],
-      fecha: json['fecha'],
-      estado: Estado.fromJson(json['estado']),
-      // Mapear otros campos
-    );
-  }
-}
-
-class Estado {
-  final int id;
-  final String tipo;
-
-  Estado({required this.id, required this.tipo});
-
-  factory Estado.fromJson(Map<String, dynamic> json) {
-    return Estado(
-      id: json['id_estado'],
-      tipo: json['tipo_estado'],
-    );
-  }
-}
 
 class TipoPago {
   final int id;
@@ -238,22 +209,4 @@ class TipoCompra {
       tipo: json['tipo_compra'],
     );
   }
-}
-
-// Renombré la clase MessageResponseCompraProvider para evitar el conflicto de nombres
-class MessageResponseCompra {
-  final bool isSuccessful;
-  final int? idCompra;
-  final String message;
-
-  MessageResponseCompra({
-    required this.isSuccessful,
-    this.idCompra,
-    required this.message,
-  });
-}
-
-class DioClient {
-  // Asegúrate de que este DioClient esté configurado correctamente
-  static Dio instance = Dio();
 }
