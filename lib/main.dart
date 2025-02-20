@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/pages/food/cart_page.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
@@ -35,7 +36,9 @@ import 'package:food_hub/domain/sede.dart';
 
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Asegura la inicialización
+  await dotenv.load(fileName: ".env"); // Carga las variables del archivo .env
   runApp(MyApp());
 }
 

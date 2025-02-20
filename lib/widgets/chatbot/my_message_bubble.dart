@@ -10,6 +10,8 @@ class MyMessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final size = MediaQuery.of(context).size;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end, // CrossAxis para column es el eje X, alinea a la derecha al final
       children: [
@@ -18,11 +20,17 @@ class MyMessageBubble extends StatelessWidget {
             color: AppColors.mainColor, 
             borderRadius: BorderRadius.circular(20)
           ),
-          child: Padding( // Padding no puede ser const porque el message.text se renderiza en tiempo de ejecución
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Text(
-              message.text,
-              style: TextStyle(color: Colors.white),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: size.width * 0.7, // 🔹 Máximo ancho de 300px
+            ),
+            // width: size.width * 0.7,
+            child: Padding( // Padding no puede ser const porque el message.text se renderiza en tiempo de ejecución
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                message.text,
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ),
