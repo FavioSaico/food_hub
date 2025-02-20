@@ -16,7 +16,7 @@ class MessageResponse {
 
 class ReserveProvider extends ChangeNotifier {
   List<Reserva> reservations = [];
-  List<EstadoReserva> states = [];
+  List<Estado> states = [];
 
   /// Método para registrar una reserva
   Future<MessageResponse> registerReserve({
@@ -99,9 +99,9 @@ class ReserveProvider extends ChangeNotifier {
 
       if (response.statusCode == 200 && response.data != null) {
         states = (response.data as List)
-            .map((e) => EstadoReserva(
-                  id_estado: e['id_estado'],
-                  tipo_estado: e['tipo_estado'],
+            .map((e) => Estado(
+                  id: e['id_estado'],
+                  tipo: e['tipo_estado'],
                 ))
             .toList();
         notifyListeners();

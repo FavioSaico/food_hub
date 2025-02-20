@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/domain/reserva.dart';
 import 'package:food_hub/utils/colors.dart';
-import 'package:food_hub/widgets/app_icon.dart';
 import 'package:food_hub/widgets/app_menu.dart';
-import 'package:food_hub/widgets/big_text.dart';
-import 'package:food_hub/widgets/bold_normal_text.dart';
-import 'package:food_hub/widgets/build_menu_option.dart';
 import 'package:food_hub/utils/dimensions.dart';
-import 'package:food_hub/providers/reserva_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:food_hub/domain/estadoreserva.dart';
-import 'package:food_hub/pages/user/admin_reservas.dart';
 
 class HistorialReservasPage extends StatefulWidget {
   const HistorialReservasPage({super.key});
@@ -17,14 +10,84 @@ class HistorialReservasPage extends StatefulWidget {
   _HistorialReservasPageState createState() => _HistorialReservasPageState();
 }
 
+class BackButtonCustom extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 4.0), // Ajuste para pegarlo más al borde
+      child: IconButton(
+        icon: Icon(Icons.arrow_back, color: Colors.black),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+}
+
 class _HistorialReservasPageState extends State<HistorialReservasPage> {
   @override
   void initState() {
     super.initState();
-    // Llama al método para cargar las reservas del usuario
-    final provider = Provider.of<ReserveProvider>(context, listen: false);
-    provider
-        .fetchReservations(); // Se usa fetchReservations para obtener todas las reservas y filtrar las del usuario
+  }
+
+  List<Reserva> listareservas = [
+    Reserva(
+      cantidad_personas: 1,
+      id_zona: 1,
+      id_estado: 1,
+      id_reserva: 1,
+      id_sede: 1,
+      id_usuario: 1,
+      fecha: DateTime.now(),
+      detalle: "Ninguno",
+    ),
+    Reserva(
+      cantidad_personas: 2,
+      id_zona: 1,
+      id_estado: 2,
+      id_reserva: 2,
+      id_sede: 1,
+      id_usuario: 2,
+      fecha: DateTime.now(),
+      detalle: "Ninguno",
+    ),
+    Reserva(
+      cantidad_personas: 3,
+      id_zona: 1,
+      id_estado: 3,
+      id_reserva: 3,
+      id_sede: 1,
+      id_usuario: 3,
+      fecha: DateTime.now(),
+      detalle: "Ninguno",
+    ),
+  ];
+
+  String getEstado(int idEstado) {
+    switch (idEstado) {
+      case 1:
+        return 'En proceso';
+      case 2:
+        return 'Enviado';
+      case 3:
+        return 'Finalizado';
+      default:
+        return 'Desconocido';
+    }
+  }
+
+  IconData getEstadoIcon(int idEstado) {
+    switch (idEstado) {
+      case 1:
+        return Icons.access_time;
+      case 2:
+        return Icons.local_shipping;
+      case 3:
+        return Icons.check_circle;
+      default:
+        return Icons.help_outline;
+    }
   }
 
   @override
@@ -33,73 +96,61 @@ class _HistorialReservasPageState extends State<HistorialReservasPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // Header de la página
           Container(
             margin: EdgeInsets.only(
                 top: Dimensions.height60, bottom: Dimensions.height15),
             padding: EdgeInsets.only(
                 left: Dimensions.width20, right: Dimensions.width20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  children: [
-                    const SizedBox(height: 15),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: Text(
-                        "Mi Historial de Reservas",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.mainColor,
-                        ),
-                      ),
+                BackButtonCustom(),
+                SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    "Mi Historial de Reservas",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.mainColor,
                     ),
-                    const SizedBox(height: 5),
-                  ],
+                  ),
                 ),
               ],
             ),
           ),
-
-          // Lista de reservas del usuario
           Expanded(
-            child: Consumer<ReserveProvider>(
-              builder: (context, provider, child) {
-                final userReservations = provider.reservations
-                    .where((reserva) =>
-                        reserva.id_usuario ==
-                        1) // Reemplaza '1' con el ID del usuario actual
-                    .toList();
+            child: ListView.builder(
+              itemCount: listareservas.length,
+              itemBuilder: (context, index) {
+                final Reserva reserva = listareservas[index];
 
-                if (userReservations.isEmpty) {
-                  return Center(child: Text("No tienes reservas."));
-                }
-
-                return ListView.builder(
-                  itemCount: userReservations.length,
-                  itemBuilder: (context, index) {
-                    final reserva = userReservations[index];
-                    final estado = provider.states.firstWhere(
-                        (state) => state.id_estado == reserva.id_estado,
-                        orElse: () => EstadoReserva(
-                            id_estado: 0, tipo_estado: "Desconocido"));
-
-                    return Card(
-                      margin: EdgeInsets.all(10),
-                      child: ListTile(
-                        title: Text('Reserva # ${reserva.id_reserva}'),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Fecha: ${reserva.fecha.toLocal()}'),
-                            Text('Estado: ${estado.tipo_estado}'),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                return Card(
+                  color: Colors.white,
+                  elevation: 3,
+                  margin: EdgeInsets.all(10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    tileColor: Colors.white,
+                    title: Text(
+                      'Reserva # ${reserva.id_reserva}',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${getEstado(reserva.id_estado)}'),
+                        Text('${reserva.fecha.toLocal()}'),
+                      ],
+                    ),
+                    trailing: Icon(
+                      getEstadoIcon(reserva.id_estado),
+                      color: AppColors.mainColor,
+                      size: 30,
+                    ),
+                  ),
                 );
               },
             ),
