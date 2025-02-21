@@ -20,7 +20,8 @@ import 'package:food_hub/pages/user/user_profile_page.dart';
 import 'package:food_hub/pages/pago/compra.dart';
 import 'package:food_hub/pages/pago/Pagorealizado.dart';
 import 'package:food_hub/pages/pago/compratienda.dart';
-
+import 'package:food_hub/pages/pago/detalle.dart';
+import 'package:food_hub/pages/reserva/detallenuevo.dart';
 import 'package:get/get.dart';
 
 import 'package:food_hub/models/sede.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        initialRoute: '/iniciolog', // Ruta inicial
+        initialRoute: '/DetalleReservas', // Ruta inicial
         routes: {
           '/': (context) => MainFoodPage(),
           '/login': (context) => LoginPage(),
@@ -56,6 +57,8 @@ class MyApp extends StatelessWidget {
           '/register-card': (context) => const RegisterCard(),
           '/iniciolog': (context) => const SplashScreen(),
           '/iniciolog2': (context) => const SplashScreen2(),
+          '/DetalleCompra': (context)=>DetalleCompraScreen(),
+          '/DetalleReservas':(context)=>DetalleReservaScreen(),
           '/reserva': (context) => DetallePage(
               sedeSeleccionada:
                   Sede(nombre: '', descripcion: '', direccion: '', imagen: '')),
@@ -63,7 +66,6 @@ class MyApp extends StatelessWidget {
           '/resumen_reserva': (context) {
             final arguments = ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>;
-
             return ResumenPage(
               sede: arguments['sede'] as Sede,
               requerimientos: arguments['requerimientos'] as String? ?? "",
