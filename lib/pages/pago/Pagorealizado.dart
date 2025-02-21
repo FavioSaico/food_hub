@@ -16,14 +16,16 @@ class PagoRealizadoPage extends StatefulWidget {
 
 class _PagoRealizadoPageState extends State<PagoRealizadoPage> {
 
+  MessageResponseCompraProvider<int>? response;
   bool _isLoading = false;
-  MessageResponseCompraProvider? response;
   bool _isSuccessful = true;
+  int idCompra = 0;
 
   Future<void> _registrarCompra() async {
     setState(() => _isLoading = true);
     response = await Provider.of<CompraProvider>(context, listen: false).registerCompra(compra: widget.compra);
     _isSuccessful = response!.isSuccessful;
+    idCompra = response!.data ?? 0;
     if (_isSuccessful) Provider.of<CartProvider>(context, listen: false).clear();
     setState(() => _isLoading = false);
   }
@@ -77,7 +79,7 @@ class _PagoRealizadoPageState extends State<PagoRealizadoPage> {
               ? Column(
                   children: [
                     Text(
-                      "Compra # ${(response!.idCompra > 0 && response!.idCompra < 9) ? "00": (response!.idCompra > 9 ? "0" : "")}${response!.idCompra}",
+                      "Compra # ${(idCompra > 0 && idCompra <= 9) ? "00": (idCompra > 9 ? "0" : "")}$idCompra",
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),

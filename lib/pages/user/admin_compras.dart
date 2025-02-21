@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_hub/domain/compras_historial.dart';
-import 'package:food_hub/providers/compra_provider.dart';
+import 'package:food_hub/domain/compra_historial.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/utils/dimensions.dart';
-import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class AdminComprasPage extends StatefulWidget {
   const AdminComprasPage({super.key});
@@ -33,51 +32,11 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
     super.initState();
   }
 
-  List<CompraHistorial> listacompras = [
-    CompraHistorial(
-      id_compra: 1,
-      fecha: DateTime.now(),
-      id_estado: 1,
-      costoTotal: 10,
-    ),
-    CompraHistorial(
-      id_compra: 2,
-      fecha: DateTime.now(),
-      id_estado: 2,
-      costoTotal: 20,
-    ),
-    CompraHistorial(
-      id_compra: 3,
-      fecha: DateTime.now(),
-      id_estado: 3,
-      costoTotal: 30,
-    ),
-  ];
+  List<HistorialCompra> listaCompras = historialCompraFromJson('[{"id_compra":5,"id_usuario":6,"tipo_compra":{"id_tipo_compra":2,"tipo_compra":"Delivery"},"tipo_pago":{"id_tipo_pago":2,"tipo_pago":"Tarjeta"},"estado":{"id_estado":3,"tipo_estado":"Finalizado"},"sede":{"id_sede":1,"sede":"C. Armando Blondet 265, San Isidro 15047"},"costo_total":110,"fecha":"2025-02-08T00:06:41.000Z"},{"id_compra":3,"id_usuario":6,"tipo_compra":{"id_tipo_compra":1,"tipo_compra":"Recojo en tienda"},"tipo_pago":{"id_tipo_pago":1,"tipo_pago":"Efectivo"},"estado":{"id_estado":3,"tipo_estado":"Finalizado"},"sede":{"id_sede":2,"sede":"Av. Aviación 2633, San Borja 15037"},"costo_total":130,"fecha":"2025-02-07T23:46:59.000Z"}]');
 
-  String getEstado(int idEstado) {
-    switch (idEstado) {
-      case 1:
-        return 'En proceso';
-      case 2:
-        return 'Enviado';
-      case 3:
-        return 'Finalizado';
-      default:
-        return 'Desconocido';
-    }
-  }
-
-  IconData getEstadoIcon(int idEstado) {
-    switch (idEstado) {
-      case 1:
-        return Icons.access_time;
-      case 2:
-        return Icons.local_shipping;
-      case 3:
-        return Icons.check_circle;
-      default:
-        return Icons.help_outline;
-    }
+  String formateoFecha( DateTime date) {
+    String formattedDateTime = DateFormat('EEEE d MMMM y - HH:mm', 'es_ES').format(date);
+    return '${formattedDateTime[0].toUpperCase()}${formattedDateTime.substring(1)}';
   }
 
   @override
@@ -114,27 +73,27 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
           // Lista de compras con el costo total en lugar del icono
           Expanded(
             child: ListView.builder(
-              itemCount: listacompras.length,
+              itemCount: listaCompras.length,
               itemBuilder: (context, index) {
-                final CompraHistorial compra = listacompras[index];
+                final HistorialCompra compra = listaCompras[index];
                 return Card(
                   color: Colors.white,
                   elevation: 3,
                   margin: EdgeInsets.all(10),
                   child: ListTile(
                     title: Text(
-                      'Compra # ${compra.id_compra}',
+                      'Compra # ${(compra.idCompra > 0 && compra.idCompra < 9) ? "00": (compra.idCompra > 9 ? "0" : "")}${compra.idCompra}',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('${getEstado(compra.id_estado)}'),
-                        Text('${compra.fecha}'),
+                        Text(compra.estado.tipo,style: TextStyle(color: Colors.teal),),
+                        Text(formateoFecha(compra.fecha))
                       ],
                     ),
                     trailing: Text(
-                      "S/. ${compra.costoTotal}",
+                      "S/. ${compra.costoTotal.toStringAsFixed(2)}",
                       style: TextStyle(
                         fontSize: 20, // 🔹 Tamaño más grande
                         fontWeight: FontWeight.bold, // 🔹 Negrita

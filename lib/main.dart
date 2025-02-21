@@ -27,18 +27,20 @@ import 'package:food_hub/pages/user/user_profile_page.dart';
 
 import 'package:food_hub/pages/pago/compra.dart';
 import 'package:food_hub/pages/pago/Pagorealizado.dart';
-import 'package:food_hub/pages/pago/compratienda.dart';
 import 'package:food_hub/providers/shared_provider.dart';
 
 import 'package:get/get.dart';
 
 import 'package:food_hub/domain/sede.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Asegura la inicialización
   await dotenv.load(fileName: ".env"); // Carga las variables del archivo .env
+  initializeDateFormatting('es_ES', null); // Inicializa formatos en español
   runApp(MyApp());
 }
 
@@ -97,7 +99,7 @@ class MyApp extends StatelessWidget {
           '/cambio_contraseña': (context) => CambiarContrasenaPage(),
           '/carrito': (context) => CartPage(),
           // '/pagoefectuado':(context)=> const PaymentScreen(),
-          '/pagoefectuadotienda': (context) => const PaymentScreen2(),
+          // '/pagoefectuadotienda': (context) => const PaymentScreen2(),
           // '/pagorealizado':(context)=>const PagoRealizadoPage(numeroCompra: 3, monto: 168.00)
         },
         theme: ThemeData(
