@@ -4,6 +4,8 @@ import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/providers/compra_provider.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_menu.dart';
+import 'package:food_hub/widgets/empty_list.dart';
+import 'package:food_hub/widgets/error_message.dart';
 import 'package:food_hub/widgets/item_compra_list.dart';
 import 'package:provider/provider.dart';
 
@@ -42,7 +44,10 @@ class _HistorialComprasPageState extends State<HistorialComprasPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.teal),
+          icon: const Icon(Icons.chevron_left, color: Colors.white),
+          style: IconButton.styleFrom(
+            backgroundColor: AppColors.mainColor,
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -66,38 +71,23 @@ class _HistorialComprasPageState extends State<HistorialComprasPage> {
         children: [
           // Lista de compras con el costo total en lugar del icono
           _isLoading
-          ? CircularProgressIndicator(color: AppColors.mainColor, backgroundColor: Colors.white,)
+          ? SizedBox(height: 100, child: Center(child: CircularProgressIndicator(color: AppColors.mainColor, backgroundColor: Colors.white,)))
           : _isSuccessful
-            ? Expanded(
-              child: ListView.builder(
-                // reverse: true,
-                itemCount: historialCompras.length,
-                itemBuilder: (context, index) {
-                  final HistorialCompra compra = historialCompras[index];
-                  return ItemCompraList(compra: compra);
-                },
-              ),
-            )
-            : const SizedBox(height: 0)
+            ? historialCompras.isNotEmpty 
+              ? Expanded(
+                child: ListView.builder(
+                  itemCount: historialCompras.length,
+                  itemBuilder: (context, index) {
+                    final HistorialCompra compra = historialCompras[index];
+                    return ItemCompraList(compra: compra);
+                  },
+                ),
+              )
+              : EmptyList(message: "No tienes compras registradas")
+            : ErrorMessage(message: response!.message)
         ],
       ),
-      bottomNavigationBar: AppMenu(),
+      bottomNavigationBar: AppMenu(selectedIndex: 3),
     );
   }
 }
-
-class BackButtonCustom extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 4.0), // Ajuste para pegarlo más al borde
-      child: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.black),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
-  }
-}
-

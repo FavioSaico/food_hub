@@ -3,6 +3,8 @@ import 'package:food_hub/domain/compra_registro.dart';
 import 'package:food_hub/providers/cart_provider.dart';
 import 'package:food_hub/providers/compra_provider.dart';
 import 'package:food_hub/utils/colors.dart';
+import 'package:food_hub/widgets/app_menu.dart';
+import 'package:food_hub/widgets/error_message.dart';
 import 'package:provider/provider.dart';
 
 class PagoRealizadoPage extends StatefulWidget {
@@ -36,8 +38,6 @@ class _PagoRealizadoPageState extends State<PagoRealizadoPage> {
     _registrarCompra();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return _isLoading
@@ -46,7 +46,10 @@ class _PagoRealizadoPageState extends State<PagoRealizadoPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.chevron_left, color: Colors.white),
+          style: IconButton.styleFrom(
+            backgroundColor: AppColors.mainColor,
+          ),
           onPressed: () {
             if(_isSuccessful){
               Navigator.pushNamed(context, '/');
@@ -58,15 +61,14 @@ class _PagoRealizadoPageState extends State<PagoRealizadoPage> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Center(
+      body: _isSuccessful 
+      ? Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _isSuccessful
-              ? Image.asset('assets/imagenes/Compra_realizadaC.png', height: 150)
-              : Icon(Icons.cancel,color: Colors.deepOrange, size: 60,),
+              Image.asset('assets/imagenes/Compra_realizadaC.png', height: 150),
               const SizedBox(height: 20),
               
               Text(
@@ -75,22 +77,20 @@ class _PagoRealizadoPageState extends State<PagoRealizadoPage> {
               ),
               const SizedBox(height: 10),
 
-              _isSuccessful 
-              ? Column(
-                  children: [
-                    Text(
-                      "Compra # ${(idCompra > 0 && idCompra <= 9) ? "00": (idCompra > 9 ? "0" : "")}$idCompra",
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "S/. ${widget.compra.costoTotal.toStringAsFixed(2)}",
-                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                )
-              : const SizedBox(height: 0),
+              Column(
+                children: [
+                  Text(
+                    "Compra # ${(idCompra > 0 && idCompra <= 9) ? "00": (idCompra > 9 ? "0" : "")}$idCompra",
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "S/. ${widget.compra.costoTotal.toStringAsFixed(2)}",
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
 
               ElevatedButton(
                 onPressed: () {
@@ -108,7 +108,9 @@ class _PagoRealizadoPageState extends State<PagoRealizadoPage> {
             ],
           ),
         ),
-      ),
+      )
+      : ErrorMessage(message: response!.message),
+      bottomNavigationBar: AppMenu(selectedIndex: 2),
     );
   }
 }

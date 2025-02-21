@@ -80,7 +80,6 @@ class CompraProvider extends ChangeNotifier {
         message: e.response?.data["error"] ?? "Error al obtener el historial de compras",
       );
     } catch (e) {
-      print(e);
       return MessageResponseCompraProvider<List<HistorialCompra>>(
           isSuccessful: false,
           message: "Error inesperado",

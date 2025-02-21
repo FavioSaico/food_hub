@@ -56,14 +56,27 @@ class ResumenPage extends StatelessWidget {
   }
 
     return Scaffold(
-      appBar: AppBar(title: Text("Resumen de la Reserva")),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.chevron_left, color: Colors.white),
+          style: IconButton.styleFrom(
+            backgroundColor: AppColors.mainColor,
+            
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        title: Text("Resumen de su reserva", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.teal),)
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Detalles de tu reserva",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             SizedBox(height: 20),
             Container(
               padding: EdgeInsets.all(20),
@@ -174,7 +187,7 @@ class ResumenPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: AppMenu(),
+      bottomNavigationBar: AppMenu(selectedIndex: 1),
     );
   }
 }

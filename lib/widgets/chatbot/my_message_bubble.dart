@@ -24,7 +24,6 @@ class MyMessageBubble extends StatelessWidget {
             constraints: BoxConstraints(
               maxWidth: size.width * 0.7, // 🔹 Máximo ancho de 300px
             ),
-            // width: size.width * 0.7,
             child: Padding( // Padding no puede ser const porque el message.text se renderiza en tiempo de ejecución
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Text(

@@ -38,23 +38,28 @@ class SedesPageState extends State<SedesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: SizedBox(
+          child: Image.asset("assets/imagenes/Logo.png", height: 70, width: 140),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
           // Header de la página
           Container(
-            margin: EdgeInsets.only(
-                top: Dimensions.height60, bottom: Dimensions.height15),
+            // margin: EdgeInsets.only(
+            //     top: Dimensions.height60, bottom: Dimensions.height15),
             padding: EdgeInsets.only(
-                left: Dimensions.width20, right: Dimensions.width20),
+                left: Dimensions.width20, top: Dimensions.width20, bottom: Dimensions.width20),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   children: [
-                    Image.asset("assets/imagenes/Logo.png",
-                        height: 70, width: 140),
-                    const SizedBox(height: 15), // Espacio después del logo
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: Text(
@@ -210,12 +215,7 @@ class SedesPageState extends State<SedesPage> {
           ),
         ],
       ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppMenu(),
-        ],
-      ),
+      bottomNavigationBar: AppMenu(),
     );
   }
 }

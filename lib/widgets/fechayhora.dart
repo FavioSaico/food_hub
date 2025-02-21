@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/utils/colors.dart';
 import 'package:intl/intl.dart'; // Para formatear fecha y hora
 
 class FechaHoraSelector extends StatefulWidget {
@@ -17,6 +18,7 @@ class _FechaHoraSelectorState extends State<FechaHoraSelector> {
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
+      // barrierColor: AppColors.mainColor,
       context: context,
       initialDate: selectedDate ?? DateTime.now(),
       firstDate: DateTime.now(),

@@ -8,6 +8,7 @@ import 'package:food_hub/pages/pago/RegisterCard.dart';
 import 'package:food_hub/pages/pago/Pagorealizado.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/providers/shared_provider.dart';
+import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_menu.dart';
 import 'package:provider/provider.dart';
 
@@ -86,7 +87,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.teal),
+          icon: const Icon(Icons.chevron_left, color: Colors.white),
+          style: IconButton.styleFrom(
+            backgroundColor: AppColors.mainColor,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -297,7 +301,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: AppMenu(),
+      bottomNavigationBar: AppMenu(selectedIndex: 2),
     );
   }
 

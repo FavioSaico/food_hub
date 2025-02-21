@@ -4,7 +4,10 @@ import 'package:food_hub/utils/dimensions.dart';
 // import 'package:food_hub/widgets/app_icon.dart';
 
 class AppMenu extends StatefulWidget {
-  const AppMenu({super.key});
+
+  int selectedIndex;
+
+  AppMenu({super.key, this.selectedIndex = 0});
 
   @override
   State<AppMenu> createState() => _AppMenuState();
@@ -15,6 +18,7 @@ class _AppMenuState extends State<AppMenu> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
+    _selectedIndex = widget.selectedIndex;
     _selectedIndex = index;
     switch (index) {
       case 0:
@@ -41,6 +45,9 @@ class _AppMenuState extends State<AppMenu> {
   @override
   void initState() {
     super.initState();
+
+    _selectedIndex = widget.selectedIndex;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final rutaActual = ModalRoute.of(context)?.settings.name;
 

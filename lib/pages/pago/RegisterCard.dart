@@ -4,6 +4,7 @@ import 'package:food_hub/pages/pago/Pagorealizado.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:flutter/services.dart';
+import 'package:food_hub/widgets/app_menu.dart';
 
 class RegisterCard extends StatelessWidget {
 
@@ -15,14 +16,17 @@ class RegisterCard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.mainColor,
+        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.chevron_left, color: Colors.white),
+          style: IconButton.styleFrom(
+            backgroundColor: AppColors.mainColor,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           "Agregar tarjeta",
-          style: TextStyle(color: Colors.white, fontSize: 18),
+          style: TextStyle(color: AppColors.mainColor, fontSize: 18, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -98,6 +102,7 @@ class RegisterCard extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: AppMenu(selectedIndex: 2),
     );
   }
 
