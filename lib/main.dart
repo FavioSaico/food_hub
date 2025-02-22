@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/pages/food/cart_page.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
+import 'package:food_hub/pages/reserva/historialreserva.dart';
 import 'package:food_hub/pages/reserva/resumen.dart';
 import 'package:food_hub/pages/reserva/sedes.dart';
 import 'package:food_hub/pages/user/admin_reservas.dart';
@@ -90,6 +91,7 @@ class MyApp extends StatelessWidget {
           },
           '/cambio_contraseña': (context) => CambiarContrasenaPage(),
           '/carrito': (context) => CartPage(),
+          '/historial_reserva': (context) => HistorialReservasPage(),
           // '/pagoefectuado':(context)=> const PaymentScreen(),
           // '/pagoefectuadotienda': (context) => const PaymentScreen2(),
           // '/pagorealizado':(context)=>const PagoRealizadoPage(numeroCompra: 3, monto: 168.00)
