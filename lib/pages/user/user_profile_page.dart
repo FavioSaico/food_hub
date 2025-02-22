@@ -82,13 +82,7 @@ class _PerfilUsuarioPageState extends State<PerfilUsuarioPage> {
             BuildMenuOption(
               text: 'Historial de reservas',
               onTap: () {
-                // Navegar a la pantalla HistorialReservasPage
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HistorialReservasPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, '/historial_reserva');
               },
             ),
 
