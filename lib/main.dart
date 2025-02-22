@@ -27,10 +27,10 @@ import 'package:food_hub/pages/user/user_profile_page.dart';
 
 import 'package:food_hub/pages/pago/compra.dart';
 import 'package:food_hub/pages/pago/Pagorealizado.dart';
-import 'package:food_hub/pages/pago/compratienda.dart';
 
 import 'package:food_hub/pages/pago/detalle.dart';
 import 'package:food_hub/pages/reserva/detallenuevo.dart';
+import 'package:food_hub/providers/shared_provider.dart';
 import 'package:get/get.dart';
 
 import 'package:food_hub/domain/sede.dart';
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        initialRoute: '/DetalleReservas', // Ruta inicial
+        initialRoute: '/iniciolog', // Ruta inicial
         routes: {
           '/': (context) => MainFoodPage(),
           '/login': (context) => LoginPage(),
