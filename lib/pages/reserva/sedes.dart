@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:food_hub/pages/reserva/resumen.dart';
 import 'package:food_hub/widgets/app_menu.dart';
-import 'package:food_hub/pages/home/body_food_page.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
-import 'package:food_hub/widgets/app_icon.dart';
 import 'package:food_hub/widgets/big_text.dart';
-import 'package:food_hub/widgets/small_text.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
-import 'package:food_hub/models/sede.dart';
+import 'package:food_hub/domain/sede.dart';
 
 class SedesPage extends StatefulWidget {
   const SedesPage({super.key});
@@ -19,8 +15,8 @@ class SedesPage extends StatefulWidget {
 
 class SedesPageState extends State<SedesPage> {
   int selectedIndex = -1;
-  final Color defaultColor = AppColors.mainColor;
-  final Color selectedColor = Colors.white;
+  final Color defaultColor = Colors.white;
+  final Color selectedColor = AppColors.mainColor;
 
   // Lista de sedes usando la clase Sede en lugar de Map
   final List<Sede> sedes = [
@@ -132,8 +128,8 @@ class SedesPageState extends State<SedesPage> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: selectedIndex == index
-                                      ? Colors.black
-                                      : Colors.white,
+                                      ? Colors.white
+                                      : Colors.black,
                                 ),
                               ),
                               Text(
@@ -141,8 +137,8 @@ class SedesPageState extends State<SedesPage> {
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: selectedIndex == index
-                                      ? Colors.black54
-                                      : Colors.white,
+                                      ? Colors.white
+                                      : Colors.black54,
                                 ),
                               ),
                               SizedBox(height: 5),
@@ -152,8 +148,8 @@ class SedesPageState extends State<SedesPage> {
                                   Icon(
                                     Icons.location_on,
                                     color: selectedIndex == index
-                                        ? Colors.black54
-                                        : Colors.white,
+                                        ? Colors.white
+                                        : Colors.black54,
                                     size: 16,
                                   ),
                                   SizedBox(width: 5),
@@ -162,8 +158,8 @@ class SedesPageState extends State<SedesPage> {
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: selectedIndex == index
-                                          ? Colors.black54
-                                          : Colors.white,
+                                          ? Colors.white
+                                          : Colors.black54,
                                     ),
                                   ),
                                 ],

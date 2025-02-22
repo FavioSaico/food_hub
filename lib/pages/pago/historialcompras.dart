@@ -1,0 +1,163 @@
+import 'package:flutter/material.dart';
+import 'package:food_hub/domain/compras_historial.dart';
+import 'package:food_hub/utils/colors.dart';
+import 'package:food_hub/widgets/app_menu.dart';
+import 'package:food_hub/utils/dimensions.dart';
+
+class HistorialComprasPage extends StatefulWidget {
+  const HistorialComprasPage({super.key});
+
+  @override
+  _HistorialComprasPageState createState() => _HistorialComprasPageState();
+}
+
+class BackButtonCustom extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 4.0), // Ajuste para pegarlo más al borde
+      child: IconButton(
+        icon: Icon(Icons.arrow_back, color: Colors.black),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+}
+
+class _HistorialComprasPageState extends State<HistorialComprasPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  List<CompraHistorial> listacompras = [
+    CompraHistorial(
+      id_compra: 1,
+      fecha: DateTime.now(),
+      id_estado: 1,
+      costoTotal: 10,
+    ),
+    CompraHistorial(
+      id_compra: 2,
+      fecha: DateTime.now(),
+      id_estado: 2,
+      costoTotal: 70,
+    ),
+    CompraHistorial(
+      id_compra: 3,
+      fecha: DateTime.now(),
+      id_estado: 3,
+      costoTotal: 80,
+    ),
+  ];
+
+  String getEstado(int idEstado) {
+    switch (idEstado) {
+      case 1:
+        return 'En proceso';
+      case 2:
+        return 'Enviado';
+      case 3:
+        return 'Finalizado';
+      default:
+        return 'Desconocido';
+    }
+  }
+
+  IconData getEstadoIcon(int idEstado) {
+    switch (idEstado) {
+      case 1:
+        return Icons.access_time;
+      case 2:
+        return Icons.local_shipping;
+      case 3:
+        return Icons.check_circle;
+      default:
+        return Icons.help_outline;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          // 🔹 Header con botón de retroceso y título centrado
+          Container(
+            margin: EdgeInsets.only(
+                top: Dimensions.height60, bottom: Dimensions.height15),
+            padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: BackButtonCustom(),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "Mis Compras",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.mainColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+
+          // Lista de compras con el costo total en lugar del icono
+          Expanded(
+            child: ListView.builder(
+              itemCount: listacompras.length,
+              itemBuilder: (context, index) {
+                final CompraHistorial compra = listacompras[index];
+                return Card(
+                  color: Colors.white,
+                  elevation: 3,
+                  margin: EdgeInsets.all(10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    tileColor: Colors.white,
+                    title: Text(
+                      'Compra # ${compra.id_compra}',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${getEstado(compra.id_estado)}'),
+                        Text('${compra.fecha}'),
+                      ],
+                    ),
+                    trailing: Text(
+                      "S/. ${compra.costoTotal}",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AppMenu(),
+        ],
+      ),
+    );
+  }
+}

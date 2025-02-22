@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/pages/user/admin_compras.dart';
 import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/widgets/build_menu_option.dart';
 import 'package:food_hub/widgets/small_text.dart';
+import 'package:food_hub/pages/user/admin_reservas.dart';
 
 class VistaAdminPage extends StatefulWidget {
   const VistaAdminPage({super.key});
@@ -24,8 +26,25 @@ class _VistaAdminPageState extends State<VistaAdminPage> {
             child: SmallText(text: 'Administrador', color: Colors.grey),
           ),
           const SizedBox(height: 20),
-          const BuildMenuOption(text: "Lista de compras"),
-          const BuildMenuOption(text: "Lista de reservas"),
+          BuildMenuOption(
+            text: "Lista de reservas",
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AdminReservasPage()),
+              );
+            },
+          ),
+          BuildMenuOption(
+            text: "Lista de compras",
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AdminComprasPage()),
+              );
+            },
+          ),
           const Expanded(
             child: Center(
               child: Image(

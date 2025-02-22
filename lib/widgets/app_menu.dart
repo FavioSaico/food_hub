@@ -24,7 +24,7 @@ class _AppMenuState extends State<AppMenu> {
         Navigator.pushNamed(context, '/sedes_reserva');
         break;
       case 2:
-        Navigator.pushNamed(context, '/second');
+        Navigator.pushNamed(context, '/carrito');
         break;
       case 3:
         Navigator.pushNamed(context, '/userProfile');
@@ -36,6 +36,33 @@ class _AppMenuState extends State<AppMenu> {
     // setState(() {
     //   _selectedIndex = index;
     // });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final rutaActual = ModalRoute.of(context)?.settings.name;
+
+      switch (rutaActual) {
+        case '/':
+          _selectedIndex = 0;
+          break;
+        case '/sedes_reserva':
+          _selectedIndex = 1;
+          break;
+        case '/carrito':
+          _selectedIndex = 2;
+          break;
+        case '/userProfile':
+          _selectedIndex = 3;
+          break;
+        // default:
+        //   _selectedIndex = 0;
+        //   break;
+      }
+      setState(() {});
+  });
   }
 
   @override

@@ -6,6 +6,8 @@ class DioClient {
     headers: {
       'Content-Type': 'application/json',
     },
+    connectTimeout: Duration(seconds: 60), // 60 seconds
+    receiveTimeout: Duration(seconds: 60) // 60 seconds
   ));
 
   static Dio get instance => _dio;

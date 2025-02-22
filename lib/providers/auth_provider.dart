@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/dio.dart';
 import 'package:food_hub/domain/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MessageResponse {
   bool isSuccessful;
@@ -20,6 +21,35 @@ class AuthProvider extends ChangeNotifier {
   bool isAuthenticated = false;
 
   User? get currentUser => usuario; // Getter para obtener el usuario actual
+
+  // GUARDAR LOS DATOS DEL USUARIOS EN EL DISPOSITIVO
+  Future<void> saveUserSession(User? usuario) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setInt('id', usuario!.id);
+    await prefs.setString('name', usuario.name);
+    await prefs.setString('typeUser',usuario.email);
+    await prefs.setString('email', usuario.email);
+    await prefs.setString('address', usuario.address);
+  }
+  // OBTENER LOS DATOS DEL USUARIO DEL DISPOSITIVO
+  Future<void> getUserSesion() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? userEmailJson = prefs.getString('email');
+
+    if (userEmailJson != null) {
+      usuario = User(
+        id: prefs.getInt('id') ?? 1,
+        typeUser: prefs.getString('typeUser') ?? "",
+        name: prefs.getString('name') ?? "", 
+        email: userEmailJson, 
+        address: prefs.getString('address') ?? "",
+      );
+    }else{
+      usuario = null;
+    }
+    notifyListeners();
+  }
 
   Future<MessageResponse> login(String email, String password) async {
 
@@ -41,6 +71,8 @@ class AuthProvider extends ChangeNotifier {
           address: data["direccion"],
         );
         isAuthenticated = true;
+        
+        await saveUserSession(usuario);
         // print(response.data);
         notifyListeners();
         return MessageResponse(isSuccessful: true, message: "Usuario autenticado");
@@ -84,18 +116,21 @@ class AuthProvider extends ChangeNotifier {
           address: data["direccion"],
         );
         isAuthenticated = true;
+
+        await saveUserSession(usuario);
+
         notifyListeners();
-        return MessageResponse(isSuccessful: true, message: "Usuario autenticado");
+        return MessageResponse(isSuccessful: true, message: "Usuario registrado");
       } else {
         usuario = null;
         isAuthenticated = false;
         notifyListeners();
-        return MessageResponse(isSuccessful: true, message: "Error en la autenticación");
+        return MessageResponse(isSuccessful: true, message: "Error en el registro");
       }
     }  on DioException catch (e) {
       return MessageResponse(
         isSuccessful: false,
-        message: (e.response != null ? e.response?.data["error"] : "Error en la autenticación")
+        message: (e.response != null ? e.response?.data["error"] : "Error en el registro")
       );
     } catch (e) {
       return MessageResponse(isSuccessful: false, message: "Error inesperado");
@@ -130,6 +165,15 @@ class AuthProvider extends ChangeNotifier {
   Future<void> logout() async {
     usuario = null;
     isAuthenticated = false;
+
+    // Eliminar usuario al cerrar sesión
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('id');
+    await prefs.remove('name');
+    await prefs.remove('typeUser'); 
+    await prefs.remove('email');
+    await prefs.remove('address'); 
+
     notifyListeners();
   }
 }
