@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/pages/food/cart_page.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
@@ -8,6 +9,7 @@ import 'package:food_hub/pages/user/admin_reservas.dart';
 import 'package:food_hub/pages/user/user_profile_change_password_page.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/providers/cart_provider.dart';
+import 'package:food_hub/providers/chatbot_provider.dart';
 import 'package:food_hub/providers/compra_provider.dart';
 import 'package:food_hub/providers/food_provider.dart';
 import 'package:food_hub/providers/reserva_provider.dart';
@@ -29,14 +31,17 @@ import 'package:food_hub/pages/pago/compratienda.dart';
 
 import 'package:food_hub/pages/pago/detalle.dart';
 import 'package:food_hub/pages/reserva/detallenuevo.dart';
-import 'package:food_hub/providers/shared_provider.dart';
 import 'package:get/get.dart';
 
 import 'package:food_hub/domain/sede.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Asegura la inicialización
+  await dotenv.load(fileName: ".env"); // Carga las variables del archivo .env
+  initializeDateFormatting('es_ES', null); // Inicializa formatos en español
   runApp(MyApp());
 }
 
@@ -55,6 +60,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CompraProvider()),
         ChangeNotifierProvider(create: (_) => ReserveProvider()),
         ChangeNotifierProvider(create: (_) => CompraProvider()),
+        ChangeNotifierProvider(create: (_) => ChatbotProvider()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
@@ -94,7 +100,7 @@ class MyApp extends StatelessWidget {
           '/cambio_contraseña': (context) => CambiarContrasenaPage(),
           '/carrito': (context) => CartPage(),
           // '/pagoefectuado':(context)=> const PaymentScreen(),
-          '/pagoefectuadotienda': (context) => const PaymentScreen2(),
+          // '/pagoefectuadotienda': (context) => const PaymentScreen2(),
           // '/pagorealizado':(context)=>const PagoRealizadoPage(numeroCompra: 3, monto: 168.00)
         },
         theme: ThemeData(

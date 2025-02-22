@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/pages/chatbot/chat_screen.dart';
 import 'package:food_hub/pages/home/body_food_page.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
@@ -68,7 +69,15 @@ class _MainFoodPageState extends State<MainFoodPage> {
         elevation: 5, // controlamos las sombras
         backgroundColor: AppColors.mainColor,
         shape: StadiumBorder(),
-        onPressed: ( ) {},
+        onPressed: ( ) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              allowSnapshotting: false,
+              builder: (context) => ChatScreen(),
+            ),
+          );
+        },
         child: Icon(Icons.mode_comment, color: Colors.white, size: 30), // pasamos el icono
       ),
       bottomNavigationBar: AppMenu(),

@@ -3,7 +3,6 @@ import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
 import 'package:food_hub/widgets/big_text.dart';
-import 'package:food_hub/widgets/btnatras.dart';
 import 'package:food_hub/widgets/cantidadpersonas.dart';
 import 'package:food_hub/widgets/fechayhora.dart';
 import 'package:food_hub/widgets/zona.dart';
@@ -30,6 +29,23 @@ class DetallePageState extends State<DetallePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.chevron_left, color: Colors.white),
+          style: IconButton.styleFrom(
+            backgroundColor: AppColors.mainColor,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        title: SizedBox(
+          child: Image.asset("assets/imagenes/Logo.png", height: 70, width: 140),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -38,15 +54,6 @@ class DetallePageState extends State<DetallePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: BackButtonCustom(),
-              ),
-              const SizedBox(height: 10),
-              Center(
-                child: Image.asset("assets/imagenes/Logo.png", height: 70, width: 140),
-              ),
               const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -137,7 +144,7 @@ class DetallePageState extends State<DetallePage> {
           ),
         ),
       ),
-      bottomNavigationBar: AppMenu(),
+      bottomNavigationBar: AppMenu(selectedIndex: 1),
     );
   }
 }
