@@ -31,7 +31,9 @@ class _CambiarContrasenaPageState extends State<CambiarContrasenaPage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('Cambiar contraseña', style: TextStyle(color: AppColors.mainColor)),
+          centerTitle: true,
+          title: Text('Cambiar contraseña', style: TextStyle(color: AppColors.mainColor, fontSize: 22,
+              fontWeight: FontWeight.bold)),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: AppColors.mainColor),
           leading: IconButton(
@@ -72,7 +74,7 @@ class _CambiarContrasenaPageState extends State<CambiarContrasenaPage> {
             ],
           ),
         ),
-        bottomNavigationBar: AppMenu(),
+        bottomNavigationBar: AppMenu(selectedIndex: 3,),
       ),
     );
   }

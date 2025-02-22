@@ -60,38 +60,38 @@ class _HistorialReservasPageState extends State<HistorialReservasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.chevron_left, color: Colors.white),
+          style: IconButton.styleFrom(
+            backgroundColor: AppColors.mainColor,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        title: SizedBox(
+          child: Text(
+            "Mi Historial de Reservas",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: AppColors.mainColor,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(
-                top: Dimensions.height60, bottom: Dimensions.height15),
-            padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.black),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                const SizedBox(height: 10),
-                Center(
-                  child: Text(
-                    "Mi Historial de Reservas",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.mainColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: Consumer<ReserveProvider>(
               builder: (context, provider, child) {
                 if (provider.reservations.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                  return SizedBox(height: 100, child: Center(child: CircularProgressIndicator(color: AppColors.mainColor, backgroundColor: Colors.white,)));
                 }
                 
                 // Ordenar las reservas por id_reserva de menor a mayor
@@ -147,10 +147,7 @@ class _HistorialReservasPageState extends State<HistorialReservasPage> {
           ),
         ],
       ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [AppMenu()],
-      ),
+      bottomNavigationBar: AppMenu(selectedIndex: 3,),
     );
   }
 }
