@@ -8,14 +8,14 @@ import 'package:food_hub/widgets/build_menu_option.dart';
 import 'package:provider/provider.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 
-class PerfilUsuarioPage extends StatefulWidget {
-  const PerfilUsuarioPage({super.key});
+class PerfilAdminPage extends StatefulWidget {
+  const PerfilAdminPage({super.key});
 
   @override
-  _PerfilUsuarioPageState createState() => _PerfilUsuarioPageState();
+  _PerfilAdminPageState createState() => _PerfilAdminPageState();
 }
 
-class _PerfilUsuarioPageState extends State<PerfilUsuarioPage> {
+class _PerfilAdminPageState extends State<PerfilAdminPage> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);

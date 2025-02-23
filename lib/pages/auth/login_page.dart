@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/pages/user/admin_view_page.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/pages/auth/registro_usuario_page.dart';
 import 'package:food_hub/pages/home/main_food_page.dart';
@@ -20,33 +21,47 @@ class _LoginPageState extends State<LoginPage> {
   final correoTxtController = TextEditingController();
   final claveTxtController = TextEditingController();
 
-  void handleLogin() async {
-    setState(() => _isLoading = true);
-    final authProvider = context.read<AuthProvider>();
-    // se realiza la petición
-    MessageResponse response = await authProvider.login(correoTxtController.value.text, claveTxtController.value.text);
+void handleLogin() async {
+  setState(() => _isLoading = true);
+  final authProvider = context.read<AuthProvider>();
+  
+  MessageResponse response = await authProvider.login(
+    correoTxtController.value.text, 
+    claveTxtController.value.text
+  );
 
-    if(response.isSuccessful && context.mounted){
-      await Future.delayed(const Duration(milliseconds: 500));
-      setState(() {
-        _isLoading = false;
-        message = response.message;
-      });
+  if (response.isSuccessful && context.mounted) {
+    await Future.delayed(const Duration(milliseconds: 500));
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          allowSnapshotting: false,
-          builder: (context) => MainFoodPage(),
-        ),
-      );
+    setState(() {
+      _isLoading = false;
+      message = response.message;
+    });
+
+    // Obtener el tipo de usuario
+    String userType = authProvider.currentUser?.typeUser ?? "";
+
+    // Redirigir según el tipo de usuario
+    Widget nextPage;
+    if (userType == "ADMIN") {
+      nextPage = VistaAdminPage(); // Pantalla para administradores
     } else {
-      setState(() {
-        _isLoading = false;
-        message = response.message;
-      });
+      nextPage = MainFoodPage(); // Pantalla para usuarios normales
     }
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => nextPage,
+      ),
+    );
+  } else {
+    setState(() {
+      _isLoading = false;
+      message = response.message;
+    });
   }
+}
 
   @override
   Widget build(BuildContext context,) {
