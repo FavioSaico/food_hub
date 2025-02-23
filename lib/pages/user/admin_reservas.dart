@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/reserva.dart';
 import 'package:food_hub/utils/colors.dart';
-import 'package:food_hub/widgets/app_icon.dart';
 import 'package:food_hub/widgets/app_menu.dart';
-import 'package:food_hub/widgets/big_text.dart';
-import 'package:food_hub/widgets/bold_normal_text.dart';
-import 'package:food_hub/widgets/build_menu_option.dart';
 import 'package:food_hub/utils/dimensions.dart';
-import 'package:food_hub/providers/reserva_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:food_hub/widgets/btnatras.dart';
 
 class AdminReservasPage extends StatefulWidget {
   const AdminReservasPage({super.key});

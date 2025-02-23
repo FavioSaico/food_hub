@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/dimensions.dart';
-// import 'package:food_hub/widgets/app_icon.dart';
 
 class AppMenu extends StatefulWidget {
 

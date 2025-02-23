@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:food_hub/domain/reserva.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_menu.dart';
-import 'package:food_hub/utils/dimensions.dart';
 import 'package:food_hub/providers/reserva_provider.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:intl/intl.dart';
