@@ -158,4 +158,36 @@ Future<void> getListReserveUser(int userId) async {
     print("Error al obtener reservas del usuario: $e");
   }
 }
+
+/// Método para obtener una reserva por su ID
+Future<Reserva?> getReserveById(int reservaId) async {
+  try {
+    final response = await DioClient.instance.get('/api/reserve/$reservaId');
+
+    if (response.statusCode == 200 && response.data != null) {
+      final reserva = response.data;
+
+      return Reserva(
+        id_reserva: reserva['id_reserva'],
+        id_usuario: reserva['usuario']['id_usuario'],
+        usuario_nombre: reserva['usuario']['nombre'],
+        correo: reserva['usuario']['correo'],
+        direccion: reserva['usuario']['direccion'],
+        id_sede: reserva['sede']['id_sede'],
+        sede_nombre: reserva['sede']['sede'],
+        id_estado: reserva['estado']['id_estado'],
+        estado_nombre: reserva['estado']['tipo_estado'],
+        id_zona: reserva['zona']['id_zona'],
+        zona_nombre: reserva['zona']['zona'],
+        zona_imagen: reserva['zona']['imagen'],
+        fecha: DateTime.parse(reserva['fecha']),
+        cantidad_personas: reserva['cantidad_personas'],
+        detalle: reserva['requerimientos'],
+      );
+    }
+  } catch (e) {
+    print("Error al obtener la reserva: $e");
+  }
+  return null;
+}
 }
