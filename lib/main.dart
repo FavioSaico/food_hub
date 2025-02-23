@@ -96,10 +96,10 @@ class MyApp extends StatelessWidget {
           '/cambio_contraseña': (context) => CambiarContrasenaPage(),
           '/carrito': (context) => CartPage(),
           '/historial_reserva': (context) => HistorialReservasPage(),
-          '/detalle_historial_reserva': (context) {
-          final routeArgs = ModalRoute.of(context)!.settings.arguments as int;
-          return DetalleReservaScreen(reservaId: routeArgs);
-          },
+          // '/detalle_historial_reserva': (context) {
+          // final routeArgs = ModalRoute.of(context)!.settings.arguments as int;
+          // return DetalleReservaScreen(reservaId: routeArgs);
+          // },
           // '/pagoefectuado':(context)=> const PaymentScreen(),
           // '/pagoefectuadotienda': (context) => const PaymentScreen2(),
           // '/pagorealizado':(context)=>const PagoRealizadoPage(numeroCompra: 3, monto: 168.00)

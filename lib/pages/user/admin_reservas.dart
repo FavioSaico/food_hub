@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:food_hub/domain/reserva.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_menu.dart';
-import 'package:food_hub/utils/dimensions.dart';
 
 class AdminReservasPage extends StatefulWidget {
   const AdminReservasPage({super.key});
@@ -94,35 +93,27 @@ class _AdminReservasPageState extends State<AdminReservasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading:false,
+        // leading: IconButton(
+        //   icon: const Icon(Icons.chevron_left, color: Colors.white),
+        //   style: IconButton.styleFrom(backgroundColor: AppColors.mainColor),
+        //   onPressed: () => Navigator.pop(context),
+        // ),
+        centerTitle: true,
+        title: Text(
+          "Lista de reservas",
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: AppColors.mainColor,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: Column(
         children: [
-          // 🔹 Header modificado: Flecha arriba, texto centrado abajo
-          Container(
-            margin: EdgeInsets.only(
-                top: Dimensions.height60, bottom: Dimensions.height15),
-            padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
-            child: Column(
-              // 🔹 Usamos Column en lugar de Row
-              children: [
-                Align(
-                  alignment:
-                      Alignment.centerLeft, // 🔹 Flecha alineada a la izquierda
-                  child: BackButtonCustom(),
-                ),
-                SizedBox(height: 10), // 🔹 Espaciado entre flecha y texto
-                Text(
-                  "Historial de reservas",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.mainColor,
-                  ),
-                  textAlign: TextAlign.center, // 🔹 Asegura centrado del texto
-                ),
-              ],
-            ),
-          ),
-
           // Lista de reservas
           Expanded(
             child: ListView.builder(
@@ -146,7 +137,7 @@ class _AdminReservasPageState extends State<AdminReservasPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('${getEstado(reserva.id_estado)}'),
+                        Text(getEstado(reserva.id_estado)),
                         Text('${reserva.fecha.toLocal()}'),
                       ],
                     ),
@@ -162,12 +153,7 @@ class _AdminReservasPageState extends State<AdminReservasPage> {
           ),
         ],
       ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppMenu(),
-        ],
-      ),
+      bottomNavigationBar: AppMenu(selectedIndex: 1),
     );
   }
 }

@@ -82,12 +82,7 @@ class _PerfilAdminPageState extends State<PerfilAdminPage> {
         ),
       ),
       // Menú
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppMenu() // widget de menú
-        ],
-      ),
+      bottomNavigationBar: AppMenu(selectedIndex: 3),
     );
   }
 }

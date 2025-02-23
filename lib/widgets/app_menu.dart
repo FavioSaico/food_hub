@@ -49,7 +49,7 @@ class _AppMenuState extends State<AppMenu> {
         case '/adminProfile':
           return 3;
         default:
-          return 0;
+          return _selectedIndex;
       }
     } else {
       switch (route) {
@@ -62,7 +62,7 @@ class _AppMenuState extends State<AppMenu> {
         case '/userProfile':
           return 3;
         default:
-          return 0;
+          return _selectedIndex;
       }
     }
   }
