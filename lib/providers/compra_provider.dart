@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:food_hub/domain/compra_detalle.dart';
 import 'package:food_hub/domain/compra_historial.dart';
 import 'package:food_hub/domain/compra_registro.dart';
 import 'package:food_hub/domain/dio.dart';
@@ -21,7 +22,7 @@ class CompraProvider extends ChangeNotifier {
   List<HistorialCompra> listaCompras = [];
   List<Estado> states = [];
 
-  // Método para obtener el historial de compras
+  // Método para obtener la lista de compras que puede ver el admin
   Future<MessageResponseCompraProvider<List<HistorialCompra>>> getListPurchases() async {
     try {
       final response = await DioClient.instance.get('/api/purchases');
@@ -88,18 +89,37 @@ class CompraProvider extends ChangeNotifier {
   }
 
   // Método para obtener el detalle de una compra específica
-  // Future<HistorialCompra> getPurchase(int id) async {
-  //   try {
-  //     final response = await DioClient.instance.get('/api/purchase/$id');
-  //     if (response.statusCode == 200) {
-  //       return HistorialCompra.fromJson(response.data);
-  //     } else {
-  //       throw Exception("Error al obtener los detalles de la compra");
-  //     }
-  //   } catch (e) {
-  //     throw Exception("Error inesperado");
-  //   }
-  // }
+  Future<MessageResponseCompraProvider<CompraDetalle>> getPurchase(int id) async {
+    try {
+
+      final response = await DioClient.instance.get('/api/purchase/$id');
+      if (response.statusCode == 200) {
+        CompraDetalle compraDetalle = compraDetalleFromJson(json.encode(response.data));
+
+        return MessageResponseCompraProvider<CompraDetalle>(
+          isSuccessful: true,
+          data: compraDetalle,
+          message: "Se obtuvo el detalle de la compra correctamente",
+        );
+      } else {
+
+        return MessageResponseCompraProvider<CompraDetalle>(
+          isSuccessful: false,
+          message: "Error al obtener el detalle de la compra",
+        );
+      }
+    } on DioException catch (e) {
+      return MessageResponseCompraProvider<CompraDetalle>(
+        isSuccessful: false,
+        message: e.response?.data["error"] ?? "Error al obtener el detalle de la compra",
+      );
+    } catch (e) {
+      return MessageResponseCompraProvider<CompraDetalle>(
+          isSuccessful: false,
+          message: "Error inesperado",
+        );
+    }
+  }
 
   // Método para registrar una compra
   Future<MessageResponseCompraProvider<int>> registerCompra({
@@ -137,27 +157,33 @@ class CompraProvider extends ChangeNotifier {
   }
 
   // Método para actualizar el estado de la compra
-  Future<MessageResponseCompraProvider> updateReserveState(
-      int reservaId, int estadoId) async {
+  Future<MessageResponseCompraProvider<int>> updateReserveState(
+      int compraId, int estadoId) async {
     try {
       final response = await DioClient.instance.put(
-        '/api/purchase/$reservaId/state',
-        data: {'id_estado': estadoId},
+        '/api/purchase',
+        data: {'id_compra':compraId,'id_estado': estadoId},
       );
 
       if (response.statusCode == 200) {
-        return MessageResponseCompraProvider(
+        return MessageResponseCompraProvider<int>(
           isSuccessful: true,
+          data: response.data['id_compra'],
           message: "Estado de la compra actualizado correctamente",
         );
       } else {
-        return MessageResponseCompraProvider(
+        return MessageResponseCompraProvider<int>(
           isSuccessful: false,
           message: "Error al actualizar el estado de la compra",
         );
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return MessageResponseCompraProvider(
+        isSuccessful: false,
+        message: e.response?.data["error"] ?? "Error al actualizar el estado de la compra",
+      );
+    } catch (e) {
+      return MessageResponseCompraProvider<int>(
         isSuccessful: false,
         message: "Error inesperado",
       );
