@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/reserva.dart';
 import 'package:food_hub/utils/colors.dart';
+import 'package:food_hub/widgets/app_menu.dart';
+import 'package:food_hub/widgets/error_message.dart';
 import 'package:intl/intl.dart';
 import 'package:food_hub/providers/reserva_provider.dart';
 import 'package:provider/provider.dart';
@@ -39,30 +41,44 @@ class _DetalleReservaScreenState extends State<DetalleReservaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
+        leading: IconButton(
+          icon: const Icon(Icons.chevron_left, color: Colors.white),
+          style: IconButton.styleFrom(
+            backgroundColor: AppColors.mainColor,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
           "Detalle de reserva",
-          style: TextStyle(color: Color(0xFF5CABA1)),
+          style: TextStyle(color: AppColors.mainColor),
         ),
         backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Color(0xFF5CABA1)),
+        // iconTheme: IconThemeData(color: AppColors.mainColor),
         elevation: 0,
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(color: AppColors.mainColor, backgroundColor: Colors.white,))
           : reserva == null
-              ? const Center(child: Text("No se encontró la reserva."))
+              ? ErrorMessage(message: "No se encontró la reserva.")
               : Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildReservaInfo(),
-                      const SizedBox(height: 16),
-                      _buildEstado(),
-                    ],
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildReservaInfo(),
+                        const SizedBox(height: 16),
+                        _buildEstado(),
+                      ],
+                    ),
                   ),
                 ),
+      bottomNavigationBar: AppMenu(selectedIndex: 3),
     );
   }
 
@@ -72,18 +88,21 @@ class _DetalleReservaScreenState extends State<DetalleReservaScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Reserva",
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            const SizedBox(height: 4),
-            _buildDetailText("Día:", DateFormat('dd/MM/yyyy').format(reserva!.fecha)),
-            _buildDetailText("Hora:", DateFormat('HH:mm').format(reserva!.fecha)),
-            _buildDetailText("Cantidad de personas:", "${reserva!.cantidad_personas} persona(s)"),
-            _buildDetailText("Zona preferida:", reserva!.zona_nombre ?? "No especificada"),
-            _buildDetailText("Requerimientos especiales:", reserva!.detalle ?? "Ninguno"),
-          ],
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Reserva",
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              const SizedBox(height: 4),
+              _buildDetailText("Día:", DateFormat('dd/MM/yyyy').format(reserva!.fecha)),
+              _buildDetailText("Hora:", DateFormat('HH:mm').format(reserva!.fecha)),
+              _buildDetailText("Cantidad de personas:", "${reserva!.cantidad_personas} persona(s)"),
+              _buildDetailText("Zona preferida:", reserva!.zona_nombre ?? "No especificada"),
+              _buildDetailText("Requerimientos especiales:", reserva!.detalle ?? "Ninguno"),
+            ],
+          ),
         ),
       ),
     );

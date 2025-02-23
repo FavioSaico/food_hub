@@ -25,11 +25,10 @@ class CompraProvider extends ChangeNotifier {
   // Método para obtener la lista de compras que puede ver el admin
   Future<MessageResponseCompraProvider<List<HistorialCompra>>> getListPurchases() async {
     try {
-      final response = await DioClient.instance.get('/api/purchases');
+      final response = await DioClient.instance.get('/api/purchase');
       if (response.statusCode == 200) {
         // Mapear la respuesta y devolver la lista de compras
         List<HistorialCompra> lista = historialCompraFromJson(json.encode(response.data));
-
         return MessageResponseCompraProvider<List<HistorialCompra>>(
           isSuccessful: true,
           data: lista,

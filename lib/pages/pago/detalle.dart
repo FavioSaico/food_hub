@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/compra_detalle.dart';
+import 'package:food_hub/domain/estadoreserva.dart';
 import 'package:food_hub/domain/food_response.dart';
+import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/providers/compra_provider.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/date.dart';
@@ -21,10 +23,23 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
   MessageResponseCompraProvider<CompraDetalle>? response;
   bool _isLoading = false;
   bool _isSuccessful = true;
+  bool _isAdmin = false;
+  int selectedValue = 1;
+  List<Estado> opciones = [
+    Estado(id: 1, tipo: "En proceso"),
+    Estado(id: 2, tipo: "Finalizado"),
+    Estado(id: 3, tipo: "Finalizado 1"),
+    Estado(id: 4, tipo: "Finalizado 2"),
+  ];
 
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isAdmin = Provider.of<AuthProvider>(context, listen: false).currentUser!.typeUser == "ADMIN";
+    });
+
     _obtenerCompra();
   }
 
@@ -33,13 +48,11 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
     response = await Provider.of<CompraProvider>(context, listen: false).getPurchase(widget.compraId);
     _isSuccessful = response!.isSuccessful;
     compraDetalle = response!.data;
+    selectedValue = _isSuccessful ? compraDetalle!.estado.id : 1;
     setState(() => _isLoading = false);
   }
-
   @override
   Widget build(BuildContext context) {
-
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -57,10 +70,9 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
         title: Text(
           "Detalle de compra",
           style: TextStyle(color: AppColors.mainColor,fontSize: 22,
-              fontWeight: FontWeight.bold,), // Color del texto
+              fontWeight: FontWeight.bold,),
         ),
-        backgroundColor: Colors.white, // Color de fondo
-        // iconTheme: IconThemeData(color: AppColors.mainColor), // Color del icono de retroceso
+        backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: _isLoading
@@ -106,25 +118,28 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
                     },
                 ),
                 SizedBox(height: 16),
-                Row(
+                
+                _isAdmin 
+                ? _buildSelectState()
+                : Row(
                   children: [
-                    Text("Estado:", style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text("Estado:", style: TextStyle(fontWeight: FontWeight.bold,fontSize:16)),
                     SizedBox(width: 5),
-                    Text(compraDetalle!.estado.tipo, style: TextStyle(color: AppColors.mainColor, fontWeight: FontWeight.bold)),
+                    Text(compraDetalle!.estado.tipo, style: TextStyle(color: AppColors.mainColor,fontSize:16, fontWeight: FontWeight.bold)),
                   ],
-                )
+                ),
+
+
               ],
             ),
           ),
         )
         : ErrorMessage(message: response!.message),
-      bottomNavigationBar: AppMenu(selectedIndex: 3,),
+      bottomNavigationBar: AppMenu(selectedIndex: 3),
     );
   }
 
   Widget _buildItem(final ComidaResponse comida) {
-
-    // final ComidaResponse comida;
 
     return Card(
       elevation: 2,
@@ -140,7 +155,7 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(comida.comida, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  Text(comida.tipoComida, style: TextStyle(color: Colors.grey)),
+                  Text(comida.tipoComida, style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500)),
                   SizedBox(height: 5),
                   Text("Precio unitario: S/. ${comida.costo.toStringAsFixed(2)}"),
                   Text("Cantidad: ${comida.cantidad}"),
@@ -150,6 +165,67 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSelectState() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text("Cambiar estado:", style: TextStyle(fontWeight: FontWeight.bold, fontSize:16)),
+              SizedBox(
+                width: 20,
+              ),
+              SizedBox(
+                child: DropdownButton<int>(
+                  icon: Icon(Icons.keyboard_arrow_down, color: AppColors.mainColor, size: 30), // 🔥 Nuevo icono
+                  borderRadius: BorderRadius.circular(10),
+                  isExpanded: false, 
+                    value: selectedValue,
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        selectedValue = newValue!;
+                      });
+                    },
+                    underline: Container(height: 1, color: Colors.black,), // Línea debajo del dropdown
+                    items: opciones.map((value) {
+                      return DropdownMenuItem<int>(
+                        value: value.id,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 30),
+                          child: Text(value.tipo),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red,),
+                onPressed: () => {
+                  Navigator.pop(context)
+                },
+                child: const Text('Cancelar', style: TextStyle(color: Colors.white, fontSize: 16)),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: AppColors.mainColor),
+                onPressed: () => {
+
+                },                            // onPressed: () => _guardarContrasena(usuario?.id ?? 0),
+                child: const Text('Guardar', style: TextStyle(color: Colors.white, fontSize: 16)),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

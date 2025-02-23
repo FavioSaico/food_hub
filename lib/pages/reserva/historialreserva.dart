@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/pages/reserva/detallenuevo.dart';
+import 'package:food_hub/widgets/empty_list.dart';
 import 'package:provider/provider.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_menu.dart';
@@ -65,7 +67,7 @@ class _HistorialReservasPageState extends State<HistorialReservasPage> {
       body: Consumer<ReserveProvider>(
         builder: (context, provider, child) {
           if (provider.reservations.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
+            return EmptyList(message: "No tienes reservas registradas");
           }
           
           final sortedReservations = List.from(provider.reservations)
@@ -109,10 +111,12 @@ class _HistorialReservasPageState extends State<HistorialReservasPage> {
                     size: 30,
                   ),
                   onTap: () {
-                    Navigator.pushNamed(
+                    Navigator.push(
                       context,
-                      '/detalle_historial_reserva',
-                      arguments: reserva.id_reserva as int,
+                      MaterialPageRoute(
+                        allowSnapshotting: false,
+                        builder: (context) => DetalleReservaScreen(reservaId: reserva.id_reserva as int),
+                      ),
                     );
                   },
                 ),

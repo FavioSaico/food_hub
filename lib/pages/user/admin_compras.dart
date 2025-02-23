@@ -45,22 +45,25 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.teal),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        automaticallyImplyLeading:false,
+        // leading: IconButton(
+        //   icon: const Icon(Icons.chevron_left, color: Colors.white),
+        //   style: IconButton.styleFrom(
+        //     backgroundColor: AppColors.mainColor,
+        //   ),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
         centerTitle: true,
         title: SizedBox(
           child: Text(
-            "Mis Compras",
+            "Lista de Compras",
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: AppColors.mainColor,
             ),
-            textAlign: TextAlign.center,
           ),
         ),
         backgroundColor: Colors.white,
