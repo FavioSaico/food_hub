@@ -29,7 +29,7 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
   String _selectedSede = "San Isidro"; // Opción predeterminada
 
   Future<void> _obtenetListaCompras() async {
-    setState(() => _isLoading = true);
+    setState(() => _isLoading = true); 
     response = await Provider.of<CompraProvider>(context, listen: false).getListPurchases();
     _isSuccessful = response!.isSuccessful;
     listaCompras = response!.data ?? [];

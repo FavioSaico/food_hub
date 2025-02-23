@@ -1,67 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:food_hub/domain/reserva.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_menu.dart';
+import 'package:food_hub/providers/reserva_provider.dart';
+import 'package:food_hub/pages/reserva/detalle_reserva_admin.dart';
 
 class AdminReservasPage extends StatefulWidget {
   const AdminReservasPage({super.key});
+
   @override
   _AdminReservasPageState createState() => _AdminReservasPageState();
 }
 
-class BackButtonCustom extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 4.0), // Ajuste para pegarlo más al borde
-      child: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.black),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
-  }
-}
-
 class _AdminReservasPageState extends State<AdminReservasPage> {
+  String _selectedSede = "San Isidro";
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ReserveProvider>(context, listen: false).fetchReservations();
+    });
   }
-
-  List<Reserva> listareservas = [
-    Reserva(
-      cantidad_personas: 1,
-      id_zona: 1,
-      id_estado: 1,
-      id_reserva: 1,
-      id_sede: 1,
-      id_usuario: 1,
-      fecha: DateTime.now(),
-      detalle: "Ninguno",
-    ),
-    Reserva(
-      cantidad_personas: 2,
-      id_zona: 1,
-      id_estado: 2,
-      id_reserva: 2,
-      id_sede: 1,
-      id_usuario: 2,
-      fecha: DateTime.now().add(Duration(days: 1)),
-      detalle: "Ninguno",
-    ),
-    Reserva(
-      cantidad_personas: 3,
-      id_zona: 1,
-      id_estado: 3,
-      id_reserva: 3,
-      id_sede: 1,
-      id_usuario: 3,
-      fecha: DateTime.now().add(Duration(days: 2)),
-      detalle: "Ninguno",
-    ),
-  ];
 
   String getEstado(int idEstado) {
     switch (idEstado) {
@@ -94,12 +55,7 @@ class _AdminReservasPageState extends State<AdminReservasPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading:false,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.chevron_left, color: Colors.white),
-        //   style: IconButton.styleFrom(backgroundColor: AppColors.mainColor),
-        //   onPressed: () => Navigator.pop(context),
-        // ),
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
           "Lista de reservas",
@@ -114,39 +70,86 @@ class _AdminReservasPageState extends State<AdminReservasPage> {
       ),
       body: Column(
         children: [
-          // Lista de reservas
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: DropdownButton<String>(
+              value: _selectedSede,
+              isExpanded: true,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedSede = newValue!;
+                });
+              },
+              items: ["San Isidro", "San Borja"].map((String sede) {
+                return DropdownMenuItem<String>(
+                  value: sede,
+                  child: Text(
+                    sede,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
           Expanded(
-            child: ListView.builder(
-              itemCount: listareservas.length,
-              itemBuilder: (context, index) {
-                final Reserva reserva = listareservas[index];
-
-                return Card(
-                  color: Colors.white,
-                  elevation: 3,
-                  margin: EdgeInsets.all(10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: ListTile(
-                    tileColor: Colors.white,
-                    title: Text(
-                      'Reserva # ${reserva.id_reserva}',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+            child: Consumer<ReserveProvider>(
+              builder: (context, provider, child) {
+                int sedeFiltro = _selectedSede == "San Isidro" ? 1 : 2;
+                List<Reserva> reservasFiltradas = provider.reservations
+                    .where((reserva) => reserva.id_sede == sedeFiltro)
+                    .toList();
+                
+                if (reservasFiltradas.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No hay reservas registradas para $_selectedSede",
+                      style: TextStyle(fontSize: 18, color: Colors.black54),
                     ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(getEstado(reserva.id_estado)),
-                        Text('${reserva.fecha.toLocal()}'),
-                      ],
-                    ),
-                    trailing: Icon(
-                      getEstadoIcon(reserva.id_estado),
-                      color: AppColors.mainColor,
-                      size: 30,
-                    ),
-                  ),
+                  );
+                }
+                
+                return ListView.builder(
+                  itemCount: reservasFiltradas.length,
+                  itemBuilder: (context, index) {
+                    final Reserva reserva = reservasFiltradas[index];
+                    return Card(
+                      color: Colors.white,
+                      elevation: 3,
+                      margin: EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListTile(
+                        tileColor: Colors.white,
+                        title: Text(
+                          'Reserva # ${reserva.id_reserva}',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(getEstado(reserva.id_estado)),
+                            Text('${reserva.fecha.toLocal()}'),
+                          ],
+                        ),
+                        trailing: Icon(
+                          getEstadoIcon(reserva.id_estado),
+                          color: AppColors.mainColor,
+                          size: 30,
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetalleReservaAdminScreen(
+                                reservaId: reserva.id_reserva as int,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 );
               },
             ),

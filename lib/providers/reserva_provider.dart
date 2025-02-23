@@ -75,14 +75,13 @@ class ReserveProvider extends ChangeNotifier {
       if (response.statusCode == 200 && response.data != null) {
         reservations = (response.data as List).map((reserva) {
           return Reserva(
-            id_reserva: reserva['id_reserva'],
-            id_usuario: reserva['id_usuario'],
-            id_sede: reserva['id_sede'],
-            id_estado: reserva['id_estado'],
-            id_zona: reserva['id_zona'],
-            fecha: DateTime.parse(reserva['fecha']),
-            cantidad_personas: reserva['cantidad_personas'],
-            detalle: reserva['requerimientos']
+          id_reserva: reserva['id_reserva'],
+          id_usuario: reserva['id_usuario'],
+          id_sede: reserva['sede']['id_sede'], // Extrae el ID de la sede
+          sede_nombre: reserva['sede']['sede'], // Extrae el nombre de la sede
+          id_estado: reserva['estado']['id_estado'], // Extrae el ID del estado
+          estado_nombre: reserva['estado']['tipo_estado'], // Extrae el nombre del estado
+          fecha: DateTime.parse(reserva['fecha'])
           );
         }).toList();
         notifyListeners();
