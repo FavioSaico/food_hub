@@ -1,29 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/domain/reserva.dart';
+import 'package:food_hub/utils/colors.dart';
+import 'package:intl/intl.dart';
+import 'package:food_hub/providers/reserva_provider.dart';
+import 'package:provider/provider.dart';
 
-class DetalleReservaScreen extends StatelessWidget {
+class DetalleReservaScreen extends StatefulWidget {
+  final int reservaId;
+
+  const DetalleReservaScreen({super.key, required this.reservaId});
+
+  @override
+  _DetalleReservaScreenState createState() => _DetalleReservaScreenState();
+}
+
+class _DetalleReservaScreenState extends State<DetalleReservaScreen> {
+  Reserva? reserva;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchReserva();
+  }
+
+  Future<void> _fetchReserva() async {
+    final provider = Provider.of<ReserveProvider>(context, listen: false);
+    final fetchedReserva = await provider.getReserveById(widget.reservaId);
+    
+    if (mounted) {
+      setState(() {
+        reserva = fetchedReserva;
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Detalle de reserva",
-          style: TextStyle(color: Color(0xFF5CABA1)), // Color del texto
+          style: TextStyle(color: Color(0xFF5CABA1)),
         ),
-        backgroundColor: Colors.white, // Color de fondo
-        iconTheme: IconThemeData(color: Color(0xFF5CABA1)), // Color del icono de retroceso
-        elevation: 0, // Sin sombra
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Color(0xFF5CABA1)),
+        elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildReservaInfo(),
-            SizedBox(height: 16),
-            _buildEstado(),
-          ],
-        ),
-      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : reserva == null
+              ? const Center(child: Text("No se encontró la reserva."))
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildReservaInfo(),
+                      const SizedBox(height: 16),
+                      _buildEstado(),
+                    ],
+                  ),
+                ),
     );
   }
 
@@ -36,13 +75,14 @@ class DetalleReservaScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Reserva #0003", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            SizedBox(height: 4),
-            _buildDetailText("Día:", "30 de Enero"),
-            _buildDetailText("Hora:", "14:00 hrs"),
-            _buildDetailText("Cantidad de personas:", "2 persona(s)"),
-            _buildDetailText("Zona preferida:", "Zona Terraza"),
-            _buildDetailText("Requerimientos especiales:", "Solicito una silla para bebé"),
+            Text("Reserva",
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            const SizedBox(height: 4),
+            _buildDetailText("Día:", DateFormat('dd/MM/yyyy').format(reserva!.fecha)),
+            _buildDetailText("Hora:", DateFormat('HH:mm').format(reserva!.fecha)),
+            _buildDetailText("Cantidad de personas:", "${reserva!.cantidad_personas} persona(s)"),
+            _buildDetailText("Zona preferida:", reserva!.zona_nombre ?? "No especificada"),
+            _buildDetailText("Requerimientos especiales:", reserva!.detalle ?? "Ninguno"),
           ],
         ),
       ),
@@ -53,11 +93,11 @@ class DetalleReservaScreen extends StatelessWidget {
     return RichText(
       text: TextSpan(
         text: "Estado: ",
-        style: TextStyle(fontSize: 16, color: Colors.black),
+        style: const TextStyle(fontSize: 16, color: Colors.black),
         children: [
           TextSpan(
-            text: "En proceso",
-            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            text: reserva!.estado_nombre,
+            style: TextStyle(color: AppColors.mainColor, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -70,11 +110,11 @@ class DetalleReservaScreen extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           text: "$title ",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),
           children: [
             TextSpan(
               text: value,
-              style: TextStyle(fontWeight: FontWeight.normal),
+              style: const TextStyle(fontWeight: FontWeight.normal),
             ),
           ],
         ),
