@@ -40,6 +40,8 @@ class HistorialCompra {
         fecha: DateTime.parse(json["fecha"]),
     );
 
+  get idSede => null;
+
     Map<String, dynamic> toJson() => {
         "id_compra": idCompra,
         "id_usuario": idUsuario,
