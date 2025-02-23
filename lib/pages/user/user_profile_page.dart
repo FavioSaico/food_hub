@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/pages/pago/historialcompras.dart';
-import 'package:food_hub/pages/reserva/historialreserva.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_icon.dart';
 import 'package:food_hub/widgets/app_menu.dart';
