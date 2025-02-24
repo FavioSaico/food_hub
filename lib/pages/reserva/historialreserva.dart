@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/domain/reserva.dart';
 import 'package:food_hub/pages/reserva/detallenuevo.dart';
 import 'package:food_hub/widgets/empty_list.dart';
 import 'package:provider/provider.dart';
@@ -70,13 +71,13 @@ class _HistorialReservasPageState extends State<HistorialReservasPage> {
             return EmptyList(message: "No tienes reservas registradas");
           }
           
-          final sortedReservations = List.from(provider.reservations)
-            ..sort((a, b) => a.id_reserva.compareTo(b.id_reserva));
+          final sortedReservations = List.from(provider.reservations);
+            // ..sort((a, b) => a.id_reserva.compareTo(b.id_reserva));
 
           return ListView.builder(
             itemCount: sortedReservations.length,
             itemBuilder: (context, index) {
-              final reserva = sortedReservations[index];
+              final Reserva reserva = sortedReservations[index];
               return Card(
                 elevation: 3,
                 margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -86,7 +87,7 @@ class _HistorialReservasPageState extends State<HistorialReservasPage> {
                 child: ListTile(
                   tileColor: Colors.white,
                   title: Text(
-                    'Reserva #${index + 1} - ${reserva.sede_nombre}',
+                    'Reserva # ${(reserva.id_reserva > 0 && reserva.id_reserva <= 9) ? "00": (reserva.id_reserva > 9 ? "0" : "")}${reserva.id_reserva} - ${reserva.sede_nombre}',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Column(
@@ -115,7 +116,7 @@ class _HistorialReservasPageState extends State<HistorialReservasPage> {
                       context,
                       MaterialPageRoute(
                         allowSnapshotting: false,
-                        builder: (context) => DetalleReservaScreen(reservaId: reserva.id_reserva as int),
+                        builder: (context) => DetalleReservaScreen(reservaId: reserva.id_reserva),
                       ),
                     );
                   },

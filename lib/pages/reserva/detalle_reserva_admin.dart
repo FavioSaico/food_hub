@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/estadoreserva.dart';
 import 'package:food_hub/domain/reserva.dart';
+import 'package:food_hub/pages/user/admin_reservas.dart';
+import 'package:food_hub/providers/shared_provider.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/widgets/error_message.dart';
@@ -20,12 +22,9 @@ class DetalleReservaAdminScreen extends StatefulWidget {
 class _DetalleReservaAdminScreenState extends State<DetalleReservaAdminScreen> {
   Reserva? reserva;
   bool isLoading = true;
-  int? selectedValue;
+  int? selectedValue = 1;
 
-  List<Estado> opciones = [
-    Estado(id: 1, tipo: "En proceso"),
-    Estado(id: 3, tipo: "Finalizado"),
-  ];
+  List<Estado> opciones = [];
 
   @override
   void initState() {
@@ -37,6 +36,11 @@ class _DetalleReservaAdminScreenState extends State<DetalleReservaAdminScreen> {
     final provider = Provider.of<ReserveProvider>(context, listen: false);
     final fetchedReserva = await provider.getReserveById(widget.reservaId);
     
+    await Provider.of<SharedProvider>(context, listen: false).getStates();
+    opciones = Provider.of<SharedProvider>(context, listen: false).estadosList;
+    opciones = opciones.where((Estado e ){ return e.tipo != "Enviado";}).toList();
+
+    selectedValue = fetchedReserva?.id_estado ?? 1;
     if (mounted) {
       setState(() {
         reserva = fetchedReserva;
@@ -59,6 +63,7 @@ class _DetalleReservaAdminScreenState extends State<DetalleReservaAdminScreen> {
             Navigator.pop(context);
           },
         ),
+        centerTitle: true,
         title: Text(
           "Detalle de Reserva",
           style: TextStyle(color: AppColors.mainColor, fontSize: 22, fontWeight: FontWeight.bold),
@@ -81,8 +86,8 @@ class _DetalleReservaAdminScreenState extends State<DetalleReservaAdminScreen> {
                       children: [
                         _buildReservaInfo(),
                         const SizedBox(height: 16),
-                        const SizedBox(height: 16), // Espaciado
-                        _buildSelectState(), // 👈 Agregado aquí
+                        // const SizedBox(height: 16), // Espaciado
+                        _buildSelectState(),
                       ],
                     ),
                   ),
@@ -144,14 +149,15 @@ class _DetalleReservaAdminScreenState extends State<DetalleReservaAdminScreen> {
             children: [
               Text("Cambiar estado:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(width: 20),
-              DropdownButton<int>(
+
+              opciones.isNotEmpty ? DropdownButton<int>(
                 icon: Icon(Icons.keyboard_arrow_down, color: AppColors.mainColor, size: 30),
                 borderRadius: BorderRadius.circular(10),
                 isExpanded: false,
                 value: selectedValue,
                 onChanged: (int? newValue) {
                   setState(() {
-                    selectedValue = newValue;
+                    selectedValue = newValue!;
                   });
                 },
                 underline: Container(height: 1, color: Colors.black),
@@ -164,7 +170,8 @@ class _DetalleReservaAdminScreenState extends State<DetalleReservaAdminScreen> {
                     ),
                   );
                 }).toList(),
-              ),
+              )
+              : Center(child: CircularProgressIndicator(color: AppColors.mainColor, backgroundColor: Colors.white,))
             ],
           ),
           SizedBox(height: 20),
@@ -173,30 +180,36 @@ class _DetalleReservaAdminScreenState extends State<DetalleReservaAdminScreen> {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                onPressed: () {
+                onPressed: selectedValue != reserva!.id_estado ? () {
                   Navigator.pop(context);
-                },
+                }
+                : null,
                 child: const Text('Cancelar', style: TextStyle(color: Colors.white, fontSize: 16)),
               ),
-             ElevatedButton(
-  style: ElevatedButton.styleFrom(backgroundColor: AppColors.mainColor),
-        onPressed: () async {
-        if (selectedValue != null && reserva != null) {
-          final provider = Provider.of<ReserveProvider>(context, listen: false);
-         await provider.updateReserveState(reserva!.id_reserva, selectedValue!);
-      
-           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text("Estado actualizado con éxito")),
-             );
-            Navigator.pop(context); // Cerrar la pantalla después de guardar
-          } else {
-           ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Por favor selecciona un estado")),
-           );
-            }
-          },
-        child: const Text('Guardar', style: TextStyle(color: Colors.white, fontSize: 16)),
-        ), 
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.mainColor),
+                  onPressed: selectedValue != reserva!.id_estado ? () async {
+                    if (reserva != null) {
+                      final provider = Provider.of<ReserveProvider>(context, listen: false);
+                      await provider.updateReserveState(reserva!.id_reserva, selectedValue!);
+                
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Estado actualizado con éxito")),
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => AdminReservasPage()),
+                      );
+                      // Navigator.pop(context); // Cerrar la pantalla después de guardar
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Por favor selecciona un estado")),
+                      );
+                    }
+                  }
+                  : null,
+                child: const Text('Guardar', style: TextStyle(color: Colors.white, fontSize: 16)),
+              ), 
             ],
           ),
         ],

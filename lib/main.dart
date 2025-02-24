@@ -3,7 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/pages/food/cart_page.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
-import 'package:food_hub/pages/reserva/detallenuevo.dart';
 import 'package:food_hub/pages/reserva/historialreserva.dart';
 import 'package:food_hub/pages/reserva/resumen.dart';
 import 'package:food_hub/pages/reserva/sedes.dart';
@@ -18,14 +17,11 @@ import 'package:food_hub/providers/reserva_provider.dart';
 import 'package:food_hub/pages/auth/registro_usuario_page.dart';
 import 'package:food_hub/pages/user/admin_compras.dart';
 import 'package:food_hub/pages/home/main_food_page.dart';
-import 'package:food_hub/pages/pago/RegisterCard.dart';
 import 'package:food_hub/pages/home/Inicio1.dart';
 import 'package:food_hub/pages/home/Inicio2.dart';
 import 'package:food_hub/pages/user/admin_profile_page.dart';
 import 'package:food_hub/pages/user/admin_view_page.dart';
 import 'package:food_hub/pages/user/user_profile_page.dart';
-import 'package:food_hub/pages/pago/compra.dart';
-import 'package:food_hub/pages/pago/Pagorealizado.dart';
 import 'package:food_hub/providers/shared_provider.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:get/get.dart';
@@ -100,9 +96,6 @@ class MyApp extends StatelessWidget {
           // final routeArgs = ModalRoute.of(context)!.settings.arguments as int;
           // return DetalleReservaScreen(reservaId: routeArgs);
           // },
-          // '/pagoefectuado':(context)=> const PaymentScreen(),
-          // '/pagoefectuadotienda': (context) => const PaymentScreen2(),
-          // '/pagorealizado':(context)=>const PagoRealizadoPage(numeroCompra: 3, monto: 168.00)
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.mainColor),

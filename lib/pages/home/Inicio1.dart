@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/pages/user/admin_view_page.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -25,14 +26,19 @@ class _SplashScreenState extends State<SplashScreen> {
     await authProvider.getUserSesion();
     
     if (authProvider.usuario != null) {
-      Future.delayed(Duration(seconds: 2), () {
+      // Redirigir según el rol
+      if (authProvider.currentUser?.typeUser == 'ADMIN') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VistaAdminPage(),
+          ),
+        );
+      } else {
         Navigator.pushReplacementNamed(context, '/');
-      });
+      }
     } else {
-      // No hay usuario guardado, ir a Login
-      Future.delayed(Duration(seconds: 2), () {
-        Navigator.pushReplacementNamed(context, '/login');
-      });
+      Navigator.pushReplacementNamed(context, '/login');
     }
   }
 

@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/dio.dart';
+import 'package:food_hub/domain/estadoreserva.dart';
 import 'package:food_hub/domain/sedes.dart';
 import 'package:food_hub/domain/tipo_compra.dart';
 import 'package:food_hub/domain/tipo_pago.dart';
@@ -10,6 +13,7 @@ class SharedProvider extends ChangeNotifier {
   List<TipoPago> tipoPagoList = [];
   List<TipoCompra> tipoCompraList = [];
   List<Sede> sedesList = [];
+  List<Estado> estadosList = [];
 
   Future<void> getTypesPayment() async {
 
@@ -101,6 +105,23 @@ class SharedProvider extends ChangeNotifier {
     } catch (e) {
       print(e);
       // return MessageResponse(isSuccessful: false, message: "Error inesperado");
+    }
+  }
+
+  Future<void> getStates() async {
+    try {
+
+      final response = await DioClient.instance.get('/api/shared/states');
+      // Mapper
+      if (response.statusCode == 200) {
+        List<Estado> lista = estadoFromJson(json.encode(response.data));
+        estadosList = lista;
+        notifyListeners();
+      }
+    }  on DioException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
     }
   }
 }

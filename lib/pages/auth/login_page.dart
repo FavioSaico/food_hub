@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
         correoTxtController.value.text, claveTxtController.value.text);
 
     if (response.isSuccessful && context.mounted) {
-      await Future.delayed(const Duration(milliseconds: 500));
 
       // Obtener el usuario autenticado
       final currentUser = authProvider.currentUser;

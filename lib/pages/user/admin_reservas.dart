@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/utils/date.dart';
 import 'package:provider/provider.dart';
 import 'package:food_hub/domain/reserva.dart';
 import 'package:food_hub/utils/colors.dart';
@@ -122,14 +123,14 @@ class _AdminReservasPageState extends State<AdminReservasPage> {
                       child: ListTile(
                         tileColor: Colors.white,
                         title: Text(
-                          'Reserva # ${reserva.id_reserva}',
+                          'Reserva # ${(reserva.id_reserva > 0 && reserva.id_reserva <= 9) ? "00": (reserva.id_reserva > 9 ? "0" : "")}${reserva.id_reserva}',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(getEstado(reserva.id_estado)),
-                            Text('${reserva.fecha.toLocal()}'),
+                            Text(getEstado(reserva.id_estado),style: TextStyle(color: AppColors.mainColor),),
+                            Text(AppDate.formateoFechaSimple(reserva.fecha)),
                           ],
                         ),
                         trailing: Icon(
@@ -142,7 +143,7 @@ class _AdminReservasPageState extends State<AdminReservasPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DetalleReservaAdminScreen(
-                                reservaId: reserva.id_reserva as int,
+                                reservaId: reserva.id_reserva,
                               ),
                             ),
                           );

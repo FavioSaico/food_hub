@@ -156,7 +156,7 @@ class CompraProvider extends ChangeNotifier {
   }
 
   // Método para actualizar el estado de la compra
-  Future<MessageResponseCompraProvider<int>> updateReserveState(
+  Future<MessageResponseCompraProvider<int>> updatePurchaseState(
       int compraId, int estadoId) async {
     try {
       final response = await DioClient.instance.put(
