@@ -28,7 +28,7 @@ class AuthProvider extends ChangeNotifier {
 
     await prefs.setInt('id', usuario!.id);
     await prefs.setString('name', usuario.name);
-    await prefs.setString('typeUser',usuario.email);
+    await prefs.setString('typeUser',usuario.typeUser);
     await prefs.setString('email', usuario.email);
     await prefs.setString('address', usuario.address);
   }

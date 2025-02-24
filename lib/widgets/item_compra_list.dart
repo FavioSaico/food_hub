@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_hub/domain/compra_historial.dart';
 import 'package:food_hub/pages/pago/detalle.dart';
+import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/date.dart';
 
 class ItemCompraList extends StatelessWidget {
@@ -37,8 +38,8 @@ class ItemCompraList extends StatelessWidget {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(compra.estado.tipo,style: TextStyle(color: Colors.teal),),
-              Text(AppDate.formateoFechaDetalle(compra.fecha))
+              Text(compra.estado.tipo,style: TextStyle(color: AppColors.mainColor),),
+              Text(AppDate.formateoFechaSimple(compra.fecha))
             ],
           ),
           trailing: Text(

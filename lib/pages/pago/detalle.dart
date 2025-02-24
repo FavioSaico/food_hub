@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:food_hub/domain/compra_detalle.dart';
 import 'package:food_hub/domain/estadoreserva.dart';
 import 'package:food_hub/domain/food_response.dart';
+import 'package:food_hub/pages/user/admin_compras.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/providers/compra_provider.dart';
+import 'package:food_hub/providers/shared_provider.dart';
 import 'package:food_hub/utils/colors.dart';
 import 'package:food_hub/utils/date.dart';
 import 'package:food_hub/widgets/app_menu.dart';
@@ -25,12 +27,7 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
   bool _isSuccessful = true;
   bool _isAdmin = false;
   int selectedValue = 1;
-  List<Estado> opciones = [
-    Estado(id: 1, tipo: "En proceso"),
-    Estado(id: 2, tipo: "Finalizado"),
-    Estado(id: 3, tipo: "Finalizado 1"),
-    Estado(id: 4, tipo: "Finalizado 2"),
-  ];
+  List<Estado> opciones = [];
 
   @override
   void initState() {
@@ -49,6 +46,10 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
     _isSuccessful = response!.isSuccessful;
     compraDetalle = response!.data;
     selectedValue = _isSuccessful ? compraDetalle!.estado.id : 1;
+
+    await Provider.of<SharedProvider>(context, listen: false).getStates();
+    opciones = Provider.of<SharedProvider>(context, listen: false).estadosList;
+
     setState(() => _isLoading = false);
   }
   @override
@@ -120,7 +121,7 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
                 SizedBox(height: 16),
                 
                 _isAdmin 
-                ? _buildSelectState()
+                ? _buildSelectState(compraDetalle!.idCompra)
                 : Row(
                   children: [
                     Text("Estado:", style: TextStyle(fontWeight: FontWeight.bold,fontSize:16)),
@@ -128,8 +129,6 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
                     Text(compraDetalle!.estado.tipo, style: TextStyle(color: AppColors.mainColor,fontSize:16, fontWeight: FontWeight.bold)),
                   ],
                 ),
-
-
               ],
             ),
           ),
@@ -169,7 +168,7 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
     );
   }
 
-  Widget _buildSelectState() {
+  Widget _buildSelectState(int idCompra) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -181,27 +180,28 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
                 width: 20,
               ),
               SizedBox(
-                child: DropdownButton<int>(
-                  icon: Icon(Icons.keyboard_arrow_down, color: AppColors.mainColor, size: 30), // 🔥 Nuevo icono
+                child: opciones.isNotEmpty ? DropdownButton<int>(
+                  icon: Icon(Icons.keyboard_arrow_down, color: AppColors.mainColor, size: 30),
                   borderRadius: BorderRadius.circular(10),
-                  isExpanded: false, 
-                    value: selectedValue,
-                    onChanged: (int? newValue) {
-                      setState(() {
-                        selectedValue = newValue!;
-                      });
-                    },
-                    underline: Container(height: 1, color: Colors.black,), // Línea debajo del dropdown
-                    items: opciones.map((value) {
-                      return DropdownMenuItem<int>(
-                        value: value.id,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 30),
-                          child: Text(value.tipo),
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                  isExpanded: false,
+                  value: selectedValue,
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      selectedValue = newValue!;
+                    });
+                  },
+                  underline: Container(height: 1, color: Colors.black,), // Línea debajo del dropdown
+                  items: opciones.map((value) {
+                    return DropdownMenuItem<int>(
+                      value: value.id,
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 30),
+                        child: Text(value.tipo),
+                      ),
+                    );
+                  }).toList(),
+                )
+                : Center(child: CircularProgressIndicator(color: AppColors.mainColor, backgroundColor: Colors.white,))
               ),
             ],
           ),
@@ -211,16 +211,32 @@ class _DetalleCompraScreenState extends State<DetalleCompraScreen> {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red,),
-                onPressed: () => {
+                onPressed: selectedValue != compraDetalle!.estado.id ? () => {
                   Navigator.pop(context)
-                },
+                }
+                : null,
                 child: const Text('Cancelar', style: TextStyle(color: Colors.white, fontSize: 16)),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: AppColors.mainColor),
-                onPressed: () => {
+                onPressed: selectedValue != compraDetalle!.estado.id ? () async {
+                  final provider = Provider.of<CompraProvider>(context, listen: false);
+                  MessageResponseCompraProvider<int> response = await provider.updatePurchaseState(idCompra,selectedValue);
 
-                },                            // onPressed: () => _guardarContrasena(usuario?.id ?? 0),
+                  if(response.isSuccessful){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Estado actualizado con éxito")),
+                    );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => AdminComprasPage()),
+                    );
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(response.message)),
+                    );
+                  }
+                } : null,                            
                 child: const Text('Guardar', style: TextStyle(color: Colors.white, fontSize: 16)),
               ),
             ],

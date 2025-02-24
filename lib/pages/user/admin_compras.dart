@@ -6,7 +6,6 @@ import 'package:food_hub/widgets/app_menu.dart';
 import 'package:food_hub/widgets/empty_list.dart';
 import 'package:food_hub/widgets/error_message.dart';
 import 'package:food_hub/widgets/item_compra_list.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AdminComprasPage extends StatefulWidget {
@@ -30,16 +29,12 @@ class _AdminComprasPageState extends State<AdminComprasPage> {
 
   Future<void> _obtenetListaCompras() async {
     setState(() => _isLoading = true); 
+    listaCompras = [];
     response = await Provider.of<CompraProvider>(context, listen: false).getListPurchases();
     _isSuccessful = response!.isSuccessful;
     listaCompras = response!.data ?? [];
+    // print(listaCompras);
     setState(() => _isLoading = false);
-  }
-
-  // Método para formatear la fecha
-  String formateoFecha(DateTime date) {
-    String formattedDateTime = DateFormat('EEEE d MMMM y - HH:mm', 'es_ES').format(date);
-    return '${formattedDateTime[0].toUpperCase()}${formattedDateTime.substring(1)}';
   }
 
   @override

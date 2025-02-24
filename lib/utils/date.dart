@@ -8,7 +8,7 @@ class AppDate{
 
   // 7/10/1996 5:08 PM
   static String formateoFechaSimple( DateTime date) {
-    String formattedDateTime = DateFormat.yMd().add_jm().format(date);
+    String formattedDateTime = DateFormat('dd/MM/y - HH:mm', 'es_ES').format(date);
     return '${formattedDateTime[0].toUpperCase()}${formattedDateTime.substring(1)}';
   }
 }
