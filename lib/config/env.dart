@@ -24,7 +24,7 @@ Future<void> setupRemoteConfig() async {
   // Configurar opciones de Remote Config
   await remoteConfig.setConfigSettings(RemoteConfigSettings(
     fetchTimeout: const Duration(seconds: 60), // Tiempo máximo de espera
-    minimumFetchInterval: const Duration(hours: 1), // Tiempo entre actualizaciones
+    minimumFetchInterval: const Duration(minutes: 30), // Tiempo entre actualizaciones
   ));
 
   try {
