@@ -1,5 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:food_hub/config/env.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/pages/food/cart_page.dart';
 import 'package:food_hub/pages/reserva/detalle.dart';
@@ -32,7 +33,9 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Asegura la inicialización
-  await dotenv.load(fileName: ".env"); // Carga las variables del archivo .env
+  // await dotenv.load(fileName: ".env"); // Carga las variables del archivo .env
+  await Firebase.initializeApp(); // Inicializa Firebase
+  await setupRemoteConfig(); // Carga Remote Config antes de iniciar la app
   initializeDateFormatting('es_ES', null); // Inicializa formatos en español
   runApp(MyApp());
 }

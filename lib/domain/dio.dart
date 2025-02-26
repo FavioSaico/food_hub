@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:food_hub/config/env.dart';
 
 class DioClient {
   static final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'http://10.0.2.2:3000',
+    baseUrl: Environment.backPort,
     headers: {
       'Content-Type': 'application/json',
     },
