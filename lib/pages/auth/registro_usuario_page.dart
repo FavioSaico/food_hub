@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_hub/pages/auth/google_maps.dart';
 import 'package:food_hub/pages/auth/login_page.dart';
 import 'package:food_hub/providers/auth_provider.dart';
 import 'package:food_hub/pages/home/main_food_page.dart';
@@ -17,6 +18,7 @@ class RegistroPage extends StatefulWidget {
 class _RegistroPageState extends State<RegistroPage> {
   bool _isLoading = false;
   String message = "";
+  bool _obscureText = true; 
   final nombreTxtController = TextEditingController();
   final correoTxtController = TextEditingController();
   final claveTxtController = TextEditingController();
@@ -85,27 +87,50 @@ class _RegistroPageState extends State<RegistroPage> {
                   
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: AppTextField(hintText: "Dirección de Entrega", icon: Icons.location_on, textController: direccionTxtController,),
+                    child: AppTextField(hintText: "Ingrese un correo electrónico", icon: Icons.email, textController: correoTxtController),
                   ),
                   const SizedBox(height: 10),
 
                   // Cuerpo (Campos de texto y botón)
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: AppTextField(hintText: "Ingrese un correo electrónico", icon: Icons.email, textController: correoTxtController),
+                    child: TextField(
+                      controller: claveTxtController,
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        labelText: "Ingrese una contraseña",
+                        suffixIcon: IconButton(
+                          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility, color: AppColors.mainColor),
+                          onPressed: () => setState(() => _obscureText = !_obscureText),
+                        ),
+                        // filled: true,
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
 
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: AppTextField(hintText: "Ingrese una contraseña", icon: Icons.lock,obscureText: true, textController: claveTxtController,),
+                    child: AppTextField(hintText: "Dirección de Entrega", icon: Icons.location_on, textController: direccionTxtController,),
                   ),
                   const SizedBox(height: 10),
 
                   GestureDetector(
-                    onTap: () {
-                      // Aquí puedes definir lo que quieres que suceda cuando el texto sea presionado
-                      print("Usar ubicación actual");
+                    onTap: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          allowSnapshotting: false,
+                          builder: (context) => GoogleMapsScreen(),
+                        ),
+                      );
+                      // print(result);
+                      if(result != null){
+                        setState(() {
+                          direccionTxtController.text = result;
+                        });
+                      }
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +138,7 @@ class _RegistroPageState extends State<RegistroPage> {
                         Icon(Icons.location_on, color: AppColors.mainColor, size: 20),
                         SizedBox(width: 5),
                         Text(
-                          "Usar mi ubicación actual",
+                          "Seleccionar ubicación",
                           style: TextStyle(
                             color: AppColors.mainColor, // Usando el color principal del botón
                             fontSize: 14,
@@ -129,17 +154,9 @@ class _RegistroPageState extends State<RegistroPage> {
                     text: "Registrarme",
                     onPressed: () {
                       handleRegister();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     allowSnapshotting: false,
-                      //     builder: (context) => MainFoodPage(),
-                      //   ),
-                      // );
                     },
                   ),
                   const SizedBox(height: 20),
-                  // Texto clickeable debajo del botón "Ingresar"
                   GestureDetector(
                     onTap: () {
                       Navigator.push(

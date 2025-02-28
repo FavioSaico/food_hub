@@ -18,6 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   String message = "";
+  bool _obscureText = true;
   final correoTxtController = TextEditingController();
   final claveTxtController = TextEditingController();
 
@@ -101,11 +102,18 @@ class _LoginPageState extends State<LoginPage> {
 
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: AppTextField(
-                      hintText: "Contraseña",
-                      icon: Icons.lock,
-                      obscureText: true,
-                      textController: claveTxtController,
+                    child: TextField(
+                      controller: claveTxtController,
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        labelText: "Ingrese una contraseña",
+                        suffixIcon: IconButton(
+                          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility, color: AppColors.mainColor),
+                          onPressed: () => setState(() => _obscureText = !_obscureText),
+                        ),
+                        // filled: true,
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 50),

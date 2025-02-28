@@ -86,7 +86,7 @@ class _CambiarContrasenaPageState extends State<CambiarContrasenaPage> {
       decoration: InputDecoration(
         labelText: label,
         suffixIcon: IconButton(
-          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
+          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility,color: AppColors.mainColor),
           onPressed: () => setState(() => _obscureText = !_obscureText),
         ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
@@ -111,10 +111,10 @@ class _CambiarContrasenaPageState extends State<CambiarContrasenaPage> {
     setState(() => _isLoading = false);
 
     if (response.isSuccessful) {
-   Get.snackbar('Éxito', 'Contraseña cambiada con éxito', backgroundColor: Colors.green, colorText: Colors.white);
-   Navigator.pushNamed(context, '/userProfile');
+      Get.snackbar('Éxito', 'Contraseña cambiada con éxito', backgroundColor: Colors.green, colorText: Colors.white);
+      Navigator.pushNamed(context, '/userProfile');
     } else {
-  Get.snackbar('Error', response.message, backgroundColor: Colors.red, colorText: Colors.white);
+      Get.snackbar('Error', response.message, backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 }

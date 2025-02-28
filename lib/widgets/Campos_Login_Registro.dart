@@ -18,21 +18,14 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: TextField(
-        controller: textController,
-        obscureText: obscureText, // Aquí activamos la opción de ocultar el texto
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(fontStyle: FontStyle.italic),
-          border: InputBorder.none,
-          suffixIcon: Icon(icon, color: Colors.teal), // Ícono al lado derecho
-        ),
+    return TextField(
+      controller: textController,
+      obscureText: obscureText, // Aquí activamos la opción de ocultar el texto
+      decoration: InputDecoration(
+        labelText: hintText,
+        hintStyle: const TextStyle(fontStyle: FontStyle.italic),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
+        suffixIcon: Icon(icon, color: Colors.teal), // Ícono al lado derecho
       ),
     );
   }

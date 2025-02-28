@@ -33,7 +33,6 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Asegura la inicialización
-  // await dotenv.load(fileName: ".env"); // Carga las variables del archivo .env
   await Firebase.initializeApp(); // Inicializa Firebase
   await setupRemoteConfig(); // Carga Remote Config antes de iniciar la app
   initializeDateFormatting('es_ES', null); // Inicializa formatos en español
@@ -70,8 +69,6 @@ class MyApp extends StatelessWidget {
           '/adminView': (context) => VistaAdminPage(),
           '/adminReservas': (context) => AdminReservasPage(),
           '/adminCompras': (context) => AdminComprasPage(),
-
-          // '/register-card': (context) => const RegisterCard(),
           '/iniciolog': (context) => const SplashScreen(),
           '/iniciolog2': (context) => const SplashScreen2(),
           '/reserva': (context) => DetallePage(
@@ -95,10 +92,6 @@ class MyApp extends StatelessWidget {
           '/cambio_contraseña': (context) => CambiarContrasenaPage(),
           '/carrito': (context) => CartPage(),
           '/historial_reserva': (context) => HistorialReservasPage(),
-          // '/detalle_historial_reserva': (context) {
-          // final routeArgs = ModalRoute.of(context)!.settings.arguments as int;
-          // return DetalleReservaScreen(reservaId: routeArgs);
-          // },
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.mainColor),
