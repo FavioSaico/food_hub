@@ -215,7 +215,7 @@ class SedesPageState extends State<SedesPage> {
           ),
         ],
       ),
-      bottomNavigationBar: AppMenu(),
+      bottomNavigationBar: AppMenu(selectedIndex: 1),
     );
   }
 }

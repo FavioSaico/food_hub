@@ -9,9 +9,11 @@ import 'package:food_hub/widgets/small_text.dart';
 class AppColumn extends StatelessWidget {
 
   final String text;
+  final String tipo;
+  final String time;
   const AppColumn ({ 
     Key? key,
-    required this.text
+    required this.text, required this.tipo, required this.time
   }): super(key: key);
 
   @override
@@ -41,7 +43,7 @@ class AppColumn extends StatelessWidget {
           children: [
             IconAndTextWidget(
               icon: Icons.set_meal,
-              text: "Fondo",
+              text: "${tipo[0]}${tipo.substring(1).toLowerCase()}",
               iconColor: AppColors.iconColor1,
             ),
             IconAndTextWidget(
@@ -51,7 +53,7 @@ class AppColumn extends StatelessWidget {
             ),
             IconAndTextWidget(
               icon: Icons.access_time_rounded,
-              text: "15 min",
+              text: time,
               iconColor: AppColors.mainColor,
             ),
           ],

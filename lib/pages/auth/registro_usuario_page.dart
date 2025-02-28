@@ -81,26 +81,26 @@ class _RegistroPageState extends State<RegistroPage> {
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: AppTextField(hintText: "Ingrese su Nombre/Apellido", icon: Icons.person, textController: nombreTxtController,),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 10),
                   
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: AppTextField(hintText: "Dirección de Entrega", icon: Icons.location_on, textController: direccionTxtController,),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 10),
 
                   // Cuerpo (Campos de texto y botón)
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: AppTextField(hintText: "Ingrese un correo electrónico", icon: Icons.email, textController: correoTxtController),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 10),
 
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: AppTextField(hintText: "Ingrese una contraseña", icon: Icons.lock,obscureText: true, textController: claveTxtController,),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 10),
 
                   GestureDetector(
                     onTap: () {

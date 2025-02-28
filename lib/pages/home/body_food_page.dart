@@ -1,5 +1,7 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:food_hub/domain/food.dart';
+import 'package:food_hub/pages/reserva/sedes.dart';
 import 'package:food_hub/providers/food_provider.dart';
 import 'package:food_hub/pages/food/recommended_food_detail.dart';
 import 'package:food_hub/utils/colors.dart';
@@ -40,8 +42,6 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
     // cargamos los datos de los platillos
     setState(() => _isLoading = true);
     await Provider.of<FoodProvider>(context, listen: false).getFoods();
-    // final foodProvider = context.watch<FoodProvider>();
-    // foodProvider.getFoods();
     setState(() => _isLoading = false);
   }
 
@@ -65,18 +65,20 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
               height: Dimensions.pageView,
               child: PageView.builder(
                   controller: pageController,
-                  itemCount: 5,
+                  itemCount: 3,
                   itemBuilder: (context, position) {
-                    return _buildPageItem(position);
+                    // print(position);
+                    final Food food = foodProvider.foodList[position];
+                    return _buildPageItem(position, food);
                   }),
             ),
             DotsIndicator(
-              dotsCount: 5,
+              dotsCount: 3,
               position: _currentPageValue,
               decorator: DotsDecorator(
                 activeColor: AppColors.mainColor,
                 size: const Size.square(9.0),
-                activeSize: const Size(18.0, 9.0),
+                activeSize: const Size(9.0, 9.0),
                 activeShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0)),
               ),
@@ -90,28 +92,38 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 // mainAxisAlignment: MainAxisAlignment,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                      padding: EdgeInsets.only(
-                        left: Dimensions.width20*2,
-                        right: Dimensions.width20*2,
-                        top: Dimensions.height10,
-                        bottom: Dimensions.height10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.mainColor,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(Dimensions.radius15),
-                          topRight: Radius.circular(Dimensions.radius15),
-                          bottomLeft: Radius.circular(Dimensions.radius15),
-                          bottomRight: Radius.circular(Dimensions.radius15),
-                        )
-                      ),
-                      child: BigText(text: "Haz una reserva", color: Colors.white,size:Dimensions.font16),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SedesPage(),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(
+                            left: Dimensions.width20*2,
+                            right: Dimensions.width20*2,
+                            top: Dimensions.height10,
+                            bottom: Dimensions.height10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.mainColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(Dimensions.radius15),
+                              topRight: Radius.circular(Dimensions.radius15),
+                              bottomLeft: Radius.circular(Dimensions.radius15),
+                              bottomRight: Radius.circular(Dimensions.radius15),
+                            )
+                          ),
+                          child: BigText(text: "Haz una reserva", color: Colors.white,size:Dimensions.font16),
+                        ),
+                      ],
                     ),
-                    ],
                   ),
                   BigText(text: "Popular"),
                 ],
@@ -182,7 +194,7 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
                                   children: [
                                     IconAndTextWidget(
                                       icon: Icons.set_meal,
-                                      text: product.typeFood,
+                                      text: "${product.typeFood[0]}${product.typeFood.substring(1).toLowerCase()}",
                                       iconColor: AppColors.iconColor1,
                                     ),
                                     IconAndTextWidget(
@@ -212,7 +224,7 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
     );
   }
 
-  Widget _buildPageItem(int index) {
+  Widget _buildPageItem(int index, Food food) {
     Matrix4 matrix = Matrix4.identity();
     if (index == _currentPageValue.floor()) {
       var currentScale = 1 - (_currentPageValue - index) * (1 - _scaleFactor);
@@ -251,7 +263,7 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
                 color: index.isEven ? Color(0xff69c5df) : Color(0xFF9294cc),
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage("assets/imagenes/Ceviche_Pescado.png"))),
+                    image: AssetImage(food.imageUrl))),
           ),
           Align(
               alignment: Alignment.bottomCenter,
@@ -282,7 +294,7 @@ class _BodyFoodPageState extends State<BodyFoodPage> {
                 child: Container(
                   padding: EdgeInsets.only(
                       top: Dimensions.height15, left: 15, right: 15),
-                  child: AppColumn(text: "Ceviche de Pescado")
+                  child: AppColumn(text: food.name, tipo: food.typeFood,time:food.time)
                 ),
               ))
         ],
